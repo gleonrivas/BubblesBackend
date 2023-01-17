@@ -8,8 +8,12 @@ use App\Repository\UsuarioEntityRepository;
 use Cassandra\Date;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Scalar\String_;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UsuarioEntityRepository::class)]
+#[ORM\Table(name:"usuario")]
+#[UniqueEntity("id")]
 class UsuarioEntity
 {
     #[ORM\Id]
@@ -17,35 +21,35 @@ class UsuarioEntity
     #[ORM\Column]
     private ?int $id;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(type: "string", length: 150)]
     private ?string $nombre;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(type: "string",length: 150)]
     private ?string $apellidos;
 
-    #[ORM\Column(length: 9)]
+    #[ORM\Column(type: "string",length: 9)]
     private ?string $telefono;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(type: "string",length: 150)]
     private ?string $email;
 
-    #[ORM\Column(length: 150)]
-    private ?rol_usuario $rol_usuario;
+    #[ORM\ManyToOne(targetEntity: RolEntity::class, inversedBy: UsuarioEntity::class)]
+    private $rol;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(type: "string",length: 150)]
     private ?tipo_cuenta $tipo_cuenta;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(type: "date",length: 150)]
     private ?Date $fecha_nacimiento;
 
-    #[ORM\Column(length: 800)]
+    #[ORM\Column(type: "string",length: 800)]
     private ?string $descripcion;
 
-    #[ORM\Column(length: 150)]
-    private ?Date $username;
+    #[ORM\Column(type: "string",length: 150)]
+    private ?string $username;
 
-    #[ORM\Column(length: 300)]
-    private ?Date $foto_perfil;
+    #[ORM\Column(type: "string",length: 300)]
+    private ?string $foto_perfil;
 
     /**
      * @param int|null $id
