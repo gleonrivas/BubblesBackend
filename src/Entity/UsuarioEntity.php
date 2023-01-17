@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\MensajeEntityRepository;
+use App\Repository\UsuarioEntityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MensajeEntityRepository::class)]
-class MensajeEntity
+#[ORM\Entity(repositoryClass: UsuarioEntityRepository::class)]
+class UsuarioEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,7 +15,13 @@ class MensajeEntity
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    private ?string $descripcion = null;
+    private ?string $nombre = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $apellidos = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $telefono = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $fecha = null;

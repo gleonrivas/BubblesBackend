@@ -3,25 +3,26 @@
 namespace App\Repository;
 
 use App\Entity\MensajeEntity;
+use App\Entity\UsuarioEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<MensajeEntity>
  *
- * @method MensajeEntity|null find($id, $lockMode = null, $lockVersion = null)
- * @method MensajeEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method MensajeEntity[]    findAll()
- * @method MensajeEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method UsuarioEntity|null find($id, $lockMode = null, $lockVersion = null)
+ * @method UsuarioEntity|null findOneBy(array $criteria, array $orderBy = null)
+ * @method UsuarioEntity[]    findAll()
+ * @method UsuarioEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MensajeEntityRepository extends ServiceEntityRepository
+class UsuarioEntityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, MensajeEntity::class);
+        parent::__construct($registry, UsuarioEntity::class);
     }
 
-    public function save(MensajeEntity $entity, bool $flush = false): void
+    public function save(UsuarioEntity $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +31,7 @@ class MensajeEntityRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(MensajeEntity $entity, bool $flush = false): void
+    public function remove(UsuarioEntity $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 

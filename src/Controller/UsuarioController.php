@@ -6,14 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MensajeController extends AbstractController
+class UsuarioController extends AbstractController
 {
     #[Route('/mensaje', name: 'app_mensaje')]
     public function index(): JsonResponse
     {
         return $this->json([
             'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/MensajeController.php',
+            'path' => 'src/Controller/UsuarioController.php',
         ]);
     }
 }
