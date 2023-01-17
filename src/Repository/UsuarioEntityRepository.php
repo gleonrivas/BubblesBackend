@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<MensajeEntity>
+ * @extends ServiceEntityRepository<UsuarioEntity>
  *
  * @method UsuarioEntity|null find($id, $lockMode = null, $lockVersion = null)
  * @method UsuarioEntity|null findOneBy(array $criteria, array $orderBy = null)
@@ -40,7 +40,7 @@ class UsuarioEntityRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return MensajeEntity[] Returns an array of MensajeEntity objects
+//     * @return UsuarioEntity[] Returns an array of UsuarioEntity objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class UsuarioEntityRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?MensajeEntity
+//    public function findOneBySomeField($value): ?UsuarioEntity
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')

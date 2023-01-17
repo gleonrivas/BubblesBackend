@@ -21,13 +21,14 @@ class UsuarioController extends AbstractController
        ]);
 
     }
-    #[Route('/listarUsuarios', name: 'listar_usuario', methods: ['GET'])]
-    public function listar(UsuarioEntityRepository $repository, Utilidades $utils): JsonResponse
+    #[Route('/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
+    public function listar(UsuarioEntityRepository $repository, Utilidades $utils):JsonResponse
     {
         $lista_usuarios = $repository->findAll();
-        $lista_Json = $utils->toJson($lista_usuarios);
+        $lista_Json = json_encode($lista_usuarios);
 
-        return new  JsonResponse($lista_Json, 200,[], true);
+        //$lista_Json = $utils->toJson($lista_usuarios);
 
+        return new JsonResponse($lista_Json, 200,[], true);
     }
 }
