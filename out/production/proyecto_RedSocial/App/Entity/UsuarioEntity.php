@@ -2,68 +2,50 @@
 
 namespace App\Entity;
 
-use App\Repository\UsuarioRepository;
-use Doctrine\Common\Collections\Collection;
+use App\Enums\rol_usuario;
+use App\Enums\tipo_cuenta;
+use App\Repository\UsuarioEntityRepository;
+use Cassandra\Date;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
-#[ORM\Entity(repositoryClass: UsuarioRepository::class)]
-#[ORM\Table(name:"usuario")]
-#[UniqueEntity("id")]
-class Usuario
+#[ORM\Entity(repositoryClass: UsuarioEntityRepository::class)]
+class UsuarioEntity
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id;
 
-    #[ORM\Column(length: 100)]
-    private ?string $nombre = null;
+    #[ORM\Column(length: 150)]
+    private ?string $nombre;
 
-    #[ORM\Column(length: 100)]
-    private ?string $apellidos = null;
+    #[ORM\Column(length: 150)]
+    private ?string $apellidos;
 
     #[ORM\Column(length: 9)]
-    private ?string $telefono = null;
+    private ?string $telefono;
 
-    #[ORM\Column(length: 255)]
-    private ?string $email = null;
+    #[ORM\Column(length: 150)]
+    private ?string $email;
 
-    #[ORM\Column(length: 100)]
-    private ?string $tipo_cuenta = null;
+    #[ORM\Column(length: 150)]
+    private ?rol_usuario $rol_usuario;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $fecha_nacimiento = null;
+    #[ORM\Column(length: 150)]
+    private ?tipo_cuenta $tipo_cuenta;
 
-    #[ORM\Column(length: 800, nullable: true)]
-    private ?string $descripcion = null;
+    #[ORM\Column(length: 150)]
+    private ?Date $fecha_nacimiento;
 
-    #[ORM\Column(length: 100)]
-    private ?string $username = null;
+    #[ORM\Column(length: 800)]
+    private ?string $descripcion;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $foto_perfil = null;
+    #[ORM\Column(length: 150)]
+    private ?Date $username;
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: RolEntity::class, orphanRemoval: true)]
-    private Collection $rol;
-
-    #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
-    private Collection $emisor ;
-
-    #[ORM\OneToMany(mappedBy: 'receptor', targetEntity: Mensaje::class)]
-    private Collection $receptor;
-
-    #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
-    private ?AccessToken $token = null;
-
-    #[ORM\OneToMany(mappedBy: 'id_principal', targetEntity: Seguidor::class)]
-    private Collection $seguidor_principal;
-
-    #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
-    private Collection $seguidor_follower;
+    #[ORM\Column(length: 300)]
+    private ?Date $foto_perfil;
 
     /**
      * @param int|null $id
@@ -71,19 +53,21 @@ class Usuario
      * @param string|null $apellidos
      * @param string|null $telefono
      * @param string|null $email
-     * @param string|null $tipo_cuenta
-     * @param \DateTimeInterface|null $fecha_nacimiento
+     * @param rol_usuario|null $rol_usuario
+     * @param tipo_cuenta|null $tipo_cuenta
+     * @param Date|null $fecha_nacimiento
      * @param string|null $descripcion
-     * @param string|null $username
-     * @param string|null $foto_perfil
+     * @param Date|null $username
+     * @param Date|null $foto_perfil
      */
-    public function __construct(?int $id, ?string $nombre, ?string $apellidos, ?string $telefono, ?string $email, ?string $tipo_cuenta, ?\DateTimeInterface $fecha_nacimiento, ?string $descripcion, ?string $username, ?string $foto_perfil)
+    public function __construct(?int $id, ?string $nombre, ?string $apellidos, ?string $telefono, ?string $email, ?rol_usuario $rol_usuario, ?tipo_cuenta $tipo_cuenta, ?Date $fecha_nacimiento, ?string $descripcion, ?Date $username, ?Date $foto_perfil)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->apellidos = $apellidos;
         $this->telefono = $telefono;
         $this->email = $email;
+        $this->rol_usuario = $rol_usuario;
         $this->tipo_cuenta = $tipo_cuenta;
         $this->fecha_nacimiento = $fecha_nacimiento;
         $this->descripcion = $descripcion;
@@ -172,33 +156,49 @@ class Usuario
     }
 
     /**
-     * @return string|null
+     * @return rol_usuario|null
      */
-    public function getTipoCuenta(): ?string
+    public function getRolUsuario(): ?rol_usuario
+    {
+        return $this->rol_usuario;
+    }
+
+    /**
+     * @param rol_usuario|null $rol_usuario
+     */
+    public function setRolUsuario(?rol_usuario $rol_usuario): void
+    {
+        $this->rol_usuario = $rol_usuario;
+    }
+
+    /**
+     * @return tipo_cuenta|null
+     */
+    public function getTipoCuenta(): ?tipo_cuenta
     {
         return $this->tipo_cuenta;
     }
 
     /**
-     * @param string|null $tipo_cuenta
+     * @param tipo_cuenta|null $tipo_cuenta
      */
-    public function setTipoCuenta(?string $tipo_cuenta): void
+    public function setTipoCuenta(?tipo_cuenta $tipo_cuenta): void
     {
         $this->tipo_cuenta = $tipo_cuenta;
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return Date|null
      */
-    public function getFechaNacimiento(): ?\DateTimeInterface
+    public function getFechaNacimiento(): ?Date
     {
         return $this->fecha_nacimiento;
     }
 
     /**
-     * @param \DateTimeInterface|null $fecha_nacimiento
+     * @param Date|null $fecha_nacimiento
      */
-    public function setFechaNacimiento(?\DateTimeInterface $fecha_nacimiento): void
+    public function setFechaNacimiento(?Date $fecha_nacimiento): void
     {
         $this->fecha_nacimiento = $fecha_nacimiento;
     }
@@ -220,37 +220,36 @@ class Usuario
     }
 
     /**
-     * @return string|null
+     * @return Date|null
      */
-    public function getUsername(): ?string
+    public function getUsername(): ?Date
     {
         return $this->username;
     }
 
     /**
-     * @param string|null $username
+     * @param Date|null $username
      */
-    public function setUsername(?string $username): void
+    public function setUsername(?Date $username): void
     {
         $this->username = $username;
     }
 
     /**
-     * @return string|null
+     * @return Date|null
      */
-    public function getFotoPerfil(): ?string
+    public function getFotoPerfil(): ?Date
     {
         return $this->foto_perfil;
     }
 
     /**
-     * @param string|null $foto_perfil
+     * @param Date|null $foto_perfil
      */
-    public function setFotoPerfil(?string $foto_perfil): void
+    public function setFotoPerfil(?Date $foto_perfil): void
     {
         $this->foto_perfil = $foto_perfil;
     }
-
 
 
 }
