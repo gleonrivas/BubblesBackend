@@ -23,6 +23,9 @@ class RolEntity
     #[ORM\OneToMany(mappedBy: 'id_rol', targetEntity: Usuario::class, orphanRemoval: true)]
     private Collection $usuario;
 
+    #[ORM\ManyToMany(targetEntity: Permiso::class, mappedBy: 'rol')]
+    private Collection $id_rol;
+
 
     /**
      * @param int|null $id
@@ -33,6 +36,7 @@ class RolEntity
         $this->id = $id;
         $this->nombre = $nombre;
         $this->usuario = new ArrayCollection();
+        $this->id_rol = new ArrayCollection();
     }
 
     /**
@@ -92,6 +96,33 @@ class RolEntity
             if ($usuario->getIdRol() === $this) {
                 $usuario->setIdRol(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Permiso>
+     */
+    public function getIdRol(): Collection
+    {
+        return $this->id_rol;
+    }
+
+    public function addIdRol(Permiso $idRol): self
+    {
+        if (!$this->id_rol->contains($idRol)) {
+            $this->id_rol->add($idRol);
+            $idRol->addRol($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdRol(Permiso $idRol): self
+    {
+        if ($this->id_rol->removeElement($idRol)) {
+            $idRol->removeRol($this);
         }
 
         return $this;

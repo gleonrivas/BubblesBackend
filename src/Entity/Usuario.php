@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsuarioRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -44,6 +46,24 @@ class Usuario
     #[ORM\ManyToOne(inversedBy: 'usuario')]
     #[ORM\JoinColumn(name: "id_rol" ,nullable: false)]
     private ?RolEntity $id_rol;
+
+    #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
+    private Collection $emisor ;
+
+    #[ORM\OneToMany(mappedBy: 'receptor', targetEntity: Mensaje::class)]
+    private Collection $receptor;
+
+    #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
+    private ?AccessToken $token = null;
+
+    public function __construct()
+    {
+        $this->receptor = new ArrayCollection();
+    }
+    public function __constructo()
+    {
+        $this->emisor = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -166,6 +186,65 @@ class Usuario
     public function setIdRol(?RolEntity $id_rol): self
     {
         $this->id_rol = $id_rol;
+
+        return $this;
+    }
+
+    public function getEmisor(): ?Mensaje
+    {
+        return $this->emisor;
+    }
+
+    public function setEmisor(?Mensaje $emisor): self
+    {
+        $this->emisor = $emisor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Mensaje>
+     */
+    public function getReceptor(): Collection
+    {
+        return $this->receptor;
+    }
+
+    public function addReceptor(Mensaje $receptor): self
+    {
+        if (!$this->receptor->contains($receptor)) {
+            $this->receptor->add($receptor);
+            $receptor->setReceptor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceptor(Mensaje $receptor): self
+    {
+        if ($this->receptor->removeElement($receptor)) {
+            // set the owning side to null (unless already changed)
+            if ($receptor->getReceptor() === $this) {
+                $receptor->setReceptor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIdToken(): ?AccessToken
+    {
+        return $this->id_token;
+    }
+
+    public function setIdToken(AccessToken $id_token): self
+    {
+        // set the owning side of the relation if necessary
+        if ($id_token->getIdUsuario() !== $this) {
+            $id_token->setIdUsuario($this);
+        }
+
+        $this->id_token = $id_token;
 
         return $this;
     }
