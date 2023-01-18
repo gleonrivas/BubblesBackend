@@ -49,6 +49,7 @@ class Usuario
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: RolEntity::class, orphanRemoval: true)]
     private Collection $rol;
+
     /**
      * @param int|null $id
      * @param string|null $nombre

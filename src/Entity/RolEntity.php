@@ -22,7 +22,7 @@ class RolEntity
     private ?string $nombre = null;
 
     #[ORM\ManyToOne(inversedBy: 'rol')]
-    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
+    #[ORM\JoinColumn(name: "id" , nullable: false)]
     #[ORM\JoinTable(name: "usuario")]
     private ?Usuario $usuario;
 
