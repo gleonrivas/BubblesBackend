@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: RolEntityRepository::class)]
 #[ORM\Table(name:"rol")]
@@ -20,19 +21,21 @@ class RolEntity
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_rol', targetEntity: Usuario::class, orphanRemoval: true)]
-    private Collection $usuario;
-
+    #[ORM\ManyToOne(inversedBy: 'rol')]
+    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
+    #[ORM\JoinTable(name: "usuario")]
+    private ?Usuario $usuario;
 
     /**
      * @param int|null $id
      * @param string|null $nombre
+     * @param Usuario|null $usuario
      */
-    public function __construct(?int $id, ?string $nombre)
+    public function __construct(?int $id, ?string $nombre, ?Usuario $usuario)
     {
         $this->id = $id;
         $this->nombre = $nombre;
-        $this->usuario = new ArrayCollection();
+        $this->usuario = $usuario;
     }
 
     /**
@@ -68,35 +71,20 @@ class RolEntity
     }
 
     /**
-     * @return Collection<int, Usuario>
+     * @return Usuario|null
      */
-    public function getUsuario(): Collection
+    public function getUsuario(): ?Usuario
     {
         return $this->usuario;
     }
 
-    public function addUsuario(Usuario $usuario): self
+    /**
+     * @param Usuario|null $usuario
+     */
+    public function setUsuario(?Usuario $usuario): void
     {
-        if (!$this->usuario->contains($usuario)) {
-            $this->usuario->add($usuario);
-            $usuario->setIdRol($this);
-        }
-
-        return $this;
+        $this->usuario = $usuario;
     }
-
-    public function removeUsuario(Usuario $usuario): self
-    {
-        if ($this->usuario->removeElement($usuario)) {
-            // set the owning side to null (unless already changed)
-            if ($usuario->getIdRol() === $this) {
-                $usuario->setIdRol(null);
-            }
-        }
-
-        return $this;
-    }
-
 
 
 
