@@ -3,14 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\UsuarioRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
+#[ORM\Table(name:"usuario")]
+#[UniqueEntity("id")]
 class Usuario
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -43,9 +47,8 @@ class Usuario
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $foto_perfil = null;
 
-    #[ORM\ManyToOne(inversedBy: 'usuario')]
-    #[ORM\JoinColumn(name: "id_rol" ,nullable: false)]
-    private ?RolEntity $id_rol;
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: RolEntity::class, orphanRemoval: true)]
+    private Collection $rol;
 
     #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
     private Collection $emisor ;
@@ -56,196 +59,192 @@ class Usuario
     #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
     private ?AccessToken $token = null;
 
-    public function __construct()
+    /**
+     * @param int|null $id
+     * @param string|null $nombre
+     * @param string|null $apellidos
+     * @param string|null $telefono
+     * @param string|null $email
+     * @param string|null $tipo_cuenta
+     * @param \DateTimeInterface|null $fecha_nacimiento
+     * @param string|null $descripcion
+     * @param string|null $username
+     * @param string|null $foto_perfil
+     */
+    public function __construct(?int $id, ?string $nombre, ?string $apellidos, ?string $telefono, ?string $email, ?string $tipo_cuenta, ?\DateTimeInterface $fecha_nacimiento, ?string $descripcion, ?string $username, ?string $foto_perfil)
     {
-        $this->receptor = new ArrayCollection();
-    }
-    public function __constructo()
-    {
-        $this->emisor = new ArrayCollection();
+        $this->id = $id;
+        $this->nombre = $nombre;
+        $this->apellidos = $apellidos;
+        $this->telefono = $telefono;
+        $this->email = $email;
+        $this->tipo_cuenta = $tipo_cuenta;
+        $this->fecha_nacimiento = $fecha_nacimiento;
+        $this->descripcion = $descripcion;
+        $this->username = $username;
+        $this->foto_perfil = $foto_perfil;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getNombre(): ?string
     {
         return $this->nombre;
     }
 
-    public function setNombre(string $nombre): self
+    /**
+     * @param string|null $nombre
+     */
+    public function setNombre(?string $nombre): void
     {
         $this->nombre = $nombre;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getApellidos(): ?string
     {
         return $this->apellidos;
     }
 
-    public function setApellidos(string $apellidos): self
+    /**
+     * @param string|null $apellidos
+     */
+    public function setApellidos(?string $apellidos): void
     {
         $this->apellidos = $apellidos;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTelefono(): ?string
     {
         return $this->telefono;
     }
 
-    public function setTelefono(string $telefono): self
+    /**
+     * @param string|null $telefono
+     */
+    public function setTelefono(?string $telefono): void
     {
         $this->telefono = $telefono;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email): void
     {
         $this->email = $email;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTipoCuenta(): ?string
     {
         return $this->tipo_cuenta;
     }
 
-    public function setTipoCuenta(string $tipo_cuenta): self
+    /**
+     * @param string|null $tipo_cuenta
+     */
+    public function setTipoCuenta(?string $tipo_cuenta): void
     {
         $this->tipo_cuenta = $tipo_cuenta;
-
-        return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getFechaNacimiento(): ?\DateTimeInterface
     {
         return $this->fecha_nacimiento;
     }
 
-    public function setFechaNacimiento(\DateTimeInterface $fecha_nacimiento): self
+    /**
+     * @param \DateTimeInterface|null $fecha_nacimiento
+     */
+    public function setFechaNacimiento(?\DateTimeInterface $fecha_nacimiento): void
     {
         $this->fecha_nacimiento = $fecha_nacimiento;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescripcion(): ?string
     {
         return $this->descripcion;
     }
 
-    public function setDescripcion(?string $descripcion): self
+    /**
+     * @param string|null $descripcion
+     */
+    public function setDescripcion(?string $descripcion): void
     {
         $this->descripcion = $descripcion;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    /**
+     * @param string|null $username
+     */
+    public function setUsername(?string $username): void
     {
         $this->username = $username;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFotoPerfil(): ?string
     {
         return $this->foto_perfil;
     }
 
-    public function setFotoPerfil(?string $foto_perfil): self
+    /**
+     * @param string|null $foto_perfil
+     */
+    public function setFotoPerfil(?string $foto_perfil): void
     {
         $this->foto_perfil = $foto_perfil;
-
-        return $this;
     }
 
-    public function getIdRol(): ?RolEntity
-    {
-        return $this->id_rol;
-    }
 
-    public function setIdRol(?RolEntity $id_rol): self
-    {
-        $this->id_rol = $id_rol;
 
-        return $this;
-    }
-
-    public function getEmisor(): ?Mensaje
-    {
-        return $this->emisor;
-    }
-
-    public function setEmisor(?Mensaje $emisor): self
-    {
-        $this->emisor = $emisor;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Mensaje>
-     */
-    public function getReceptor(): Collection
-    {
-        return $this->receptor;
-    }
-
-    public function addReceptor(Mensaje $receptor): self
-    {
-        if (!$this->receptor->contains($receptor)) {
-            $this->receptor->add($receptor);
-            $receptor->setReceptor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReceptor(Mensaje $receptor): self
-    {
-        if ($this->receptor->removeElement($receptor)) {
-            // set the owning side to null (unless already changed)
-            if ($receptor->getReceptor() === $this) {
-                $receptor->setReceptor(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getIdToken(): ?AccessToken
-    {
-        return $this->id_token;
-    }
-
-    public function setIdToken(AccessToken $id_token): self
-    {
-        // set the owning side of the relation if necessary
-        if ($id_token->getIdUsuario() !== $this) {
-            $id_token->setIdUsuario($this);
-        }
-
-        $this->id_token = $id_token;
-
-        return $this;
-    }
 }
