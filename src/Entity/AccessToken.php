@@ -21,7 +21,8 @@ class AccessToken
     private ?\DateTimeInterface $fecha_expiracion = null;
 
     #[ORM\OneToOne(inversedBy: 'token', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "id" ,nullable: false)]
+    #[ORM\JoinTable(name: "usuario")]
     private ?Usuario $id_usuario = null;
 
     public function getId(): ?int
