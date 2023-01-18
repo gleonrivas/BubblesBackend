@@ -52,6 +52,7 @@ class Usuario
     private Collection $rol;
 
     #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
+
     private Collection $emisor ;
 
     #[ORM\OneToMany(mappedBy: 'receptor', targetEntity: Mensaje::class)]
@@ -65,6 +66,15 @@ class Usuario
 
     #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
     private Collection $seguidor_follower;
+
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Comentario::class, orphanRemoval: true)]
+    private Collection $comentario;
+
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Publicacion::class, orphanRemoval: true)]
+    private Collection $publicacion;
+
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
+    private Collection $id_usuario;
 
     /**
      * @param int|null $id
@@ -92,6 +102,9 @@ class Usuario
         $this->foto_perfil = $foto_perfil;
         $this->seguidor_principal = new ArrayCollection();
         $this->seguidor_follower = new ArrayCollection();
+        $this->comentario = new ArrayCollection();
+        $this->publicacion = new ArrayCollection();
+        $this->id_usuario = new ArrayCollection();
     }
 
     /**
@@ -308,6 +321,96 @@ class Usuario
             // set the owning side to null (unless already changed)
             if ($seguidorFollower->getIdFollower() === $this) {
                 $seguidorFollower->setIdFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comentario>
+     */
+    public function getComentario(): Collection
+    {
+        return $this->comentario;
+    }
+
+    public function addComentario(Comentario $comentario): self
+    {
+        if (!$this->comentario->contains($comentario)) {
+            $this->comentario->add($comentario);
+            $comentario->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComentario(Comentario $comentario): self
+    {
+        if ($this->comentario->removeElement($comentario)) {
+            // set the owning side to null (unless already changed)
+            if ($comentario->getIdUsuario() === $this) {
+                $comentario->setIdUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Publicacion>
+     */
+    public function getPublicacion(): Collection
+    {
+        return $this->publicacion;
+    }
+
+    public function addPublicacion(Publicacion $publicacion): self
+    {
+        if (!$this->publicacion->contains($publicacion)) {
+            $this->publicacion->add($publicacion);
+            $publicacion->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removePublicacion(Publicacion $publicacion): self
+    {
+        if ($this->publicacion->removeElement($publicacion)) {
+            // set the owning side to null (unless already changed)
+            if ($publicacion->getIdUsuario() === $this) {
+                $publicacion->setIdUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Like>
+     */
+    public function getIdUsuario(): Collection
+    {
+        return $this->id_usuario;
+    }
+
+    public function addIdUsuario(Like $idUsuario): self
+    {
+        if (!$this->id_usuario->contains($idUsuario)) {
+            $this->id_usuario->add($idUsuario);
+            $idUsuario->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIdUsuario(Like $idUsuario): self
+    {
+        if ($this->id_usuario->removeElement($idUsuario)) {
+            // set the owning side to null (unless already changed)
+            if ($idUsuario->getIdUsuario() === $this) {
+                $idUsuario->setIdUsuario(null);
             }
         }
 
