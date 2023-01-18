@@ -19,7 +19,8 @@ class Comentario
     private ?string $texto = null;
 
     #[ORM\ManyToOne(inversedBy: 'comentario')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "id" , nullable: false)]
+    #[ORM\JoinTable(name: "usuario")]
     private ?Usuario $id_usuario = null;
 
     #[ORM\OneToMany(mappedBy: 'id_comentario', targetEntity: Like::class)]
