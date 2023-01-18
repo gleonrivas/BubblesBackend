@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UsuarioRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -59,6 +60,12 @@ class Usuario
     #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
     private ?AccessToken $token = null;
 
+    #[ORM\OneToMany(mappedBy: 'id_principal', targetEntity: Seguidor::class)]
+    private Collection $seguidor_principal;
+
+    #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
+    private Collection $seguidor_follower;
+
     /**
      * @param int|null $id
      * @param string|null $nombre
@@ -83,6 +90,8 @@ class Usuario
         $this->descripcion = $descripcion;
         $this->username = $username;
         $this->foto_perfil = $foto_perfil;
+        $this->seguidor_principal = new ArrayCollection();
+        $this->seguidor_follower = new ArrayCollection();
     }
 
     /**
@@ -243,6 +252,66 @@ class Usuario
     public function setFotoPerfil(?string $foto_perfil): void
     {
         $this->foto_perfil = $foto_perfil;
+    }
+
+    /**
+     * @return Collection<int, Seguidor>
+     */
+    public function getSeguidorPrincipal(): Collection
+    {
+        return $this->seguidor_principal;
+    }
+
+    public function addSeguidorPrincipal(Seguidor $seguidorPrincipal): self
+    {
+        if (!$this->seguidor_principal->contains($seguidorPrincipal)) {
+            $this->seguidor_principal->add($seguidorPrincipal);
+            $seguidorPrincipal->setIdPrincipal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeguidorPrincipal(Seguidor $seguidorPrincipal): self
+    {
+        if ($this->seguidor_principal->removeElement($seguidorPrincipal)) {
+            // set the owning side to null (unless already changed)
+            if ($seguidorPrincipal->getIdPrincipal() === $this) {
+                $seguidorPrincipal->setIdPrincipal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seguidor>
+     */
+    public function getSeguidorFollower(): Collection
+    {
+        return $this->seguidor_follower;
+    }
+
+    public function addSeguidorFollower(Seguidor $seguidorFollower): self
+    {
+        if (!$this->seguidor_follower->contains($seguidorFollower)) {
+            $this->seguidor_follower->add($seguidorFollower);
+            $seguidorFollower->setIdFollower($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeguidorFollower(Seguidor $seguidorFollower): self
+    {
+        if ($this->seguidor_follower->removeElement($seguidorFollower)) {
+            // set the owning side to null (unless already changed)
+            if ($seguidorFollower->getIdFollower() === $this) {
+                $seguidorFollower->setIdFollower(null);
+            }
+        }
+
+        return $this;
     }
 
 
