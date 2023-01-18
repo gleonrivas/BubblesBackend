@@ -6,7 +6,6 @@ use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-
 /**
  * @extends ServiceEntityRepository<Usuario>
  *
@@ -15,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Usuario[]    findAll()
  * @method Usuario[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UsuarioEntityRepository extends ServiceEntityRepository
+class UsuarioRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -41,24 +40,24 @@ class UsuarioEntityRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return UsuarioEntity[] Returns an array of UsuarioEntity objects
+//     * @return Usuario[] Returns an array of Usuario objects
 //     */
 //    public function findByExampleField($value): array
 //    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
+//        return $this->createQueryBuilder('u')
+//            ->andWhere('u.exampleField = :val')
 //            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
+//            ->orderBy('u.id', 'ASC')
 //            ->setMaxResults(10)
 //            ->getQuery()
 //            ->getResult()
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?UsuarioEntity
+//    public function findOneBySomeField($value): ?Usuario
 //    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
+//        return $this->createQueryBuilder('u')
+//            ->andWhere('u.exampleField = :val')
 //            ->setParameter('val', $value)
 //            ->getQuery()
 //            ->getOneOrNullResult()

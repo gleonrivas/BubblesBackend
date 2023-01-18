@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 use App\Repository\RolEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -12,15 +14,15 @@ class RolEntity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name:"id", type:"integer")]
     private ?int $id;
 
-    #[ORM\Column(type: "string", length: 150)]
-    private ?string $nombre;
+    #[ORM\Column(length: 100)]
+    private ?string $nombre = null;
 
-    private $usuarios;
-    #[ORM\OneToMany(mappedBy: RolEntity::class, targetEntity: UsuarioEntity::class)]
-    private $usuario;
+    #[ORM\OneToMany(mappedBy: 'id_rol', targetEntity: Usuario::class, orphanRemoval: true)]
+    private Collection $usuario;
+
 
     /**
      * @param int|null $id
@@ -30,6 +32,7 @@ class RolEntity
     {
         $this->id = $id;
         $this->nombre = $nombre;
+        $this->usuario = new ArrayCollection();
     }
 
     /**
@@ -62,6 +65,36 @@ class RolEntity
     public function setNombre(?string $nombre): void
     {
         $this->nombre = $nombre;
+    }
+
+    /**
+     * @return Collection<int, Usuario>
+     */
+    public function getUsuario(): Collection
+    {
+        return $this->usuario;
+    }
+
+    public function addUsuario(Usuario $usuario): self
+    {
+        if (!$this->usuario->contains($usuario)) {
+            $this->usuario->add($usuario);
+            $usuario->setIdRol($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuario(Usuario $usuario): self
+    {
+        if ($this->usuario->removeElement($usuario)) {
+            // set the owning side to null (unless already changed)
+            if ($usuario->getIdRol() === $this) {
+                $usuario->setIdRol(null);
+            }
+        }
+
+        return $this;
     }
 
 
