@@ -19,34 +19,34 @@ class Usuario
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id ;
 
     #[ORM\Column(length: 100)]
-    private ?string $nombre = null;
+    private ?string $nombre ;
 
     #[ORM\Column(length: 100)]
-    private ?string $apellidos = null;
+    private ?string $apellidos ;
 
     #[ORM\Column(length: 9)]
-    private ?string $telefono = null;
+    private ?string $telefono ;
 
     #[ORM\Column(length: 255)]
-    private ?string $email = null;
+    private ?string $email ;
 
     #[ORM\Column(length: 100)]
-    private ?string $tipo_cuenta = null;
+    private ?string $tipo_cuenta ;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $fecha_nacimiento = null;
+    private ?\DateTimeInterface $fecha_nacimiento ;
 
     #[ORM\Column(length: 800, nullable: true)]
-    private ?string $descripcion = null;
+    private ?string $descripcion ;
 
     #[ORM\Column(length: 100)]
-    private ?string $username = null;
+    private ?string $username ;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $foto_perfil = null;
+    private ?string $foto_perfil ;
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: RolEntity::class, orphanRemoval: true)]
     private Collection $rol;
@@ -87,6 +87,9 @@ class Usuario
      * @param string|null $username
      * @param string|null $foto_perfil
      */
+
+
+
     public function __construct(?int $id, ?string $nombre, ?string $apellidos, ?string $telefono, ?string $email, ?string $tipo_cuenta, ?\DateTimeInterface $fecha_nacimiento, ?string $descripcion, ?string $username, ?string $foto_perfil)
     {
         $this->id = $id;
