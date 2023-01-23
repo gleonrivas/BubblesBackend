@@ -21,21 +21,17 @@ class RolEntity
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
 
-    #[ORM\ManyToOne(inversedBy: 'rol')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
-    private ?Usuario $usuario;
+    #[ORM\OneToMany(mappedBy: 'id_rol', targetEntity: Usuario::class, orphanRemoval: true)]
+    private Collection $usuario;
 
     /**
      * @param int|null $id
      * @param string|null $nombre
-     * @param Usuario|null $usuario
      */
     public function __construct(?int $id, ?string $nombre, ?Usuario $usuario)
     {
         $this->id = $id;
         $this->nombre = $nombre;
-        $this->usuario = $usuario;
     }
 
     /**
@@ -70,21 +66,8 @@ class RolEntity
         $this->nombre = $nombre;
     }
 
-    /**
-     * @return Usuario|null
-     */
-    public function getUsuario(): ?Usuario
-    {
-        return $this->usuario;
-    }
 
-    /**
-     * @param Usuario|null $usuario
-     */
-    public function setUsuario(?Usuario $usuario): void
-    {
-        $this->usuario = $usuario;
-    }
+
 
 
 

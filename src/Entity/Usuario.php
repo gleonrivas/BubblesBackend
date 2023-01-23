@@ -33,6 +33,9 @@ class Usuario
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $contrasena = null;
+
     #[ORM\Column(length: 100)]
     private ?string $tipo_cuenta = null;
 
@@ -48,8 +51,11 @@ class Usuario
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $foto_perfil = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: RolEntity::class, orphanRemoval: true)]
-    private Collection $rol;
+    #[ORM\ManyToOne(inversedBy: 'usuario')]
+    #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
+    #[ORM\JoinTable(name: "rol")]
+    private ?RolEntity $rol;
+
 
     #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
     private Collection $emisor ;
@@ -87,13 +93,14 @@ class Usuario
      * @param string|null $username
      * @param string|null $foto_perfil
      */
-    public function __construct(?int $id, ?string $nombre, ?string $apellidos, ?string $telefono, ?string $email, ?string $tipo_cuenta, ?\DateTimeInterface $fecha_nacimiento, ?string $descripcion, ?string $username, ?string $foto_perfil)
+    public function __construct(?int $id, ?string $nombre, ?string $apellidos, ?string $telefono, ?string $email, ?string $tipo_cuenta, ?\DateTimeInterface $fecha_nacimiento, ?string $descripcion, ?string $username, ?string $foto_perfil, ?string $contrasena)
     {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->apellidos = $apellidos;
         $this->telefono = $telefono;
         $this->email = $email;
+        $this->contrasena = $contrasena;
         $this->tipo_cuenta = $tipo_cuenta;
         $this->fecha_nacimiento = $fecha_nacimiento;
         $this->descripcion = $descripcion;
@@ -176,11 +183,27 @@ class Usuario
     }
 
     /**
+     * @return string|null
+     */
+    public function getContrasena(): ?string
+    {
+        return $this->contrasena;
+    }
+
+    /**
      * @param string|null $email
      */
     public function setEmail(?string $email): void
     {
         $this->email = $email;
+    }
+
+    /**
+     * @param string|null $email
+     */
+    public function setContrasena(?string $contrasena): void
+    {
+        $this->email = $contrasena;
     }
 
     /**

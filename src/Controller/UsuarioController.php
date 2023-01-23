@@ -25,16 +25,20 @@ class UsuarioController extends AbstractController
 
 
     #[Route('/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
-    public function listar(UsuarioRepository $repository, Utilidades $utils):JsonResponse
+    public function listar(UsuarioRepository $repository, Utilidades $utilidades):JsonResponse
     {
         //Se obtiene la lista de usuarios de la BBDD
         $lista_usuarios = $repository->findAll();
         //Se transforma a Json
-        $lista_Json = $utils->toJson($lista_usuarios);
+        $lista_Json = $utilidades->toJson($lista_usuarios);
         //se devuelve el Json transformado
         return new JsonResponse($lista_Json, 200,[], true);
 
     }
+
+
+
+
 
     #[Route('/usuario/rol', name: 'app_usuario_listar_rol', methods: ['GET'])]
     public function listarRol(RolEntityRepository $repository, Utilidades $utils):JsonResponse
