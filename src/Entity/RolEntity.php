@@ -21,8 +21,8 @@ class RolEntity
     #[ORM\Column(length: 100)]
     private ?string $nombre = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_rol', targetEntity: Usuario::class, orphanRemoval: true)]
-    private Collection $usuario;
+    #[ORM\OneToMany(mappedBy: 'rol', targetEntity: Usuario::class, orphanRemoval: true)]
+    private Collection $usuarios;
 
     /**
      * @param int|null $id

@@ -53,7 +53,6 @@ class Usuario
 
     #[ORM\ManyToOne(inversedBy: 'usuario')]
     #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
-    #[ORM\JoinTable(name: "rol")]
     private ?RolEntity $rol;
 
 
