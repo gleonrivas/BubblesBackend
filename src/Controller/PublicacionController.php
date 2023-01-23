@@ -31,12 +31,12 @@ class PublicacionController extends AbstractController
         $lista_Json = $utilidades->toJson($lista_publicacion);
         return new JsonResponse($lista_Json,200, [], true);
     }
-    #[Route('/publicacion/usuario/listar', name: 'app_publicacaion_listar_usuario', methods: ['GET'])]
+    #[Route('/publicacion/listar/{id}', name: 'app_publicacaion_listar_usuario', methods: ['GET'])]
     public function listarPublicacionporUsuario(PublicacionRepository $repository,
-                                                Utilidades $utilidades, Request $request): JsonResponse
+                                                Utilidades $utilidades,  int $id): JsonResponse
     {
         //se obtiene el parametro
-        $id_usuario = $request->query->get("id_usuario");
+        $id_usuario = $id;
 
 
         $parametrosBusqueda = array(
@@ -56,38 +56,17 @@ class PublicacionController extends AbstractController
         //Obtener Json del body
         $json  = json_decode($request->getContent(), true);
 
-       //cambiar array Json al contenido del json
-        $tipo_publicacion= "";
-        $texto= "";
-        $imagen= "";
-        $tematica= "";
-        $fecha_publi = date_create();
-        $activa = true;
-        $id_usuario= 0;
 
-
-        if(is_array($json)){
-            $tipo_publicacion = $json['tipo_publicacion'];
-            $texto = $json['texto'];
-            $imagen = $json['imagen'];
-            $tematica= $json['tematica'];
-            $fecha_publi= $json['fecha_publicacion'];
-            $activa= $json['activa'];
-            $id_usuario = $json['id_usuario'];
-
-
-        }
-
-        $usuario = new Usuario();
+        $usuario = $repository->encontrarporId($json['id_usuario']);
 
         //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
         $publicacionNueva = new Publicacion();
-        $publicacionNueva->setTipoPublicacion($tipo_publicacion);
-        $publicacionNueva->setTexto($texto);
-        $publicacionNueva->setImagen($imagen);
-        $publicacionNueva->setTematica($tematica);
-        $publicacionNueva->setFechaPublicacion($fecha_publi);
-        $publicacionNueva->setActiva($activa);
+        $publicacionNueva->setTipoPublicacion($json['tipo_publicacion']);
+        $publicacionNueva->setTexto($json['texto']);
+        $publicacionNueva->setImagen($json['imagen']);
+        $publicacionNueva->setTematica($json['tematica']);
+        $publicacionNueva->setFechaPublicacion($json['fecha_publicacion']);
+        $publicacionNueva->setActiva($json['activa']);
         $publicacionNueva->setIdUsuario($usuario);
 
         //GUARDAR
