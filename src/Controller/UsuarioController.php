@@ -3,16 +3,11 @@
 namespace App\Controller;
 
 
-use App\Entity\UsuarioEntity;
 use App\Repository\UsuarioEntityRepository;
-use App\Service\UsuarioService;
 use App\Utilidades\Utilidades;
-use App\Utilidades\UtilidadesUsuario;
-use http\Client\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use function Symfony\Component\String\u;
 
 class UsuarioController extends AbstractController
 {
@@ -26,15 +21,34 @@ class UsuarioController extends AbstractController
        ]);
 
     }
+
+
     #[Route('/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
-    public function listar(UsuarioEntityRepository $repository, Utilidades $utils):JsonResponse
+    public function listar(UsuarioRepository $repository, Utilidades $utilidades):JsonResponse
     {
+        //Se obtiene la lista de usuarios de la BBDD
         $lista_usuarios = $repository->findAll();
-        $lista_Json = json_encode($lista_usuarios);
-
-        //$lista_Json = $utils->toJson($lista_usuarios);
-
+        //Se transforma a Json
+        $lista_Json = $utilidades->toJson($lista_usuarios);
+        //se devuelve el Json transformado
         return new JsonResponse($lista_Json, 200,[], true);
+
+    }
+
+
+
+
+
+    #[Route('/usuario/rol', name: 'app_usuario_listar_rol', methods: ['GET'])]
+    public function listarRol(RolEntityRepository $repository, Utilidades $utils):JsonResponse
+    {
+        //Se obtiene la lista de usuarios de la BBDD
+        $lista_roles = $repository->findAll();
+        //Se transforma a Json
+        $lista_Json = $utils->toJson($lista_roles);
+        //se devuelve el Json transformado
+        return new JsonResponse($lista_Json, 200,[], true);
+
     }
 
 

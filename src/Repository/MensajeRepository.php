@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\UsuarioEntity;
+use App\Entity\Mensaje;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<UsuarioEntity>
+ * @extends ServiceEntityRepository<Mensaje>
  *
- * @method UsuarioEntity|null find($id, $lockMode = null, $lockVersion = null)
- * @method UsuarioEntity|null findOneBy(array $criteria, array $orderBy = null)
- * @method UsuarioEntity[]    findAll()
- * @method UsuarioEntity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Mensaje|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Mensaje|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Mensaje[]    findAll()
+ * @method Mensaje[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UsuarioEntityRepository extends ServiceEntityRepository
+class MensajeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UsuarioEntity::class);
+        parent::__construct($registry, Mensaje::class);
     }
 
-    public function save(UsuarioEntity $entity, bool $flush = false): void
+    public function save(Mensaje $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class UsuarioEntityRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(UsuarioEntity $entity, bool $flush = false): void
+    public function remove(Mensaje $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -52,7 +52,7 @@ class UsuarioEntityRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return UsuarioEntity[] Returns an array of UsuarioEntity objects
+//     * @return Mensaje[] Returns an array of Mensaje objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -66,7 +66,7 @@ class UsuarioEntityRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?UsuarioEntity
+//    public function findOneBySomeField($value): ?Mensaje
 //    {
 //        return $this->createQueryBuilder('m')
 //            ->andWhere('m.exampleField = :val')
