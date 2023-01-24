@@ -14,30 +14,29 @@ class Publicacion
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id ;
 
     #[ORM\Column(length: 50)]
-    private ?string $tipo_publicacion = null;
+    private ?string $tipo_publicacion;
 
     #[ORM\Column(length: 800)]
-    private ?string $texto = null;
+    private ?string $texto ;
 
     #[ORM\Column(length: 800, nullable: true)]
-    private ?string $imagen = null;
+    private ?string $imagen ;
 
     #[ORM\Column(length: 100)]
-    private ?string $tematica = null;
+    private ?string $tematica ;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $fecha_publicacion = null;
+    private ?\DateTimeInterface $fecha_publicacion ;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $activa = null;
+    private ?bool $activa;
 
     #[ORM\ManyToOne(inversedBy: 'publicacion')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
-    private ?Usuario $id_usuario = null;
+    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
+    private ?Usuario $id_usuario ;
 
     #[ORM\OneToMany(mappedBy: 'id_publicacion', targetEntity: Like::class)]
     private Collection $id_publicacion;

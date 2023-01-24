@@ -14,7 +14,7 @@ class AccessToken
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(length: 500)]
     private ?string $token = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

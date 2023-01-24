@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
 #[ORM\Table(name:"usuario")]
+#[UniqueEntity("id")]
 class Usuario
 {
 
