@@ -35,8 +35,7 @@ class Publicacion
     private ?bool $activa;
 
     #[ORM\ManyToOne(inversedBy: 'publicacion')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
+    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
     private ?Usuario $id_usuario ;
 
     #[ORM\OneToMany(mappedBy: 'id_publicacion', targetEntity: Like::class)]

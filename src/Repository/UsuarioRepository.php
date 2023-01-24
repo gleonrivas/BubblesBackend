@@ -43,7 +43,7 @@ class UsuarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function encontrarporId( $id_usuario): Usuario
+    public function encontrarporId( int $id_usuario): Usuario
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
 
@@ -52,12 +52,12 @@ class UsuarioRepository extends ServiceEntityRepository
         $rsm->addFieldResult('u', 'nombre', 'nombre');
 
         $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM usuario WHERE id=? LIMIT 1', $rsm);
-        $query->setParameter(1, 1);
+        $query->setParameter(1, $id_usuario);
         $usuarios = $query->getResult();
         $usuario = $usuarios[0];
 
         $repository = $this->getEntityManager()->getRepository('App\Entity\Usuario');
-        $users = $repository->findBy(['id' => 1] );
+        $users = $repository->findBy(['id' => $id_usuario] );
 
         return $usuario;
     }
