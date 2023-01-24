@@ -56,8 +56,8 @@ class PublicacionController extends AbstractController
     }
 
     #[Route('/publicacion/guardar', name: 'app_publicacaion_crear', methods: ['POST'])]
-    public function guardarPublicacion( Request $request,
-                                       UsuarioRepository $repository, PublicacionRepository $publicacionRepository): JsonResponse
+    public function guardarPublicacion( Request $request, UsuarioRepository $repository,
+                                        PublicacionRepository $publicacionRepository): JsonResponse
     {
 
         //Obtener Json del body
