@@ -37,6 +37,14 @@ class RolEntityRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    public function findOneByIdentificador($descripcion): ?RolEntity
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.nombre = :val')
+            ->setParameter('val', $descripcion)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 
 }
