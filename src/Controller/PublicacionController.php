@@ -60,7 +60,6 @@ class PublicacionController extends AbstractController
                                        UsuarioRepository $repository, PublicacionRepository $publicacionRepository): JsonResponse
     {
 
-
         //Obtener Json del body
         $json  = json_decode($request->getContent(), true);
 
@@ -78,13 +77,11 @@ class PublicacionController extends AbstractController
         $publicacionNueva->setActiva($json['activa']);
         $publicacionNueva->setIdUsuario($usuario);
 
-
-
         //GUARDAR
         $publicacionRepository->save($publicacionNueva, true);
-
 
         return new JsonResponse("{ mensaje: Publicacion creada correctamente }", 200, [], true);
 
     }
+
 }
