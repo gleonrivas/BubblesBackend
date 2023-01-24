@@ -8,6 +8,7 @@ use App\Entity\Usuario;
 use App\Repository\RolEntityRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
+use PhpParser\Node\Scalar\String_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\MakerBundle\Tests\tmp\current_project_xml\src\Entity\UserXml;
 use Symfony\Bundle\MakerBundle\Tests\tmp\current_project_xml\src\Repository\UserRepository;
@@ -42,27 +43,27 @@ class UsuarioController extends AbstractController
     }
 
     #[Route('/usuario/guardar', name: 'app_usuario_crear', methods: ['POST'])]
-    public function save(Request $request, Utilidades $utils,UserRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
+    public function save(Request $request, Utilidades $utils,UsuarioRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
     {
 
         //Obtener Json del body
         $json  = json_decode($request->getContent(), true);
-
         //Obtenemos los parámetros del JSON
         $nombre = $json['nombre'];
-        $rol = $json['rol'];
+        $password = $json['password'];
+        $rol = $rolEntityRepository->findOneByIdentificador($json['rol']);
         $apellidos = $json['apellidos'];
-        $telefono = $json['apellidos'];
+        $telefono = $json['telefono'];
         $email = $json['email'];
-        $contrasena = $json['contrasena'];
         $tipo_cuenta = $json['tipoCuenta'];
-        $fecha_nacimiento = $json['fechaNacimiento'];
+        $fecha_nacimiento = new \DateTime($json['fechaNacimiento']);
+
 
         //CREAR NUEVO USUARIO A PARTIR DEL JSON
-        if($nombre != null and $contrasena != null) {
+        if($nombre != null and $password != null) {
             $usuarioNuevo = new Usuario();
             $usuarioNuevo->setNombre($nombre);
-            $usuarioNuevo->setContrasena($contrasena);
+            $usuarioNuevo->setContrasena($password);
             $usuarioNuevo->setApellidos($apellidos);
             $usuarioNuevo->setEmail($email);
             $usuarioNuevo->setTelefono($telefono);

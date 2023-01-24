@@ -32,8 +32,8 @@ class Usuario
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $contrasena = null;
+    #[ORM\Column(length: 100, nullable: false)]
+    private ?string $contrasena;
 
     #[ORM\Column(length: 100)]
     private ?string $tipo_cuenta = null;
@@ -78,6 +78,25 @@ class Usuario
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
     private Collection $id_usuario;
+
+    /**
+     * @return string|null
+     */
+    public function getContrasena(): ?string
+    {
+        return $this->contrasena;
+    }
+
+    /**
+     * @param string|null $contrasena
+     */
+    public function setContrasena(?string $contrasena): void
+    {
+        $this->contrasena = $contrasena;
+    }
+
+
+
 
     /**
      */
@@ -178,13 +197,6 @@ class Usuario
         return $this->email;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getContrasena(): ?string
-    {
-        return $this->contrasena;
-    }
 
     /**
      * @param string|null $email
@@ -194,13 +206,6 @@ class Usuario
         $this->email = $email;
     }
 
-    /**
-     * @param string|null $email
-     */
-    public function setContrasena(?string $contrasena): void
-    {
-        $this->email = $contrasena;
-    }
 
     /**
      * @return string|null
