@@ -39,6 +39,18 @@ class UsuarioEntityRepository extends ServiceEntityRepository
         }
     }
 
+    public function findEmail($email)
+    {
+        $usuario = $this->findOneBy(['email' => $email]);
+        return $usuario->getEmail();
+    }
+
+    public function findUsername(string $username)
+    {
+        $usuario = $this->findOneBy(['username' => $username]);
+        return $usuario->getUsername();
+    }
+
 //    /**
 //     * @return UsuarioEntity[] Returns an array of UsuarioEntity objects
 //     */
