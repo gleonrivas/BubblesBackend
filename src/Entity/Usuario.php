@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
 #[ORM\Table(name:"usuario")]
-#[UniqueEntity("id")]
 class Usuario
 {
 
@@ -81,33 +80,31 @@ class Usuario
     private Collection $id_usuario;
 
     /**
-     * @param int|null $id
-     * @param string|null $nombre
-     * @param string|null $apellidos
-     * @param string|null $telefono
-     * @param string|null $email
-     * @param string|null $tipo_cuenta
-     * @param \DateTimeInterface|null $fecha_nacimiento
-     * @param string|null $descripcion
-     * @param string|null $username
-     * @param string|null $foto_perfil
      */
-    public function __construct(?int $id, ?string $nombre, ?string $apellidos, ?string $telefono, ?string $email, ?string $tipo_cuenta, ?\DateTimeInterface $fecha_nacimiento, ?string $descripcion, ?string $username, ?string $foto_perfil, ?string $contrasena)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->nombre = $nombre;
-        $this->apellidos = $apellidos;
-        $this->telefono = $telefono;
-        $this->email = $email;
-        $this->contrasena = $contrasena;
-        $this->tipo_cuenta = $tipo_cuenta;
-        $this->fecha_nacimiento = $fecha_nacimiento;
-        $this->descripcion = $descripcion;
-        $this->username = $username;
-        $this->foto_perfil = $foto_perfil;
-        $this->seguidor_principal = new ArrayCollection();
-        $this->seguidor_follower = new ArrayCollection();
     }
+
+
+    /**
+     * @return RolEntity|null
+     */
+    public function getRol(): ?RolEntity
+    {
+        return $this->rol;
+    }
+
+    /**
+     * @param RolEntity|null $rol
+     */
+    public function setRol(?RolEntity $rol): void
+    {
+        $this->rol = $rol;
+    }
+
+
+
+
 
     /**
      * @return int|null

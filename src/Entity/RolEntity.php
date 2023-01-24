@@ -10,7 +10,6 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: RolEntityRepository::class)]
 #[ORM\Table(name:"rol")]
-#[UniqueEntity("id")]
 class RolEntity
 {
     #[ORM\Id]
@@ -25,13 +24,9 @@ class RolEntity
     private Collection $usuarios;
 
     /**
-     * @param int|null $id
-     * @param string|null $nombre
      */
-    public function __construct(?int $id, ?string $nombre, ?Usuario $usuario)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->nombre = $nombre;
     }
 
     /**
