@@ -60,6 +60,11 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/nelmio/cors-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/password-hasher" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/rbdwllr/reallysimplejwt" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/migrations" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/doctrine-migrations-bundle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laminas/laminas-code" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/friendsofphp/proxy-manager-lts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/stopwatch" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

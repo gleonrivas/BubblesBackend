@@ -61,7 +61,6 @@ class UsuarioController extends AbstractController
         $apellidos = $json['apellidos'];
         $telefono = $json['telefono'];
         $email = $json['email'];
-        $tipo_cuenta = $json['tipoCuenta'];
         $fecha_nacimiento = new \DateTime($json['fechaNacimiento']);
 
 
@@ -73,7 +72,6 @@ class UsuarioController extends AbstractController
             $usuarioNuevo->setApellidos($apellidos);
             $usuarioNuevo->setEmail($email);
             $usuarioNuevo->setTelefono($telefono);
-            $usuarioNuevo->setTipoCuenta($tipo_cuenta);
             $usuarioNuevo->setFechaNacimiento($fecha_nacimiento);
 
             //GESTION DEL ROL

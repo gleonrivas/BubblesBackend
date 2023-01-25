@@ -36,20 +36,8 @@ class Usuario
     #[ORM\Column(length: 100, nullable: false)]
     private ?string $contrasena;
 
-    #[ORM\Column(length: 100)]
-    private ?string $tipo_cuenta = null;
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha_nacimiento = null;
-
-    #[ORM\Column(length: 800, nullable: true)]
-    private ?string $descripcion = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $username = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $foto_perfil = null;
 
     #[ORM\ManyToOne(inversedBy: 'usuario')]
     #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
@@ -80,6 +68,9 @@ class Usuario
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
     private Collection $id_usuario;
 
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Perfil::class)]
+    private Collection $perfils;
+
     /**
      * @return string|null
      */
@@ -103,6 +94,7 @@ class Usuario
      */
     public function __construct()
     {
+        $this->perfils = new ArrayCollection();
     }
 
     /**
@@ -343,6 +335,36 @@ class Usuario
             // set the owning side to null (unless already changed)
             if ($seguidorFollower->getIdFollower() === $this) {
                 $seguidorFollower->setIdFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Perfil>
+     */
+    public function getPerfils(): Collection
+    {
+        return $this->perfils;
+    }
+
+    public function addPerfil(Perfil $perfil): self
+    {
+        if (!$this->perfils->contains($perfil)) {
+            $this->perfils->add($perfil);
+            $perfil->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removePerfil(Perfil $perfil): self
+    {
+        if ($this->perfils->removeElement($perfil)) {
+            // set the owning side to null (unless already changed)
+            if ($perfil->getIdUsuario() === $this) {
+                $perfil->setIdUsuario(null);
             }
         }
 
