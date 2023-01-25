@@ -91,7 +91,7 @@ class UsuarioController extends AbstractController
 
             $userRepository->save($usuarioNuevo, true);
 
-            $utilidades-> generateApiToken($usuarioNuevo, $accessTokenRepository);
+            $utilidades-> generateAccessToken($usuarioNuevo, $accessTokenRepository);
 
             return new JsonResponse("{ mensaje: Usuario creado correctamente }", 200, [], true);
         }else{

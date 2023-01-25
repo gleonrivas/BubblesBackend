@@ -5,6 +5,7 @@ namespace App\Utilidades;
 use App\Entity\AccessToken;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
+use App\Repository\UsuarioRepository;
 use DateTime;
 use Doctrine\ORM\Mapping\Entity;
 use ReallySimpleJWT\Token;
@@ -51,15 +52,15 @@ class Utilidades
     }
 
 
-    public function  generateApiToken(Usuario $user, AccessTokenRepository $apiKeyRepository):string
+    public function  generateAccessToken(Usuario $user, AccessTokenRepository $apiKeyRepository):string
     {
 
         //GENERO UN OBJETO CON API KEY NUEVO
-        $apiKey = new AccessToken();
-        $apiKey->setIdUsuario($user);
+        $accessToken = new AccessToken();
+        $accessToken->setIdUsuario($user);
         $fechaActual5hour = date("Y-m-d H:i:s", strtotime('+5 hours'));
         $fechaExpiracion = DateTime::createFromFormat('Y-m-d H:i:s', $fechaActual5hour);
-        $apiKey->setFechaExpiracion($fechaExpiracion);
+        $accessToken->setFechaExpiracion($fechaExpiracion);
 
         $tokenData = [
             'user_id' => $user->getId(),
@@ -72,29 +73,29 @@ class Utilidades
 
         $token = Token::customPayload($tokenData, $secret);
 
-        $apiKey->setToken($token);
+        $accessToken->setToken($token);
 
-        $apiKeyRepository->save($apiKey,true);
+        $apiKeyRepository->save($accessToken,true);
 
 
         return $token;
     }
 
 
-    //no usada todavia
-    public function esApiKeyValida($token, $permisoRequerido, AccessToken $apiKeyRepository,UsuarioRepository $usuarioRepository):bool
+    //no usada todavia//
+    public function esAccesTokenValida($token, $permisoRequerido, AccessTokenRepository $accessTokenRepository,UsuarioRepository $usuarioRepository):bool
     {
-        $apiKey = $apiKeyRepository->findOneBy(array("token" => $token));
+        $accesToken = $accessTokenRepository->findOneBy(array("token" => $token));
         $fechaActual = DateTime::createFromFormat('Y-m-d H:i:s', date("Y-m-d H:i:s"));
         $id_usuario = Token::getPayload($token)["user_id"];
         $rol_name= Token::getPayload($token)["user_rol"];
         $usuario= $usuarioRepository->findOneBy(array("id" => $id_usuario));
 
-        return $apiKey == null
+        return $accesToken == null
             or $permisoRequerido == $rol_name
-            or $apiKey->getUsuario()->getId() == $id_usuario
-            or $apiKey->getFechaExpiracion() <= $fechaActual
-            or Token::validate($token, $usuario->getPassword());
+            or $accesToken->getIdUsuario()->getId() == $id_usuario
+            or $accesToken->getFechaExpiracion() <= $fechaActual
+            or Token::validate($token, $usuario->getContrasena());
     }
 
 
