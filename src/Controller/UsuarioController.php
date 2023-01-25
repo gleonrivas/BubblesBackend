@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\AccessToken;
 use App\Entity\Usuario;
+use App\Repository\AccessTokenRepository;
 use App\Repository\RolEntityRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
@@ -47,7 +49,7 @@ class UsuarioController extends AbstractController
     }
 
     #[Route('/usuario/guardar', name: 'app_usuario_crear', methods: ['POST'])]
-    public function save(Request $request, UsuarioRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
+    public function save(AccessTokenRepository $accessTokenRepository,Utilidades $utilidades, Request $request, UsuarioRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
     {
         $em = $this->doctrine->getManager();
         //Obtener Json del body
@@ -67,7 +69,7 @@ class UsuarioController extends AbstractController
         if($nombre != null and $password != null) {
             $usuarioNuevo = new Usuario();
             $usuarioNuevo->setNombre($nombre);
-            $usuarioNuevo->setContrasena($password);
+            $usuarioNuevo->setContrasena($utilidades->hashPassword($password));
             $usuarioNuevo->setApellidos($apellidos);
             $usuarioNuevo->setEmail($email);
             $usuarioNuevo->setTelefono($telefono);
@@ -89,12 +91,16 @@ class UsuarioController extends AbstractController
 
             $userRepository->save($usuarioNuevo, true);
 
+            $utilidades-> generateApiToken($usuarioNuevo, $accessTokenRepository);
+
             return new JsonResponse("{ mensaje: Usuario creado correctamente }", 200, [], true);
         }else{
             return new JsonResponse("{ mensaje: No ha indicado usario y contraseña }", 101, [], true);
         }
 
     }
+
+
 
 
 
