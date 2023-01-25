@@ -105,7 +105,6 @@ class Usuario
     {
     }
 
-
     /**
      * @return RolEntity|null
      */
@@ -121,6 +120,8 @@ class Usuario
     {
         $this->rol = $rol;
     }
+
+
 
 
 

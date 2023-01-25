@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\RolEntity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,6 +47,16 @@ class RolEntityRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
             ;
+    }
+
+    public function findOneByName(?string $nombre, EntityManager $entityManager): ?RolEntity{
+
+        $rsm = new ResultSetMapping();
+        $query = $entityManager->createNativeQuery('SELECT * FROM rol WHERE nombre = ? ', $rsm);
+        $query->setParameter(1,$nombre);
+
+        $rol = $query->getResult();
+        return $rol;
     }
 
 

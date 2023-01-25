@@ -9,7 +9,7 @@
         "ext-iconv": "*",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/orm": "^2.14",
-        "nelmio/cors-bundle": "^2.2",
+        "nelmio/cors-bundle": "*",
         "symfony/console": "6.2.*",
         "symfony/dotenv": "6.2.*",
         "symfony/flex": "^2.2",
@@ -68,4 +68,6 @@
             "require": "6.2.*"
         }
     }
+
+
 }
