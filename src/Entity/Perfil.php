@@ -26,8 +26,8 @@ class Perfil
     private ?string $foto_perfil = null;
 
     #[ORM\ManyToOne(inversedBy: 'id_usuario')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    private ?Usuario $id_usuario = null;
+    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
+    private ?Usuario $id_usuario;
 
     public function getId(): ?int
     {

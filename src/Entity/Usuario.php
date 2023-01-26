@@ -43,7 +43,6 @@ class Usuario
     #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
     private ?RolEntity $rol;
 
-
     #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
     private Collection $emisor ;
 
