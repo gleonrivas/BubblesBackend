@@ -35,6 +35,18 @@ class PerfilController extends AbstractController
         ]);
     }
 
+    #[Route('/perfil/listar', name: 'app_perfil_listar', methods: ['GET'])]
+    public function listar(PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
+    {
+        //Se obtiene la lista de perfiles de la BBDD
+        $lista_perfiles = $perfilRepository->findAll();
+        //Se transforma a Json
+        $lista_Json = $utilidades->toJson($lista_perfiles);
+        //se devuelve el Json transformado
+        return new JsonResponse($lista_Json, 200,[], true);
+
+    }
+
     #[Route('/perfil/guardar', name: 'app_perfil_guardar', methods: ['POST'])]
     public function save(Request $request, PerfilRepository $perfilRepository, UsuarioRepository $usuarioRepository): JsonResponse
     {

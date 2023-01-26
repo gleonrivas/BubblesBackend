@@ -201,22 +201,6 @@ class Usuario
 
 
     /**
-     * @return string|null
-     */
-    public function getTipoCuenta(): ?string
-    {
-        return $this->tipo_cuenta;
-    }
-
-    /**
-     * @param string|null $tipo_cuenta
-     */
-    public function setTipoCuenta(?string $tipo_cuenta): void
-    {
-        $this->tipo_cuenta = $tipo_cuenta;
-    }
-
-    /**
      * @return \DateTimeInterface|null
      */
     public function getFechaNacimiento(): ?\DateTimeInterface
@@ -230,54 +214,6 @@ class Usuario
     public function setFechaNacimiento(?\DateTimeInterface $fecha_nacimiento): void
     {
         $this->fecha_nacimiento = $fecha_nacimiento;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string|null $descripcion
-     */
-    public function setDescripcion(?string $descripcion): void
-    {
-        $this->descripcion = $descripcion;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string|null $username
-     */
-    public function setUsername(?string $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFotoPerfil(): ?string
-    {
-        return $this->foto_perfil;
-    }
-
-    /**
-     * @param string|null $foto_perfil
-     */
-    public function setFotoPerfil(?string $foto_perfil): void
-    {
-        $this->foto_perfil = $foto_perfil;
     }
 
     /**
@@ -338,14 +274,6 @@ class Usuario
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Perfil>
-     */
-    public function getPerfils(): Collection
-    {
-        return $this->perfils;
     }
 
     public function addPerfil(Perfil $perfil): self
