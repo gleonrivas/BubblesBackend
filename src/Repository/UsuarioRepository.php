@@ -4,7 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @extends ServiceEntityRepository<Usuario>
@@ -20,6 +24,7 @@ class UsuarioRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Usuario::class);
     }
+
 
     public function save(Usuario $entity, bool $flush = false): void
     {
@@ -39,16 +44,23 @@ class UsuarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function findEmail($email)
+    public function encontrarporId( int $id_usuario): Usuario
     {
-        $usuario = $this->findOneBy(['email' => $email]);
-        return $usuario->getEmail();
-    }
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
 
-    public function findUsername($username)
-    {
-        $usuario = $this->findOneBy(['username' => $username]);
-        return $usuario->getUsername();
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Usuario', 'u');
+        $rsm->addFieldResult('u', 'id', 'id');
+        $rsm->addFieldResult('u', 'nombre', 'nombre');
+
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM usuario WHERE id=? LIMIT 1', $rsm);
+        $query->setParameter(1, $id_usuario);
+        $usuarios = $query->getResult();
+        $usuario = $usuarios[0];
+
+        $repository = $this->getEntityManager()->getRepository('App\Entity\Usuario');
+        $users = $repository->findBy(['id' => $id_usuario] );
+
+        return $usuario;
     }
 
 
@@ -76,4 +88,14 @@ class UsuarioRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findOneById(?int $id, EntityManager $entityManager): ?Usuario{
+
+        $rsm = new ResultSetMapping();
+        $query = $entityManager->createNativeQuery('SELECT * FROM usuario WHERE id = ? limit 1', $rsm);
+        $query->setParameter(1,$id);
+
+        $usuario = $query->getResult();
+        return $usuario;
+    }
 }

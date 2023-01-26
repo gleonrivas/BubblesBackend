@@ -65,6 +65,13 @@
       <path value="$PROJECT_DIR$/vendor/symfony/property-access" />
       <path value="$PROJECT_DIR$/vendor/symfony/property-info" />
       <path value="$PROJECT_DIR$/vendor/nelmio/cors-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/password-hasher" />
+      <path value="$PROJECT_DIR$/vendor/rbdwllr/reallysimplejwt" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/migrations" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/vendor/laminas/laminas-code" />
+      <path value="$PROJECT_DIR$/vendor/friendsofphp/proxy-manager-lts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/stopwatch" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

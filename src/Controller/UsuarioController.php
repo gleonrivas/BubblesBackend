@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
-
+use App\Entity\AccessToken;
 use App\Entity\Usuario;
+use App\Repository\AccessTokenRepository;
 use App\Repository\RolEntityRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UsuarioController extends AbstractController
@@ -47,7 +49,7 @@ class UsuarioController extends AbstractController
     }
 
     #[Route('/usuario/guardar', name: 'app_usuario_crear', methods: ['POST'])]
-    public function save(Request $request, UsuarioRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
+    public function save(AccessTokenRepository $accessTokenRepository,Utilidades $utilidades, Request $request, UsuarioRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
     {
         $em = $this->doctrine->getManager();
         //Obtener Json del body
@@ -59,7 +61,6 @@ class UsuarioController extends AbstractController
         $apellidos = $json['apellidos'];
         $telefono = $json['telefono'];
         $email = $json['email'];
-        $tipo_cuenta = $json['tipoCuenta'];
         $fecha_nacimiento = new \DateTime($json['fechaNacimiento']);
 
 
@@ -67,11 +68,10 @@ class UsuarioController extends AbstractController
         if($nombre != null and $password != null) {
             $usuarioNuevo = new Usuario();
             $usuarioNuevo->setNombre($nombre);
-            $usuarioNuevo->setContrasena($password);
+            $usuarioNuevo->setContrasena($utilidades->hashPassword($password));
             $usuarioNuevo->setApellidos($apellidos);
             $usuarioNuevo->setEmail($email);
             $usuarioNuevo->setTelefono($telefono);
-            $usuarioNuevo->setTipoCuenta($tipo_cuenta);
             $usuarioNuevo->setFechaNacimiento($fecha_nacimiento);
 
             //GESTION DEL ROL
@@ -89,12 +89,15 @@ class UsuarioController extends AbstractController
 
             $userRepository->save($usuarioNuevo, true);
 
+            $utilidades-> generateAccessToken($usuarioNuevo, $accessTokenRepository);
+
             return new JsonResponse("{ mensaje: Usuario creado correctamente }", 200, [], true);
         }else{
             return new JsonResponse("{ mensaje: No ha indicado usario y contraseña }", 101, [], true);
         }
 
     }
+
 
 
 

@@ -36,25 +36,12 @@ class Usuario
     #[ORM\Column(length: 100, nullable: false)]
     private ?string $contrasena;
 
-    #[ORM\Column(length: 100)]
-    private ?string $tipo_cuenta = null;
-
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha_nacimiento = null;
-
-    #[ORM\Column(length: 800, nullable: true)]
-    private ?string $descripcion = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $username = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $foto_perfil = null;
 
     #[ORM\ManyToOne(inversedBy: 'usuario')]
     #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
     private ?RolEntity $rol;
-
 
     #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
     private Collection $emisor ;
@@ -80,6 +67,9 @@ class Usuario
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
     private Collection $id_usuario;
 
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Perfil::class)]
+    private Collection $perfils;
+
     /**
      * @return string|null
      */
@@ -103,6 +93,7 @@ class Usuario
      */
     public function __construct()
     {
+        $this->perfils = new ArrayCollection();
     }
 
     /**
@@ -210,22 +201,6 @@ class Usuario
 
 
     /**
-     * @return string|null
-     */
-    public function getTipoCuenta(): ?string
-    {
-        return $this->tipo_cuenta;
-    }
-
-    /**
-     * @param string|null $tipo_cuenta
-     */
-    public function setTipoCuenta(?string $tipo_cuenta): void
-    {
-        $this->tipo_cuenta = $tipo_cuenta;
-    }
-
-    /**
      * @return \DateTimeInterface|null
      */
     public function getFechaNacimiento(): ?\DateTimeInterface
@@ -239,54 +214,6 @@ class Usuario
     public function setFechaNacimiento(?\DateTimeInterface $fecha_nacimiento): void
     {
         $this->fecha_nacimiento = $fecha_nacimiento;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string|null $descripcion
-     */
-    public function setDescripcion(?string $descripcion): void
-    {
-        $this->descripcion = $descripcion;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string|null $username
-     */
-    public function setUsername(?string $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFotoPerfil(): ?string
-    {
-        return $this->foto_perfil;
-    }
-
-    /**
-     * @param string|null $foto_perfil
-     */
-    public function setFotoPerfil(?string $foto_perfil): void
-    {
-        $this->foto_perfil = $foto_perfil;
     }
 
     /**
@@ -343,6 +270,28 @@ class Usuario
             // set the owning side to null (unless already changed)
             if ($seguidorFollower->getIdFollower() === $this) {
                 $seguidorFollower->setIdFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function addPerfil(Perfil $perfil): self
+    {
+        if (!$this->perfils->contains($perfil)) {
+            $this->perfils->add($perfil);
+            $perfil->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removePerfil(Perfil $perfil): self
+    {
+        if ($this->perfils->removeElement($perfil)) {
+            // set the owning side to null (unless already changed)
+            if ($perfil->getIdUsuario() === $this) {
+                $perfil->setIdUsuario(null);
             }
         }
 
