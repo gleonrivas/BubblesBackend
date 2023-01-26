@@ -79,11 +79,12 @@ class PerfilController extends AbstractController
 
 
 
-    #[Route('/perfil/eliminar/{id}', name: 'app_perfil_listar', methods: ['POST'])]
+    #[Route('/perfil/eliminar/{id}', name: 'app_perfil_eliminar', methods: ['POST'])]
     public function eliminar(?int $id, PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
     {
+        $perfilEncontrado = $perfilRepository->encontrarporId($id);
 
-        $perfilRepository->remove($perfilRepository->encontrarporId($id));
+        $perfilRepository->remove($perfilEncontrado, true);
 
         return new JsonResponse("se ha eliminado correctamente", 200,[], true);
 

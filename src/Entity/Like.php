@@ -73,10 +73,7 @@ class Like
         return $this;
     }
 
-    public function getIdUsuario(): ?Usuario
-    {
-        return $this->id_usuario;
-    }
+
 
     public function setIdUsuario(?Usuario $id_usuario): self
     {

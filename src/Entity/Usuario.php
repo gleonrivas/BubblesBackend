@@ -30,7 +30,7 @@ class Usuario
     #[ORM\Column(length: 9)]
     private ?string $telefono = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $email = null;
 
     #[ORM\Column(length: 100, nullable: false)]
@@ -96,13 +96,6 @@ class Usuario
         $this->perfils = new ArrayCollection();
     }
 
-    /**
-     * @return RolEntity|null
-     */
-    public function getRol(): ?RolEntity
-    {
-        return $this->rol;
-    }
 
     /**
      * @param RolEntity|null $rol
