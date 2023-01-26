@@ -2,12 +2,12 @@
 
 namespace App\Utilidades;
 
-use App\Entity\UsuarioEntity;
+use App\Entity\Usuario;
+use App\Repository\UsuarioRepository;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-use App\Repository\UsuarioEntityRepository;
 
 class UtilidadesUsuario
 {
@@ -19,24 +19,24 @@ class UtilidadesUsuario
 
         $serializer = new Serializer($normalizers, $encoders);
 
-        $usuario = $serializer->deserialize($json, UsuarioEntity::class, 'json');
+        $usuario = $serializer->deserialize($json, Usuario::class, 'json');
 
         return $usuario;
 
     }
 
-    public function existeEmail(UsuarioEntityRepository $usuarioEntityRepository, string $email):bool
+    public function existeEmail(UsuarioRepository $usuarioRepository, string $email):bool
     {
-        if ($usuarioEntityRepository->findEmail($email) != null){
+        if ($usuarioRepository->findEmail($email) != null){
             return true;
         } else {
             return false;
         }
     }
 
-    public function existeUsername(UsuarioEntityRepository $usuarioEntityRepository, string $username):bool
+    public function existeUsername(UsuarioRepository $usuarioRepository, string $username):bool
     {
-        if ($usuarioEntityRepository->findUsername($username) != null){
+        if ($usuarioRepository->findUsername($username) != null){
             return true;
         } else {
             return false;

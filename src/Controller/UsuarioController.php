@@ -3,17 +3,14 @@
 namespace App\Controller;
 
 
-use App\Repository\UsuarioEntityRepository;
-use App\Entity\RolEntity;
 use App\Entity\Usuario;
 use App\Repository\RolEntityRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
-use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UsuarioController extends AbstractController
