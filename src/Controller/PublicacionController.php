@@ -34,7 +34,7 @@ class PublicacionController extends AbstractController
         //se obtiene la lista de publicacion
         $lista_publicacion= $repository->findAll();
 
-        $lista_Json = $utilidades->toJson($lista_publicacion);
+        $lista_Json = $utilidades->toJson($lista_publicacion, null);
         return new JsonResponse($lista_Json,200, [], true);
     }
     #[Route('/publicacion/listar/{id}', name: 'app_publicacaion_listar_usuario', methods: ['GET'])]
@@ -51,7 +51,7 @@ class PublicacionController extends AbstractController
         //se obtiene la lista de publicacion
         $lista_publicacion= $repository->findBy($parametrosBusqueda);
 
-        $lista_Json = $utilidades->toJson($lista_publicacion);
+        $lista_Json = $utilidades->toJson($lista_publicacion, null);
         return new JsonResponse($lista_Json,200,[], true);
     }
 

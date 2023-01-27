@@ -19,10 +19,4 @@ class LoginController extends AbstractController
         ]);
     }
 
-    #[Route("login/acceder", name: "app_login_acceder", methods: ["GET"])]
-    public function registrar(UsuarioRepository $repository, Utilidades $utilidades):JsonResponse
-    {
-
-
-    }
 }

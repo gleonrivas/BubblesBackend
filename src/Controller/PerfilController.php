@@ -41,7 +41,7 @@ class PerfilController extends AbstractController
         //Se obtiene la lista de perfiles de la BBDD
         $lista_perfiles = $perfilRepository->findAll();
         //Se transforma a Json
-        $lista_Json = $utilidades->toJson($lista_perfiles);
+        $lista_Json = $utilidades->toJson($lista_perfiles, null);
         //se devuelve el Json transformado
         return new JsonResponse($lista_Json, 200,[], true);
 
