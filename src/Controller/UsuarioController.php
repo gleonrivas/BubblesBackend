@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\DTO\DTOConverters;
 use App\Entity\AccessToken;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
@@ -37,14 +38,20 @@ class UsuarioController extends AbstractController
 
 
     #[Route('/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
-    public function listar(UsuarioRepository $repository, Utilidades $utilidades):JsonResponse
+    public function listar(UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
         //Se obtiene la lista de usuarios de la BBDD
         $lista_usuarios = $repository->findAll();
         //Se transforma a Json
-        $lista_Json = $utilidades->toJson($lista_usuarios);
+        $lista_Json = array();
         //se devuelve el Json transformado
-        return new JsonResponse($lista_Json, 200,[], true);
+        foreach($lista_usuarios as $user){
+            $usarioDto = $converters-> usuarioToDto($user);
+            $json = $utilidades->toJson($usarioDto, null);
+            $lista_Json[] = json_decode($json);
+        }
+
+        return new JsonResponse($lista_Json, 200,[], false);
 
     }
 

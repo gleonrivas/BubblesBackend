@@ -96,6 +96,16 @@ class Usuario
         $this->perfils = new ArrayCollection();
     }
 
+    /**
+     * @return RolEntity|null
+     */
+    public function getRol(): ?RolEntity
+    {
+        return $this->rol;
+    }
+
+
+
 
     /**
      * @param RolEntity|null $rol
@@ -104,10 +114,6 @@ class Usuario
     {
         $this->rol = $rol;
     }
-
-
-
-
 
 
 
