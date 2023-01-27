@@ -54,7 +54,7 @@ class PerfilRepository extends ServiceEntityRepository
         $rsm->addFieldResult('p', 'username', 'username');
         $rsm->addFieldResult('p', 'tipo_cuenta', 'tipo_cuenta');
         $rsm->addFieldResult('p', 'foto_perfil', 'foto_perfil');
-        $rsm->addEntityResult('App\Entity\Usuario', 'id_usuario', 'id_usuario');
+        $rsm->addMetaResult('p', 'id_usuario', 'id_usuario');
 
         $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM perfil WHERE id=? LIMIT 1', $rsm);
         $query->setParameter(1, $id_perfil);

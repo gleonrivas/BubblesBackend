@@ -82,5 +82,10 @@ class Perfil
         return $this;
     }
 
+    public function setIdUsuario(?Usuario $id_usuario): self
+    {
+        $this->id_usuario = $id_usuario;
 
+        return $this;
+    }
 }
