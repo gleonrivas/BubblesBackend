@@ -33,9 +33,8 @@ class Usuario
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $contrasena = null;
-
+    #[ORM\Column(length: 100, nullable: false)]
+    private ?string $contrasena;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha_nacimiento = null;
@@ -69,12 +68,34 @@ class Usuario
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
     private Collection $id_usuario;
 
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Perfil::class)]
+    private Collection $perfils;
+
+    /**
+     * @return string|null
+     */
+    public function getContrasena(): ?string
+    {
+        return $this->contrasena;
+    }
+
+    /**
+     * @param string|null $contrasena
+     */
+    public function setContrasena(?string $contrasena): void
+    {
+        $this->contrasena = $contrasena;
+    }
+
+
+
+
     /**
      */
     public function __construct()
     {
+        $this->perfils = new ArrayCollection();
     }
-
 
     /**
      * @return RolEntity|null
@@ -91,6 +112,8 @@ class Usuario
     {
         $this->rol = $rol;
     }
+
+
 
 
 
@@ -168,13 +191,6 @@ class Usuario
         return $this->email;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getContrasena(): ?string
-    {
-        return $this->contrasena;
-    }
 
     /**
      * @param string|null $email
@@ -184,17 +200,22 @@ class Usuario
         $this->email = $email;
     }
 
-    /**
-     * @param string|null $email
-     */
-    public function setContrasena(?string $contrasena): void
-    {
-        $this->email = $contrasena;
-    }
 
     /**
      * @return string|null
      */
+    public function getTipoCuenta(): ?string
+    {
+        return $this->tipo_cuenta;
+    }
+
+    /**
+     * @param string|null $tipo_cuenta
+     */
+    public function setTipoCuenta(?string $tipo_cuenta): void
+    {
+        $this->tipo_cuenta = $tipo_cuenta;
+    }
 
     /**
      * @return \DateTimeInterface|null
@@ -212,6 +233,53 @@ class Usuario
         $this->fecha_nacimiento = $fecha_nacimiento;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string|null $descripcion
+     */
+    public function setDescripcion(?string $descripcion): void
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string|null $username
+     */
+    public function setUsername(?string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFotoPerfil(): ?string
+    {
+        return $this->foto_perfil;
+    }
+
+    /**
+     * @param string|null $foto_perfil
+     */
+    public function setFotoPerfil(?string $foto_perfil): void
+    {
+        $this->foto_perfil = $foto_perfil;
+    }
 
     /**
      * @return Collection<int, Seguidor>
@@ -267,6 +335,36 @@ class Usuario
             // set the owning side to null (unless already changed)
             if ($seguidorFollower->getIdFollower() === $this) {
                 $seguidorFollower->setIdFollower(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Perfil>
+     */
+    public function getPerfils(): Collection
+    {
+        return $this->perfils;
+    }
+
+    public function addPerfil(Perfil $perfil): self
+    {
+        if (!$this->perfils->contains($perfil)) {
+            $this->perfils->add($perfil);
+            $perfil->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removePerfil(Perfil $perfil): self
+    {
+        if ($this->perfils->removeElement($perfil)) {
+            // set the owning side to null (unless already changed)
+            if ($perfil->getIdUsuario() === $this) {
+                $perfil->setIdUsuario(null);
             }
         }
 
