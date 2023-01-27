@@ -19,11 +19,11 @@ class Seguidor
 
     #[ORM\ManyToOne(inversedBy: 'seguidor_principal')]
     #[ORM\JoinColumn(name: "id_principal" , nullable: false)]
-    private ?Usuario $id_principal = null;
+    private ?Perfil $id_principal = null;
 
     #[ORM\ManyToOne(inversedBy: 'seguidor_follower')]
     #[ORM\JoinColumn(name: "id_follower" , nullable: false)]
-    private ?Usuario $id_follower = null;
+    private ?Perfil $id_follower = null;
 
     public function getId(): ?int
     {

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Controller\DTO\PerfilDTO;
 use App\Controller\DTO\UsuarioDTO;
+use App\Repository\PerfilRepository;
 use App\Repository\SeguidorRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
@@ -21,7 +23,7 @@ class SeguidorController extends AbstractController
         ]);
     }
     #[Route('/seguidores/listar/{id}', name: 'app_seguidor', methods: ['GET'])]
-    public function listarseguidoresporidusuario(UsuarioRepository $usuariorepository,
+    public function listarseguidoresporidusuario(PerfilRepository $perfilrepository,
                                                  SeguidorRepository $seguidorRepository,
                                                  int $id,Utilidades $utilidades): JsonResponse
     {
@@ -35,11 +37,11 @@ class SeguidorController extends AbstractController
             foreach ($lista_seguidores as $value) {
                 $id_follower = $value->getIdFollower();
                 $criterio = array('id'=>$id_follower);
-                $followers = $usuariorepository->findBy($criterio);
+                $followers = $perfilrepository->findBy($criterio);
                 $follower = $followers[0];
-                $usuario = new UsuarioDTO($follower->getId(), $follower->getNombre(), $follower->getApellidos(),
-                    $follower->getTelefono(), $follower->getEmail());
-                array_push($lista_follower, $usuario);
+                $perfil = new PerfilDTO($follower->getId(), $follower->getDescripcion(), $follower->getUsername(),
+                    $follower->getTipoCuenta(), $follower->getFotoPerfil());
+                array_push($lista_follower, $perfil);
 
             }
             $lista_Json = $utilidades->toJson($lista_follower);
@@ -53,7 +55,7 @@ class SeguidorController extends AbstractController
     }
 
     #[Route('/seguidos/listar/{id}', name: 'app_seguidores', methods: ['GET'])]
-    public function listarseguidosporidusuario(UsuarioRepository $usuariorepository,
+    public function listarseguidosporidusuario(PerfilRepository $perfilrepository,
                                                  SeguidorRepository $seguidorRepository,
                                                  int $id,Utilidades $utilidades): JsonResponse
     {
@@ -68,11 +70,11 @@ class SeguidorController extends AbstractController
             foreach ($lista_seguidores as $value) {
                 $id_principal = $value->getIdPrincipal();
                 $criterio = array('id'=>$id_principal);
-                $followers = $usuariorepository->findBy($criterio);
+                $followers = $perfilrepository->findBy($criterio);
                 $follower = $followers[0];
-                $usuario = new UsuarioDTO($follower->getId(), $follower->getNombre(), $follower->getApellidos(),
-                    $follower->getTelefono(), $follower->getEmail());
-                array_push($lista_follower, $usuario);
+                $perfil = new PerfilDTO($follower->getId(), $follower->getDescripcion(), $follower->getUsername(),
+                    $follower->getTipoCuenta(), $follower->getFotoPerfil());
+                array_push($lista_follower, $perfil);
 
             }
 
@@ -93,7 +95,6 @@ class SeguidorController extends AbstractController
             return new JsonResponse("{ mensaje: el usuario no te sigue}", 200, [], true);
         }else{
             $seguidor = $listaseguidores[0];
-
 
             //ELIMINAR
             $seguidorRepository->remove($seguidor,true);

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PerfilRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PerfilRepository::class)]
@@ -28,6 +29,12 @@ class Perfil
     #[ORM\ManyToOne(inversedBy: 'id_usuario')]
     #[ORM\JoinColumn(name: "id" , nullable: false)]
     private ?Usuario $id_usuario = null;
+
+    #[ORM\OneToMany(mappedBy: 'id_principal', targetEntity: Seguidor::class)]
+    private Collection $seguidor_principal;
+
+    #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
+    private Collection $seguidor_follower;
 
     public function getId(): ?int
     {

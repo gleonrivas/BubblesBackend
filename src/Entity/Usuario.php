@@ -53,12 +53,6 @@ class Usuario
     #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
     private ?AccessToken $token = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_principal', targetEntity: Seguidor::class)]
-    private Collection $seguidor_principal;
-
-    #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
-    private Collection $seguidor_follower;
-
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Comentario::class, orphanRemoval: true)]
     private Collection $comentario;
 
