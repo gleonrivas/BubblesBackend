@@ -36,20 +36,9 @@ class Usuario
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $contrasena = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $tipo_cuenta = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha_nacimiento = null;
-
-    #[ORM\Column(length: 800, nullable: true)]
-    private ?string $descripcion = null;
-
-    #[ORM\Column(length: 100)]
-    private ?string $username = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $foto_perfil = null;
 
     #[ORM\ManyToOne(inversedBy: 'usuario')]
     #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
@@ -206,18 +195,6 @@ class Usuario
     /**
      * @return string|null
      */
-    public function getTipoCuenta(): ?string
-    {
-        return $this->tipo_cuenta;
-    }
-
-    /**
-     * @param string|null $tipo_cuenta
-     */
-    public function setTipoCuenta(?string $tipo_cuenta): void
-    {
-        $this->tipo_cuenta = $tipo_cuenta;
-    }
 
     /**
      * @return \DateTimeInterface|null
@@ -235,53 +212,6 @@ class Usuario
         $this->fecha_nacimiento = $fecha_nacimiento;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * @param string|null $descripcion
-     */
-    public function setDescripcion(?string $descripcion): void
-    {
-        $this->descripcion = $descripcion;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string|null $username
-     */
-    public function setUsername(?string $username): void
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getFotoPerfil(): ?string
-    {
-        return $this->foto_perfil;
-    }
-
-    /**
-     * @param string|null $foto_perfil
-     */
-    public function setFotoPerfil(?string $foto_perfil): void
-    {
-        $this->foto_perfil = $foto_perfil;
-    }
 
     /**
      * @return Collection<int, Seguidor>

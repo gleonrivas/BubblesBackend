@@ -83,5 +83,54 @@ class PublicacionController extends AbstractController
         return new JsonResponse("{ mensaje: Publicacion creada correctamente }", 200, [], true);
 
     }
+    #[Route('/publicacion/eliminar/{id}', name: 'app_publicacaion_eliminar', methods: ['POST'])]
+    public function eliminarPublicacion(PublicacionRepository $publicacionRepository, int $id): JsonResponse
+    {
+       $publicaciones = array('id'=>$id);
+       $listapublicaciones= $publicacionRepository->findBy($publicaciones);
+       $publicacion = $listapublicaciones[0];
+
+        //ELIMINAR
+        $publicacionRepository->remove($publicacion,true);
+
+        return new JsonResponse("{ mensaje: Publicacion eliminada correctamente }", 200, [], true);
+
+    }
+
+    #[Route('/publicacion/editar', name: 'app_publicacaion_editar', methods: ['POST'])]
+    public function editarPublicacion( Request $request, UsuarioRepository $repository,
+                                        PublicacionRepository $publicacionRepository): JsonResponse
+    {
+
+        //Obtener Json del body
+        $json  = json_decode($request->getContent(), true);
+
+        //buscar publicacion antigua
+        $id = $json['id'];
+        $publicaciones = array('id'=>$id);
+        $listapublicaciones= $publicacionRepository->findBy($publicaciones);
+        $publicacionantigua = $listapublicaciones[0];
+
+        //buscar usuario y cambiar formato fecha publicacion
+        $id_usuario = $json['id_usuario'];
+        $usuario = $repository->encontrarporId($id_usuario);
+        $datetime = new \DateTime($json['fecha_publicacion']);
+
+        //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
+
+        $publicacionantigua->setTipoPublicacion($json['tipo_publicacion']);
+        $publicacionantigua->setTexto($json['texto']);
+        $publicacionantigua->setImagen($json['imagen']);
+        $publicacionantigua->setTematica($json['tematica']);
+        $publicacionantigua->setFechaPublicacion($datetime);
+        $publicacionantigua->setActiva($json['activa']);
+        $publicacionantigua->setIdUsuario($usuario);
+
+        //GUARDAR
+        $publicacionRepository->save($publicacionantigua, true);
+
+        return new JsonResponse("{ mensaje: Publicacion editada correctamente }", 200, [], true);
+
+    }
 
 }
