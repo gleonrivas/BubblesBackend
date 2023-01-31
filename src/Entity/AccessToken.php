@@ -14,15 +14,14 @@ class AccessToken
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 500)]
+    #[ORM\Column(length: 800)]
     private ?string $token = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha_expiracion = null;
 
-    #[ORM\OneToOne(inversedBy: 'token', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: "id" ,nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
+    #[ORM\OneToOne(inversedBy: 'id_usuario', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: "id_usuario" ,nullable: false)]
     private ?Usuario $id_usuario = null;
 
     public function getId(): ?int
@@ -53,6 +52,24 @@ class AccessToken
 
         return $this;
     }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return Usuario|null
+     */
+    public function getIdUsuario(): ?Usuario
+    {
+        return $this->id_usuario;
+    }
+
+
 
 
 

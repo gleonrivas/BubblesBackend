@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\DTO\DTOConverters;
 use App\Entity\Perfil;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
@@ -36,14 +37,19 @@ class PerfilController extends AbstractController
     }
 
     #[Route('/perfil/listar', name: 'app_perfil_listar', methods: ['GET'])]
-    public function listar(PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
+    public function listar(DtoConverters $converters,PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
     {
         //Se obtiene la lista de perfiles de la BBDD
         $lista_perfiles = $perfilRepository->findAll();
         //Se transforma a Json
-        $lista_Json = $utilidades->toJson($lista_perfiles);
+        $lista_Json = array();
         //se devuelve el Json transformado
-        return new JsonResponse($lista_Json, 200,[], true);
+        foreach($lista_perfiles as $perfil){
+            $perfilDTO = $converters-> perfilToDto($perfil);
+            $json = $utilidades->toJson($perfilDTO, null);
+            $lista_Json[] = json_decode($json);
+        }
+        return new JsonResponse($lista_Json, 200,[], false);
 
     }
 

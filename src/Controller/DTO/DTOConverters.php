@@ -9,17 +9,20 @@ use App\Entity\Usuario;
 class DTOConverters
 {
 
-    // /**
-    //  * @param Perfil $perfil
-    //  */
-    // public function perfilToDto(Perfil $perfil):PerfilDTO
-    // {
+     /**
+      * @param Perfil $perfil
+      */
+     public function perfilToDto(Perfil $perfil):PerfilDTO
+     {
 
-    //     $perfilDto = new PerfilDto($perfil->getId(),$perfil->getNombre(),
-    //          $perfil->getApellidos(),$perfil->getFechaNacimiento(),$perfil->getSexo(),$perfil->getUsuario()->getUsername());
+         $perfilDto = new PerfilDto();
+         $perfilDto->setFotoPerfil($perfil->getFotoPerfil());
+         $perfilDto->setDescripcion($perfil->getDescripcion());
+         $perfilDto->setUsername($perfil->getUsername());
+         $perfilDto->setIdUsuario($this->usuarioToDto($perfil->getIdUsuario()));
 
-    //    return $perfilDto;
-    // }
+        return $perfilDto;
+     }
 
 
 

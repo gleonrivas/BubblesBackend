@@ -46,6 +46,7 @@ class Perfil
         return $this;
     }
 
+
     public function getUsername(): ?string
     {
         return $this->username;
@@ -81,6 +82,16 @@ class Perfil
 
         return $this;
     }
+
+    /**
+     * @return Usuario|null
+     */
+    public function getIdUsuario(): ?Usuario
+    {
+        return $this->id_usuario;
+    }
+
+
 
     public function setIdUsuario(?Usuario $id_usuario): self
     {

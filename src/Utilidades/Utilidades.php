@@ -59,6 +59,19 @@ class Utilidades
 
     }
 
+    public function  verify($passwordPlain, $passwordBD):bool
+    {
+        $factory = new PasswordHasherFactory([
+            'common' => ['algorithm' => 'bcrypt'],
+            'memory-hard' => ['algorithm' => 'sodium'],
+        ]);
+
+        $passwordHasher = $factory->getPasswordHasher('common');
+
+        return $passwordHasher->verify($passwordBD,$passwordPlain);
+
+    }
+
 
     public function  generateAccessToken(Usuario $user, AccessTokenRepository $apiKeyRepository):string
     {

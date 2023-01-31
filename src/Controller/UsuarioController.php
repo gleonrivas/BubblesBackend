@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Controller\DTO\DTOConverters;
+use App\Controller\DTO\UsuarioDTO;
 use App\Entity\AccessToken;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
@@ -11,10 +12,12 @@ use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use OpenApi\Attributes as OA;
 
 class UsuarioController extends AbstractController
 {
@@ -26,6 +29,7 @@ class UsuarioController extends AbstractController
     {
         $this-> doctrine = $managerRegistry;
     }
+    #[OA\Tag(name: 'Usuarios')]
     #[Route('/usuario', name: 'app_usuario')]
     public function index(): JsonResponse
     {
@@ -36,8 +40,9 @@ class UsuarioController extends AbstractController
 
     }
 
-
     #[Route('/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
+    #[OA\Tag(name: 'Usuarios')]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
     public function listar(UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
         //Se obtiene la lista de usuarios de la BBDD
