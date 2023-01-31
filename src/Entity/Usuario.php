@@ -56,8 +56,7 @@ class Usuario
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Comentario::class, orphanRemoval: true)]
     private Collection $comentario;
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Publicacion::class, orphanRemoval: true)]
-    private Collection $publicacion;
+
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
     private Collection $id_usuario;
@@ -275,65 +274,7 @@ class Usuario
         $this->foto_perfil = $foto_perfil;
     }
 
-    /**
-     * @return Collection<int, Seguidor>
-     */
-    public function getSeguidorPrincipal(): Collection
-    {
-        return $this->seguidor_principal;
-    }
 
-    public function addSeguidorPrincipal(Seguidor $seguidorPrincipal): self
-    {
-        if (!$this->seguidor_principal->contains($seguidorPrincipal)) {
-            $this->seguidor_principal->add($seguidorPrincipal);
-            $seguidorPrincipal->setIdPrincipal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSeguidorPrincipal(Seguidor $seguidorPrincipal): self
-    {
-        if ($this->seguidor_principal->removeElement($seguidorPrincipal)) {
-            // set the owning side to null (unless already changed)
-            if ($seguidorPrincipal->getIdPrincipal() === $this) {
-                $seguidorPrincipal->setIdPrincipal(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Seguidor>
-     */
-    public function getSeguidorFollower(): Collection
-    {
-        return $this->seguidor_follower;
-    }
-
-    public function addSeguidorFollower(Seguidor $seguidorFollower): self
-    {
-        if (!$this->seguidor_follower->contains($seguidorFollower)) {
-            $this->seguidor_follower->add($seguidorFollower);
-            $seguidorFollower->setIdFollower($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSeguidorFollower(Seguidor $seguidorFollower): self
-    {
-        if ($this->seguidor_follower->removeElement($seguidorFollower)) {
-            // set the owning side to null (unless already changed)
-            if ($seguidorFollower->getIdFollower() === $this) {
-                $seguidorFollower->setIdFollower(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Perfil>

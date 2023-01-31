@@ -36,9 +36,60 @@ class Perfil
     #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
     private Collection $seguidor_follower;
 
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Publicacion::class, orphanRemoval: true)]
+    private Collection $publicacion;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSeguidorPrincipal(): Collection
+    {
+        return $this->seguidor_principal;
+    }
+
+    /**
+     * @param Collection $seguidor_principal
+     */
+    public function setSeguidorPrincipal(Collection $seguidor_principal): void
+    {
+        $this->seguidor_principal = $seguidor_principal;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSeguidorFollower(): Collection
+    {
+        return $this->seguidor_follower;
+    }
+
+    /**
+     * @param Collection $seguidor_follower
+     */
+    public function setSeguidorFollower(Collection $seguidor_follower): void
+    {
+        $this->seguidor_follower = $seguidor_follower;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPublicacion(): Collection
+    {
+        return $this->publicacion;
+    }
+
+    /**
+     * @param Collection $publicacion
+     */
+    public function setPublicacion(Collection $publicacion): void
+    {
+        $this->publicacion = $publicacion;
     }
 
     public function getDescripcion(): ?string
@@ -100,4 +151,5 @@ class Perfil
 
         return $this;
     }
+
 }
