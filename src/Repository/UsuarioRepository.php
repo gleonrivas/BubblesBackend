@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -87,4 +88,14 @@ class UsuarioRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    public function findOneById(?int $id, EntityManager $entityManager): ?Usuario{
+
+        $rsm = new ResultSetMapping();
+        $query = $entityManager->createNativeQuery('SELECT * FROM usuario WHERE id = ? limit 1', $rsm);
+        $query->setParameter(1,$id);
+
+        $usuario = $query->getResult();
+        return $usuario;
+    }
 }

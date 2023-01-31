@@ -3,7 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Perfil;
+use App\Entity\RolEntity;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,6 +44,30 @@ class PerfilRepository extends ServiceEntityRepository
         }
     }
 
+    public function encontrarporId( int $id_perfil): Perfil
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
+        $rsm->addFieldResult('p', 'id', 'id');
+        $rsm->addFieldResult('p', 'descripcion', 'descripcion');
+        $rsm->addFieldResult('p', 'username', 'username');
+        $rsm->addFieldResult('p', 'tipo_cuenta', 'tipo_cuenta');
+        $rsm->addFieldResult('p', 'foto_perfil', 'foto_perfil');
+        $rsm->addMetaResult('p', 'id_usuario', 'id_usuario');
+
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM perfil WHERE id=? LIMIT 1', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $perfiles = $query->getResult();
+        $perfil = $perfiles[0];
+
+        $repository = $this->getEntityManager()->getRepository('App\Entity\Perfil');
+        $perfiles = $repository->findBy(['id' => $id_perfil] );
+
+        return $perfil;
+    }
+
+
 //    /**
 //     * @return Perfil[] Returns an array of Perfil objects
 //     */
@@ -63,4 +92,8 @@ class PerfilRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+
+
 }

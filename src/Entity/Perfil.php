@@ -27,8 +27,8 @@ class Perfil
     private ?string $foto_perfil = null;
 
     #[ORM\ManyToOne(inversedBy: 'id_usuario')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    private ?Usuario $id_usuario = null;
+    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
+    private ?Usuario $id_usuario;
 
     #[ORM\OneToMany(mappedBy: 'id_principal', targetEntity: Seguidor::class)]
     private Collection $seguidor_principal;
@@ -104,6 +104,7 @@ class Perfil
         return $this;
     }
 
+
     public function getUsername(): ?string
     {
         return $this->username;
@@ -140,10 +141,15 @@ class Perfil
         return $this;
     }
 
+    /**
+     * @return Usuario|null
+     */
     public function getIdUsuario(): ?Usuario
     {
         return $this->id_usuario;
     }
+
+
 
     public function setIdUsuario(?Usuario $id_usuario): self
     {

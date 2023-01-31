@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\AccessToken;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,22 @@ class AccessTokenRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+
+    public function findAccessTokenValida($usuario): ?AccessToken
+    {
+        $fechaActual = date("Y-m-d H:i:s");
+        $fecha = DateTime::createFromFormat('Y-m-d H:i:s', $fechaActual);
+
+
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.id_usuario = :val and a.fecha_expiracion >= :fecha ')
+            ->setParameter('val', $usuario)
+            ->setParameter('fecha', $fecha)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 
 //    /**

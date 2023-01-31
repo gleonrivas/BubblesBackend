@@ -10,6 +10,7 @@ use DateTime;
 use Doctrine\ORM\Mapping\Entity;
 use ReallySimpleJWT\Token;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
+use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -22,18 +23,25 @@ class Utilidades
 {
 
 
-    public function toJson($data):string
+    public function toJson($data, ?array  $groups ): string
     {
-        //Inicialización de serializador
+        $context = (new ObjectNormalizerContextBuilder())
+            ->withGroups("user_query")->toArray();
+
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $serializer = new Serializer($normalizers, $encoders);
 
-        //Conversion a JSON
-        $json = $serializer->serialize($data, 'json');
+
+        if($groups != null){
+            //Conversion a JSON con groups
+            $json = $serializer->serialize($data, 'json', $context);
+        }else{
+            //Conversion a JSON
+            $json = $serializer->serialize($data, 'json');
+        }
 
         return $json;
-
     }
 
 
@@ -48,6 +56,19 @@ class Utilidades
         $passwordHasher = $factory->getPasswordHasher('common');
 
         return $passwordHasher->hash($password);
+
+    }
+
+    public function  verify($passwordPlain, $passwordBD):bool
+    {
+        $factory = new PasswordHasherFactory([
+            'common' => ['algorithm' => 'bcrypt'],
+            'memory-hard' => ['algorithm' => 'sodium'],
+        ]);
+
+        $passwordHasher = $factory->getPasswordHasher('common');
+
+        return $passwordHasher->verify($passwordBD,$passwordPlain);
 
     }
 

@@ -1,119 +1,119 @@
 <?php
 
 namespace App\Controller\DTO;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class PerfilDTO
 {
-    public ?int $id;
 
+    private int $id;
+    private string $descripcion;
+    private string $username;
+    private string $tipo_cuenta;
+    private string $foto_perfil;
 
-    public ?string $descripcion ;
+    private UsuarioDTO $id_usuario;
 
-
-    public ?string $username ;
-
-
-    public ?string $tipo_cuenta ;
-
-
-    public ?string $foto_perfil ;
-
-    /**
-     * @param int|null $id
-     * @param string|null $descripcion
-     * @param string|null $username
-     * @param string|null $tipo_cuenta
-     * @param string|null $foto_perfil
-     */
-    public function __construct(?int $id, ?string $descripcion, ?string $username, ?string $tipo_cuenta, ?string $foto_perfil)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->descripcion = $descripcion;
-        $this->username = $username;
-        $this->tipo_cuenta = $tipo_cuenta;
-        $this->foto_perfil = $foto_perfil;
     }
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param int|null $id
+     * @param int $id
      */
-    public function setId(?int $id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getDescripcion(): ?string
+    public function getDescripcion(): string
     {
         return $this->descripcion;
     }
 
     /**
-     * @param string|null $descripcion
+     * @param string $descripcion
      */
-    public function setDescripcion(?string $descripcion): void
+    public function setDescripcion(string $descripcion): void
     {
         $this->descripcion = $descripcion;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getUsername(): ?string
+    public function getUsername(): string
     {
         return $this->username;
     }
 
     /**
-     * @param string|null $username
+     * @param string $username
      */
-    public function setUsername(?string $username): void
+    public function setUsername(string $username): void
     {
         $this->username = $username;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getTipoCuenta(): ?string
+    public function getTipoCuenta(): string
     {
         return $this->tipo_cuenta;
     }
 
     /**
-     * @param string|null $tipo_cuenta
+     * @param string $tipo_cuenta
      */
-    public function setTipoCuenta(?string $tipo_cuenta): void
+    public function setTipoCuenta(string $tipo_cuenta): void
     {
         $this->tipo_cuenta = $tipo_cuenta;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getFotoPerfil(): ?string
+    public function getFotoPerfil(): string
     {
         return $this->foto_perfil;
     }
 
     /**
-     * @param string|null $foto_perfil
+     * @param string $foto_perfil
      */
-    public function setFotoPerfil(?string $foto_perfil): void
+    public function setFotoPerfil(string $foto_perfil): void
     {
         $this->foto_perfil = $foto_perfil;
     }
+
+    /**
+     * @return UsuarioDTO
+     */
+    public function getIdUsuario(): UsuarioDTO
+    {
+        return $this->id_usuario;
+    }
+
+    /**
+     * @param UsuarioDTO $id_usuario
+     */
+    public function setIdUsuario(UsuarioDTO $id_usuario): void
+    {
+        $this->id_usuario = $id_usuario;
+    }
+
+
 
 
 }
