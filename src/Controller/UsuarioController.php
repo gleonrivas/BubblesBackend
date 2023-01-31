@@ -52,7 +52,6 @@ class UsuarioController extends AbstractController
         $json = $utilidades->toJson($usarioDto, null);
         $lista_Json[] = json_decode($json);
 
-
         return new JsonResponse($lista_Json, 200,[], false);
 
     }

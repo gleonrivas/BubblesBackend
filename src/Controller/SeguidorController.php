@@ -44,7 +44,7 @@ class SeguidorController extends AbstractController
                 array_push($lista_follower, $perfil);
 
             }
-            $lista_Json = $utilidades->toJson($lista_follower);
+            $lista_Json = $utilidades->toJson($lista_follower, null);
             return new JsonResponse($lista_Json,200, [], true);
 
         }
@@ -79,7 +79,7 @@ class SeguidorController extends AbstractController
             }
 
 
-            $lista_Json = $utilidades->toJson($lista_follower);
+            $lista_Json = $utilidades->toJson($lista_follower, null);
             return new JsonResponse($lista_Json,200, [], true);
         }
 

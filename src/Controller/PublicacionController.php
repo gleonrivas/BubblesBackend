@@ -48,7 +48,7 @@ class PublicacionController extends AbstractController
             array_push($lista_dto_publicacion, $publicacionDTO);
         }
 
-        $lista_Json = $utilidades->toJson($lista_dto_publicacion);
+        $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
         return new JsonResponse($lista_Json,200, [], true);
     }
     #[Route('/publicacion/listar/{id}', name: 'app_publicacaion_listar_usuario', methods: ['GET'])]
@@ -78,7 +78,7 @@ class PublicacionController extends AbstractController
             array_push($lista_dto_publicacion, $publicacionDTO);
         }
 
-        $lista_Json = $utilidades->toJson($lista_dto_publicacion);
+        $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
         return new JsonResponse($lista_Json,200, [], true);
     }
 
@@ -105,7 +105,7 @@ class PublicacionController extends AbstractController
         $publicacionNueva->setTematica($json['tematica']);
         $publicacionNueva->setFechaPublicacion($datetime);
         $publicacionNueva->setActiva($json['activa']);
-        $publicacionNueva->setPerfil($perfil);
+        $publicacionNueva->setIdPerfil($perfil);
 
         //GUARDAR
         $publicacionRepository->save($publicacionNueva, true);
@@ -160,7 +160,7 @@ class PublicacionController extends AbstractController
             $publicacionantigua->setTematica($json['tematica']);
             $publicacionantigua->setFechaPublicacion($datetime);
             $publicacionantigua->setActiva($json['activa']);
-            $publicacionantigua->setPerfil($perfil);
+            $publicacionantigua->setIdPerfil($perfil);
 
             //GUARDAR
             $publicacionRepository->save($publicacionantigua, true);

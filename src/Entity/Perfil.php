@@ -26,7 +26,7 @@ class Perfil
     #[ORM\Column(length: 500)]
     private ?string $foto_perfil = null;
 
-    #[ORM\ManyToOne(inversedBy: 'id_usuario')]
+    #[ORM\ManyToOne(inversedBy: 'perfil')]
     #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
     private ?Usuario $id_usuario;
 
@@ -36,12 +36,107 @@ class Perfil
     #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
     private Collection $seguidor_follower;
 
-    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Publicacion::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Publicacion::class)]
     private Collection $publicacion;
 
+    public function __construct()
+    {
+    }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescripcion(): ?string
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string|null $descripcion
+     */
+    public function setDescripcion(?string $descripcion): void
+    {
+        $this->descripcion = $descripcion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string|null $username
+     */
+    public function setUsername(?string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTipoCuenta(): ?string
+    {
+        return $this->tipo_cuenta;
+    }
+
+    /**
+     * @param string|null $tipo_cuenta
+     */
+    public function setTipoCuenta(?string $tipo_cuenta): void
+    {
+        $this->tipo_cuenta = $tipo_cuenta;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFotoPerfil(): ?string
+    {
+        return $this->foto_perfil;
+    }
+
+    /**
+     * @param string|null $foto_perfil
+     */
+    public function setFotoPerfil(?string $foto_perfil): void
+    {
+        $this->foto_perfil = $foto_perfil;
+    }
+
+    /**
+     * @return Usuario|null
+     */
+    public function getIdUsuario(): ?Usuario
+    {
+        return $this->id_usuario;
+    }
+
+    /**
+     * @param Usuario|null $id_usuario
+     */
+    public function setIdUsuario(?Usuario $id_usuario): void
+    {
+        $this->id_usuario = $id_usuario;
     }
 
     /**
@@ -92,70 +187,5 @@ class Perfil
         $this->publicacion = $publicacion;
     }
 
-    public function getDescripcion(): ?string
-    {
-        return $this->descripcion;
-    }
-
-    public function setDescripcion(?string $descripcion): self
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(?string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    public function getTipoCuenta(): ?string
-    {
-        return $this->tipo_cuenta;
-    }
-
-    public function setTipoCuenta(?string $tipo_cuenta): self
-    {
-        $this->tipo_cuenta = $tipo_cuenta;
-
-        return $this;
-    }
-
-    public function getFotoPerfil(): ?string
-    {
-        return $this->foto_perfil;
-    }
-
-    public function setFotoPerfil(?string $foto_perfil): self
-    {
-        $this->foto_perfil = $foto_perfil;
-
-        return $this;
-    }
-
-    /**
-     * @return Usuario|null
-     */
-    public function getIdUsuario(): ?Usuario
-    {
-        return $this->id_usuario;
-    }
-
-
-
-    public function setIdUsuario(?Usuario $id_usuario): self
-    {
-        $this->id_usuario = $id_usuario;
-
-        return $this;
-    }
 
 }

@@ -17,24 +17,20 @@ class Like
     #[ORM\Column]
     private ?int $numero_likes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'id_comentario')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "comentario")]
-    private ?Comentario $id_comentario = null;
+    #[ORM\ManyToOne(inversedBy: 'like')]
+    #[ORM\JoinColumn(name: "id_comentario" , nullable: false)]
+    private ?Comentario $id_comentario;
 
-    #[ORM\ManyToOne(inversedBy: 'id_publicacion')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "publicacion")]
-    private ?publicacion $id_publicacion = null;
+    #[ORM\ManyToOne(inversedBy: 'like')]
+    #[ORM\JoinColumn(name: "id_publicacion" , nullable: false)]
+    private ?Publicacion $id_publicacion;
 
-    #[ORM\ManyToOne(inversedBy: 'id_usuario')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
-    private ?Usuario $id_usuario = null;
+    #[ORM\ManyToOne(inversedBy: 'like')]
+    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
+    private ?Usuario $id_usuario;
 
     public function getId(): ?int
     {
-        return $this->id;
     }
 
     public function getNumeroLikes(): ?int

@@ -36,15 +36,15 @@ class Publicacion
 
     #[ORM\ManyToOne(inversedBy: 'publicacion')]
     #[ORM\JoinColumn(name: "id_perfil" , nullable: false)]
-    private ?Perfil $id_perfil ;
+    private ?Perfil $id_perfil;
 
-    #[ORM\OneToMany(mappedBy: 'publicacion', targetEntity: Like::class)]
+    #[ORM\OneToMany(mappedBy: 'id_publicacion', targetEntity: Like::class)]
     private Collection $publicacion;
 
     public function __construct()
     {
-        $this->publicacion = new ArrayCollection();
     }
+
 
     /**
      * @return int|null
@@ -52,14 +52,6 @@ class Publicacion
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int|null $id
-     */
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
     }
 
     /**
@@ -71,27 +63,11 @@ class Publicacion
     }
 
     /**
-     * @param string|null $tipo_publicacion
-     */
-    public function setTipoPublicacion(?string $tipo_publicacion): void
-    {
-        $this->tipo_publicacion = $tipo_publicacion;
-    }
-
-    /**
      * @return string|null
      */
     public function getTexto(): ?string
     {
         return $this->texto;
-    }
-
-    /**
-     * @param string|null $texto
-     */
-    public function setTexto(?string $texto): void
-    {
-        $this->texto = $texto;
     }
 
     /**
@@ -103,27 +79,11 @@ class Publicacion
     }
 
     /**
-     * @param string|null $imagen
-     */
-    public function setImagen(?string $imagen): void
-    {
-        $this->imagen = $imagen;
-    }
-
-    /**
      * @return string|null
      */
     public function getTematica(): ?string
     {
         return $this->tematica;
-    }
-
-    /**
-     * @param string|null $tematica
-     */
-    public function setTematica(?string $tematica): void
-    {
-        $this->tematica = $tematica;
     }
 
     /**
@@ -135,27 +95,11 @@ class Publicacion
     }
 
     /**
-     * @param \DateTimeInterface|null $fecha_publicacion
-     */
-    public function setFechaPublicacion(?\DateTimeInterface $fecha_publicacion): void
-    {
-        $this->fecha_publicacion = $fecha_publicacion;
-    }
-
-    /**
      * @return bool|null
      */
     public function getActiva(): ?bool
     {
         return $this->activa;
-    }
-
-    /**
-     * @param bool|null $activa
-     */
-    public function setActiva(?bool $activa): void
-    {
-        $this->activa = $activa;
     }
 
     /**
@@ -167,19 +111,75 @@ class Publicacion
     }
 
     /**
-     * @param Perfil|null $id_perfil
-     */
-    public function setIdPerfil(?Perfil $id_perfil): void
-    {
-        $this->id_perfil = $id_perfil;
-    }
-
-    /**
      * @return Collection
      */
     public function getPublicacion(): Collection
     {
         return $this->publicacion;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param string|null $tipo_publicacion
+     */
+    public function setTipoPublicacion(?string $tipo_publicacion): void
+    {
+        $this->tipo_publicacion = $tipo_publicacion;
+    }
+
+    /**
+     * @param string|null $texto
+     */
+    public function setTexto(?string $texto): void
+    {
+        $this->texto = $texto;
+    }
+
+    /**
+     * @param string|null $imagen
+     */
+    public function setImagen(?string $imagen): void
+    {
+        $this->imagen = $imagen;
+    }
+
+    /**
+     * @param string|null $tematica
+     */
+    public function setTematica(?string $tematica): void
+    {
+        $this->tematica = $tematica;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $fecha_publicacion
+     */
+    public function setFechaPublicacion(?\DateTimeInterface $fecha_publicacion): void
+    {
+        $this->fecha_publicacion = $fecha_publicacion;
+    }
+
+    /**
+     * @param bool|null $activa
+     */
+    public function setActiva(?bool $activa): void
+    {
+        $this->activa = $activa;
+    }
+
+    /**
+     * @param Perfil|null $id_perfil
+     */
+    public function setIdPerfil(?Perfil $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
     }
 
     /**
@@ -189,6 +189,9 @@ class Publicacion
     {
         $this->publicacion = $publicacion;
     }
+
+
+
 
 
 }
