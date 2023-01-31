@@ -39,8 +39,12 @@ class SeguidorController extends AbstractController
                 $criterio = array('id'=>$id_follower);
                 $followers = $perfilrepository->findBy($criterio);
                 $follower = $followers[0];
-                $perfil = new PerfilDTO($follower->getId(), $follower->getDescripcion(), $follower->getUsername(),
-                    $follower->getTipoCuenta(), $follower->getFotoPerfil());
+                $perfil = new PerfilDTO();
+                $perfil->setId($follower->getId());
+                $perfil->setDescripcion($follower->getDescripcion());
+                $perfil->setUsername($follower->getUsername());
+                $perfil->setTipoCuenta($follower->getTipoCuenta());
+                $perfil->setFotoPerfil($follower->getFotoPerfil());
                 array_push($lista_follower, $perfil);
 
             }
@@ -72,8 +76,12 @@ class SeguidorController extends AbstractController
                 $criterio = array('id'=>$id_principal);
                 $followers = $perfilrepository->findBy($criterio);
                 $follower = $followers[0];
-                $perfil = new PerfilDTO($follower->getId(), $follower->getDescripcion(), $follower->getUsername(),
-                    $follower->getTipoCuenta(), $follower->getFotoPerfil());
+                $perfil = new PerfilDTO();
+                $perfil->setId($follower->getId());
+                $perfil->setDescripcion($follower->getDescripcion());
+                $perfil->setUsername($follower->getUsername());
+                $perfil->setTipoCuenta($follower->getTipoCuenta());
+                $perfil->setFotoPerfil($follower->getFotoPerfil());
                 array_push($lista_follower, $perfil);
 
             }
