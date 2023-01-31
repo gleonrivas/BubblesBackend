@@ -15,7 +15,7 @@ class DTOConverters
      public function perfilToDto(Perfil $perfil):PerfilDTO
      {
 
-         $perfilDto = new PerfilDto();
+         $perfilDto = new PerfilDTO();
          $perfilDto->setFotoPerfil($perfil->getFotoPerfil());
          $perfilDto->setDescripcion($perfil->getDescripcion());
          $perfilDto->setUsername($perfil->getUsername());
