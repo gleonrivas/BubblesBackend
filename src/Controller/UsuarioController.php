@@ -30,7 +30,7 @@ class UsuarioController extends AbstractController
         $this-> doctrine = $managerRegistry;
     }
     #[OA\Tag(name: 'Usuarios')]
-    #[Route('/usuario', name: 'app_usuario')]
+    #[Route('/api/usuario', name: 'app_usuario')]
     public function index(): JsonResponse
     {
        return $this->json([
@@ -40,11 +40,30 @@ class UsuarioController extends AbstractController
 
     }
 
-    #[Route('/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
+    #[Route('/api/usuario/buscar/{id}', name: 'app_usuario_buscar', methods: ['GET'])]
+    #[OA\Tag(name: 'Usuarios')]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
+    public function buscar(int $id, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
+    {
+
+        $usuario = $repository->findOneBy(array('id'=>$id));
+
+        $usarioDto = $converters-> usuarioToDto($usuario);
+        $json = $utilidades->toJson($usarioDto, null);
+        $lista_Json[] = json_decode($json);
+
+
+        return new JsonResponse($lista_Json, 200,[], false);
+
+    }
+
+
+    #[Route('/api/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
     public function listar(UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
+
         //Se obtiene la lista de usuarios de la BBDD
         $lista_usuarios = $repository->findAll();
         //Se transforma a Json
