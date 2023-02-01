@@ -8,7 +8,9 @@ use App\Repository\AccessTokenRepository;
 use App\Repository\UsuarioRepository;
 use DateTime;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\Persistence\ManagerRegistry;
 use ReallySimpleJWT\Token;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -21,7 +23,12 @@ use Symfony\Component\Serializer\Serializer;
 
 class Utilidades
 {
+    private ManagerRegistry $doctrine;
 
+    public function __construct(ManagerRegistry $managerRegistry)
+    {
+        $this-> doctrine = $managerRegistry;
+    }
 
     public function toJson($data, ?array  $groups ): string
     {
@@ -103,7 +110,15 @@ class Utilidades
     }
 
 
-    //no usada todavia//
+    public function comprobarPermisos(Request $request, $permiso){
+        $em = $this-> doctrine->getManager();
+        $userRepository = $em->getRepository(Usuario::class);
+        $apikeyRepository = $em->getRepository(AccessToken::class);
+        $token = $request->headers->get("apikey");
+
+        return $token != null and $this->esAccesTokenValida($token, $permiso, $apikeyRepository, $userRepository);
+
+    }
     public function esAccesTokenValida($token, $permisoRequerido, AccessTokenRepository $accessTokenRepository,UsuarioRepository $usuarioRepository):bool
     {
         $accesToken = $accessTokenRepository->findOneBy(array("token" => $token));

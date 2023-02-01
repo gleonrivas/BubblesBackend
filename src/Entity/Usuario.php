@@ -50,8 +50,8 @@ class Usuario
     #[ORM\OneToMany(mappedBy: 'receptor', targetEntity: Mensaje::class)]
     private Collection $receptor;
 
-    #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
-    private ?AccessToken $token = null;
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: AccessToken::class)]
+    private ?Collection $token;
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Comentario::class, orphanRemoval: true)]
     private Collection $comentario;
