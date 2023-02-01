@@ -42,6 +42,9 @@ class Perfil
     #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Like::class)]
     private Collection $id_perfil;
 
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Comentario::class, orphanRemoval: true)]
+    private Collection $comentario;
+
     public function __construct()
     {
     }

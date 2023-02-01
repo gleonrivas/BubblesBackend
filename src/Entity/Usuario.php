@@ -53,8 +53,7 @@ class Usuario
     #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
     private ?AccessToken $token = null;
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Comentario::class, orphanRemoval: true)]
-    private Collection $comentario;
+
 
 
 

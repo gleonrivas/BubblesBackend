@@ -216,18 +216,21 @@ class PublicacionController extends AbstractController
 
     }
 
-    #[Route('/publicacion/eliminar/{id}', name: 'app_publicacaion_eliminar', methods: ['POST'])]
+    #[Route('/publicacion/eliminar/{id}', name: 'app_publicacaion_eliminar', methods: ['DELETE'])]
     public function eliminarPublicacion(PublicacionRepository $publicacionRepository, int $id): JsonResponse
     {
         $publicaciones = array('id' => $id);
-        $listapublicaciones = $publicacionRepository->findBy($publicaciones);
-        $publicacion = $listapublicaciones[0];
 
-        //ELIMINAR
-        $publicacionRepository->remove($publicacion, true);
+        if ($publicacionRepository->findBy($publicaciones) == null) {
+            return new JsonResponse("{ mensaje: La publicación no existe }", 200, [], true);
+        } else {
+            $listapublicaciones = $publicacionRepository->findBy($publicaciones);
+            $publicacion = $listapublicaciones[0];
+            //ELIMINAR
+            $publicacionRepository->remove($publicacion, true);
 
-        return new JsonResponse("{ mensaje: Publicacion eliminada correctamente }", 200, [], true);
-
+            return new JsonResponse("{ mensaje: Publicacion eliminada correctamente }", 200, [], true);
+        }
     }
 
     #[Route('/publicacion/editar', name: 'app_publicacaion_editar', methods: ['POST'])]

@@ -4,12 +4,16 @@ namespace App\Controller;
 
 use App\Controller\DTO\PerfilDTO;
 use App\Controller\DTO\PublicacionDTO;
+use App\Entity\Like;
+use App\Entity\Publicacion;
+use App\Repository\ComentarioRepository;
 use App\Repository\LikeRepository;
 use App\Repository\PerfilRepository;
 use App\Repository\PublicacionRepository;
 use App\Utilidades\Utilidades;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LikeController extends AbstractController
@@ -129,16 +133,76 @@ class LikeController extends AbstractController
     public function eliminarlikepublicacion(LikeRepository $likeRepository, int $id): JsonResponse
     {
         $criterio = array('id' => $id);
-        $listalikes = $likeRepository->findBy($criterio);
-        $like = $listalikes[0];
-        if(count($listalikes)==0){
+        if($likeRepository->findBy($criterio)==null){
             return new JsonResponse("{ mensaje: El like ya no existe }", 200, [], true);
         }else{
+            $listalikes = $likeRepository->findBy($criterio);
+            $like = $listalikes[0];
             //ELIMINAR
             $likeRepository->remove($like, true);
 
             return new JsonResponse("{ mensaje: Like eliminado correctamente }", 200, [], true);
         }
+
+    }
+
+    #[Route('/likepublicacion/guardar/{id_publicacion}/{id_perfil}', name: 'app_likepublicacaion_crear', methods: ['POST'])]
+    public function guardarLikePublicacion(int $id_publicacion, int $id_perfil,
+                                       LikeRepository $likerepository,
+                                       PerfilRepository $perfilRepository,
+                                       PublicacionRepository $publicacionRepository): JsonResponse
+    {
+        //necesito el perfil
+        $criterio = array('id'=> $id_perfil);
+        $perfiles = $perfilRepository->findBy($criterio);
+        $perfil = $perfiles[0];
+
+       //necesito la publicacion
+        $criterio2 = array('id'=> $id_publicacion);
+        $publicaciones = $publicacionRepository->findBy($criterio2);
+        $publicacion = $publicaciones[0];
+
+        //crear un nuevo like
+        $like = new Like();
+        $like->setIdPublicacion($publicacion);
+        $like->setNumeroLikes(1);
+        $like->setIdComentario(null);
+        $like->setIdPerfil($perfil);
+
+        //GUARDAR
+        $likerepository->save($like, true);
+
+        return new JsonResponse("{ mensaje: like a la publicación creado correctamente }", 200, [], true);
+
+    }
+
+    #[Route('/likecomentario/guardar/{id_comentario}/{id_perfil}', name: 'app_likecomentario_crear', methods: ['POST'])]
+    public function guardarLikeComentario(int $id_comentario, int $id_perfil,
+                                           LikeRepository $likerepository,
+                                           PerfilRepository $perfilRepository,
+                                           ComentarioRepository $comentarioRepository): JsonResponse
+    {
+        //necesito el perfil
+        $criterio = array('id'=> $id_perfil);
+        $perfiles = $perfilRepository->findBy($criterio);
+        $perfil = $perfiles[0];
+
+        //necesito el comentario
+        $criterio2 = array('id'=> $id_comentario);
+        $comentarios = $comentarioRepository->findBy($criterio2);
+        $comentario = $comentarios[0];
+
+        //crear un nuevo like
+        $like = new Like();
+        $like->setIdPublicacion(null);
+        $like->setNumeroLikes(1);
+        $like->setIdComentario($comentario);
+        $like->setIdPerfil($perfil);
+
+        //GUARDAR
+        $likerepository->save($like, true);
+
+        return new JsonResponse("{ mensaje: like al comentario creado correctamente }", 200, [], true);
 
     }
 }

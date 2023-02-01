@@ -98,10 +98,10 @@ class SeguidorController extends AbstractController
     {
         $criterioseguidor = array('id_principal'=>$id,
             'id_follower'=>$id_seguidor);
-        $listaseguidores= $seguidorRepository->findBy($criterioseguidor);
-        if(count($listaseguidores)==0){
+        if( $seguidorRepository->findBy($criterioseguidor)==null){
             return new JsonResponse("{ mensaje: el usuario no te sigue}", 200, [], true);
         }else{
+            $listaseguidores= $seguidorRepository->findBy($criterioseguidor);
             $seguidor = $listaseguidores[0];
 
             //ELIMINAR
@@ -118,11 +118,11 @@ class SeguidorController extends AbstractController
     {
         $criterioseguidor = array('id_follower'=>$id,
             'id_principal'=>$id_seguido);
-        $listaseguidores= $seguidorRepository->findBy($criterioseguidor);
 
-        if(count($listaseguidores)== 0){
+        if( $seguidorRepository->findBy($criterioseguidor)==null){
             return new JsonResponse("{ mensaje:no sigues a ese usuario }", 200, [], true);
         }else{
+            $listaseguidores= $seguidorRepository->findBy($criterioseguidor);
             $seguidor = $listaseguidores[0];
 
 
