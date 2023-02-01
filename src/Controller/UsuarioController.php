@@ -46,6 +46,7 @@ class UsuarioController extends AbstractController
     #[Route('/api/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
     public function listar(Request $request, Utilidades $utils, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
@@ -68,16 +69,40 @@ class UsuarioController extends AbstractController
 
     }
 
-    #[Route('/api/usuario/listar/{id}', name: 'app_usuario_buscar', methods: ['GET'])]
+    #[Route('/api/usuario/listar/{id}', name: 'app_usuario_buscar_id', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
-    public function buscar(Request $request, Utilidades $utils, int $id, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
+    public function buscaPorId(Request $request, Utilidades $utils, int $id, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
 
         if($utils->comprobarPermisos($request, "usuario"))
         {
             $usuario = $repository->findOneBy(array('id'=>$id));
+
+            $usarioDto = $converters-> usuarioToDto($usuario);
+            $json = $utilidades->toJson($usarioDto, null);
+            $lista_Json[] = json_decode($json);
+            return new JsonResponse($lista_Json, 200,[], false);
+        }
+        else{
+            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+        }
+
+    }
+
+    #[Route('/api/usuario/listar/{nombre}', name: 'app_usuario_buscar_nombre', methods: ['GET'])]
+    #[OA\Tag(name: 'Usuarios')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
+    public function buscarPorNombre(Request $request, Utilidades $utils, string $nombre, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
+    {
+
+        if($utils->comprobarPermisos($request, "usuario"))
+        {
+            $usuario = $repository->findOneBy(array('nombre'=>$nombre));
 
             $usarioDto = $converters-> usuarioToDto($usuario);
             $json = $utilidades->toJson($usarioDto, null);
