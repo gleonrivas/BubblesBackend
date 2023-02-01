@@ -8,7 +8,9 @@ use App\Repository\AccessTokenRepository;
 use App\Repository\UsuarioRepository;
 use DateTime;
 use Doctrine\ORM\Mapping\Entity;
+use phpDocumentor\Reflection\Types\Integer;
 use ReallySimpleJWT\Token;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -58,6 +60,11 @@ class Utilidades
         return $passwordHasher->hash($password);
 
     }
+
+    public function getSessionToken(Request $request):string{
+        return $this->$request->headers->get('token');
+    }
+
 
     public function  verify($passwordPlain, $passwordBD):bool
     {
