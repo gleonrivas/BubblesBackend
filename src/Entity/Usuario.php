@@ -58,8 +58,7 @@ class Usuario
 
 
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
-    private Collection $id_usuario;
+
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Perfil::class)]
     private Collection $perfils;

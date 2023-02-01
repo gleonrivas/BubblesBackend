@@ -39,6 +39,9 @@ class Perfil
     #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Publicacion::class)]
     private Collection $publicacion;
 
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Like::class)]
+    private Collection $id_perfil;
+
     public function __construct()
     {
     }
