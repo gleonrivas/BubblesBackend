@@ -86,8 +86,9 @@ class Utilidades
         //GENERO UN OBJETO CON API KEY NUEVO
         $accessToken = new AccessToken();
         $accessToken->setIdUsuario($user);
-        $fechaActual5hour = date("Y-m-d H:i:s", strtotime('+5 hours'));
+        $fechaActual5hour = date("Y-m-d H:i:s");
         $fechaExpiracion = DateTime::createFromFormat('Y-m-d H:i:s', $fechaActual5hour);
+        $fechaExpiracion->modify('+5 hours');
         $accessToken->setFechaExpiracion($fechaExpiracion);
 
         $tokenData = [

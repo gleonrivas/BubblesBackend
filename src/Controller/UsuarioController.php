@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\DTO\CrearUsuarioDTO;
 use App\Controller\DTO\DTOConverters;
 use App\Controller\DTO\UsuarioDTO;
 use App\Entity\AccessToken;
@@ -30,8 +31,8 @@ class UsuarioController extends AbstractController
     {
         $this-> doctrine = $managerRegistry;
     }
-    #[OA\Tag(name: 'Usuarios')]
-    #[Route('/api/usuario', name: 'app_usuario')]
+
+    #[Route('/usuario', name: 'app_usuario', methods: ["GET"])]
     public function index(): JsonResponse
     {
        return $this->json([
@@ -69,23 +70,31 @@ class UsuarioController extends AbstractController
 
     #[Route('/api/usuario/listar/{id}', name: 'app_usuario_buscar', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
+    #[Security(name: "apikey")]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
     public function buscar(Request $request, Utilidades $utils, int $id, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
 
-        $usuario = $repository->findOneBy(array('id'=>$id));
+        if($utils->comprobarPermisos($request, "usuario"))
+        {
+            $usuario = $repository->findOneBy(array('id'=>$id));
 
-        $usarioDto = $converters-> usuarioToDto($usuario);
-        $json = $utilidades->toJson($usarioDto, null);
-        $lista_Json[] = json_decode($json);
-
-        return new JsonResponse($lista_Json, 200,[], false);
+            $usarioDto = $converters-> usuarioToDto($usuario);
+            $json = $utilidades->toJson($usarioDto, null);
+            $lista_Json[] = json_decode($json);
+            return new JsonResponse($lista_Json, 200,[], false);
+        }
+        else{
+            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+        }
 
     }
 
-
-
-    #[Route('/usuario/guardar', name: 'app_usuario_crear', methods: ['POST'])]
+    #[Route('/api/usuario/guardar', name: 'app_usuario_crear', methods: ['POST'])]
+    #[OA\Tag(name: 'Usuarios')]
+    #[OA\RequestBody(description:"DTO del usuario" ,required: true, content: new OA\JsonContent(ref: new Model(type:CrearUsuarioDTO::class)))]
+    #[OA\Response(response: 200,description: "Usuario creado correctamente")]
+    #[OA\Response(response: 101,description: "No ha indicado usario y contraseña")]
     public function save(AccessTokenRepository $accessTokenRepository,Utilidades $utilidades, Request $request, UsuarioRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
     {
         $em = $this->doctrine->getManager();
