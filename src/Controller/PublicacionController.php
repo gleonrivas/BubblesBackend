@@ -321,7 +321,7 @@ class PublicacionController extends AbstractController
             $id = $json['id'];
             $publicaciones = array('id' => $id);
             if ($publicacionRepository->findBy($publicaciones) == null) {
-                return new JsonResponse("{ mensaje: No existe la publicación }", 101, [], true);
+                return new JsonResponse("{ mensaje: No existe la publicación }", 200, [], true);
             } else {
                 $listapublicaciones = $publicacionRepository->findBy($publicaciones);
                 $publicacionantigua = $listapublicaciones[0];
@@ -351,7 +351,7 @@ class PublicacionController extends AbstractController
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 100, [], false);
+            return new JsonResponse("{message: Unauthorized}", 200, [], false);
         }
     }
 
