@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
+use App\Controller\DTO\LoginDTO;
 use App\Entity\AccessToken;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
 use Doctrine\Persistence\ManagerRegistry;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use OpenApi\Attributes as OA;
 
 class LoginController extends AbstractController
 {
@@ -25,7 +28,9 @@ class LoginController extends AbstractController
     }
 
 
-    #[Route('/login', name: 'app_login', methods: ["POST"])]
+    #[Route('/api/login', name: 'app_login', methods: ["POST"])]
+    #[OA\Tag(name: 'Login')]
+    #[OA\RequestBody(description: "Dto de autentificación", content: new OA\JsonContent(ref: new Model(type: LoginDTO::class)))]
     public function login(Request $request, Utilidades $utils, UsuarioRepository $usuarioRepository, AccessTokenRepository $accessTokenRepository): JsonResponse
     {
 
