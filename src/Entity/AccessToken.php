@@ -20,7 +20,7 @@ class AccessToken
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fecha_expiracion = null;
 
-    #[ORM\ManyToOne(inversedBy: 'access_token')]
+    #[ORM\ManyToOne(cascade:["persist"],inversedBy: 'access_token')]
     #[ORM\JoinColumn(name: "id_usuario" ,nullable: false)]
     private ?Usuario $id_usuario = null;
 

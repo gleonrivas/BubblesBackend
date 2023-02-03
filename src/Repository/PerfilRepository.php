@@ -67,6 +67,22 @@ class PerfilRepository extends ServiceEntityRepository
         return $perfil;
     }
 
+    public function editar(string $username,string $descripcion,string $foto_perfil, string $tipo_cuenta, int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery('update perfil set username = ? , descripcion  = ? ,foto_perfil  = ?, tipo_cuenta  = ? where id_usuario = ?', $rsm);
+        $query->setParameter(1, $username);
+        $query->setParameter(2, $descripcion);
+        $query->setParameter(3, $foto_perfil);
+        $query->setParameter(4, $tipo_cuenta);
+        $query->setParameter(5, $id_perfil);
+        $query->execute();
+
+
+    }
+
 
 //    /**
 //     * @return Perfil[] Returns an array of Perfil objects

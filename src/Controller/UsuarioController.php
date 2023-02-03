@@ -171,6 +171,34 @@ class UsuarioController extends AbstractController
 
 
 
+    #[Route('/api/usuario/editar', name: 'app_usuario_editar', methods: ['POST'])]
+    #[OA\Tag(name: 'Usuarios')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\RequestBody(description:"DTO del usuario" ,required: true, content: new OA\JsonContent(ref: new Model(type:CrearUsuarioDTO::class)))]
+    #[OA\Response(response: 200,description: "Usuario editado correctamente")]
+    #[OA\Response(response: 101,description: "No ha indicado los datos del usuario")]
+    public function editar(AccessTokenRepository $accessTokenRepository,Utilidades $utilidades, Request $request, UsuarioRepository $userRepository, RolEntityRepository $rolEntityRepository): JsonResponse
+    {
+
+        //Obtener Json del body
+        $json  = json_decode($request->getContent(), true);
+        //Obtenemos los parámetros del JSON
+        $nombre = $json['nombre'];
+        $password = $json['password'];
+        $rolname = $json['rol'];
+        $apellidos = $json['apellidos'];
+        $telefono = $json['telefono'];
+        $email = $json['email'];
+        $fecha_nacimiento = new \DateTime($json['fechaNacimiento']);
+
+        $userRepository->editar($nombre, $telefono,$apellidos,$email, $utilidades->hashPassword($password),$fecha_nacimiento,$utilidades->infoToken($request)->getId());
+        $utilidades-> generateAccessToken($userRepository->findOneBy(array('id'=>$utilidades->infoToken($request)->getId())), $accessTokenRepository);
+        return new JsonResponse("{ mensaje: Usuario modificado correctamente }", 200, [], true);
+
+    }
+
+
 
 
 

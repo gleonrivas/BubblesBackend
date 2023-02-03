@@ -2,6 +2,8 @@
 
 namespace App\Utilidades;
 
+use App\Controller\DTO\UsuarioDTO;
+use App\Controller\DTO\UsuarioTokenInfoDTO;
 use App\Entity\AccessToken;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
@@ -110,6 +112,18 @@ class Utilidades
         return $token;
     }
 
+    public function infoToken(Request $request):UsuarioTokenInfoDTO{
+        $token = $request->headers->get("apikey");
+        $id_usuario = Token::getPayload($token)["user_id"];
+        $rol_name= Token::getPayload($token)["user_rol"];
+        $usuario = new UsuarioTokenInfoDTO();
+        $usuario->setRol($rol_name);
+        $usuario->setId($id_usuario);
+
+        return $usuario;
+
+    }
+
 
     public function comprobarPermisos(Request $request, $permiso){
         $em = $this-> doctrine->getManager();
@@ -120,6 +134,8 @@ class Utilidades
         return $token != null and $this->esAccesTokenValida($token, $permiso, $apikeyRepository, $userRepository);
 
     }
+
+
     public function esAccesTokenValida($token, $permisoRequerido, AccessTokenRepository $accessTokenRepository,UsuarioRepository $usuarioRepository):bool
     {
         $accesToken = $accessTokenRepository->findOneBy(array("token" => $token));

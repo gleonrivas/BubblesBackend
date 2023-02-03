@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Scalar\String_;
 
 /**
  * @extends ServiceEntityRepository<Usuario>
@@ -57,10 +58,25 @@ class UsuarioRepository extends ServiceEntityRepository
         $usuarios = $query->getResult();
         $usuario = $usuarios[0];
 
-        $repository = $this->getEntityManager()->getRepository('App\Entity\Usuario');
-        $users = $repository->findBy(['id' => $id_usuario] );
-
         return $usuario;
+    }
+
+    public function editar(string $nombre,string $telefono,string $apellidos, string $email, string $contrasena, \DateTimeInterface $fecha_nacimiento, int $id_usuario)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Usuario', 'u');
+
+        $query = $this->getEntityManager()->createNativeQuery('update usuario set nombre = ? , apellidos = ? ,telefono = ?, email = ?, contrasena = ?, fecha_nacimiento = ? where id = ?', $rsm);
+        $query->setParameter(1, $nombre);
+        $query->setParameter(2, $apellidos);
+        $query->setParameter(3, $telefono);
+        $query->setParameter(4, $email);
+        $query->setParameter(5, $contrasena);
+        $query->setParameter(6, $fecha_nacimiento);
+        $query->setParameter(7, $id_usuario);
+        $usuarios = $query->execute();
+
     }
 
 
@@ -89,13 +105,5 @@ class UsuarioRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-    public function findOneById(?int $id, EntityManager $entityManager): ?Usuario{
 
-        $rsm = new ResultSetMapping();
-        $query = $entityManager->createNativeQuery('SELECT * FROM usuario WHERE id = ? limit 1', $rsm);
-        $query->setParameter(1,$id);
-
-        $usuario = $query->getResult();
-        return $usuario;
-    }
 }
