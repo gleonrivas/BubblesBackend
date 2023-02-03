@@ -192,7 +192,7 @@ class PerfilController extends AbstractController
 
     }
 
-    #[Route('/api/perfil/eliminar/{id}', name: 'app_perfil_eliminar', methods: ['POST'])]
+    #[Route('/api/perfil/eliminar/{id}', name: 'app_perfil_eliminar', methods: ['DELETE'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\HeaderParameter(name: "apiKey", required: true)]
