@@ -63,7 +63,7 @@ class UsuarioController extends AbstractController
             return new JsonResponse($lista_Json, 200,[], true);
 
         }else{
-            return new JsonResponse("{message: Unauthorized}", 200,[], true);
+            return new JsonResponse("{message: Unauthorized}", 401,[], true);
         }
 
 
