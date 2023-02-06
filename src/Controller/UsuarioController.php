@@ -60,10 +60,10 @@ class UsuarioController extends AbstractController
                 $json = $utilidades->toJson($usarioDto, null);
                 $lista_Json[] = json_decode($json);
         }
-            return new JsonResponse($lista_Json, 200,[], false);
+            return new JsonResponse($lista_Json, 200,[], true);
 
         }else{
-            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+            return new JsonResponse("{message: Unauthorized}", 200,[], true);
         }
 
 
