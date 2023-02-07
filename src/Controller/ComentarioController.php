@@ -33,13 +33,10 @@ class ComentarioController extends AbstractController
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: ComentarioDTO::class))))]
     public function listar(Request $request,ComentarioRepository $comentarioRepository, DTOConverters $converters,Utilidades $utilidades):JsonResponse
     {
-        //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
             $listaComentarios = $comentarioRepository->findAll();
-            //Se transforma a Json
-            $listaJson = array();
-            //se devuelve el Json transformado
+
             foreach($listaComentarios as $comentario){
                 $comentarioDTO = $converters-> comentarioToDTO($comentario);
                 $json = $utilidades->toJson($comentarioDTO, null);
@@ -49,7 +46,31 @@ class ComentarioController extends AbstractController
         }else{
             return new JsonResponse("{message: Unauthorized}", 200,[], false);
         }
+    }
+
+    #[Route('api/comentario/listar/{id}', name: 'app_comentario_listar_id', methods: ['GET'])]
+    #[OA\Tag(name: 'Comentarios')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: ComentarioDTO::class))))]
+    public function listarPorIdUsuario(Request $request,ComentarioRepository $comentarioRepository, DTOConverters $converters,Utilidades $utilidades, int $id):JsonResponse
+    {
+
+        $listaComentarios = $comentarioRepository->listarComentariosPorIdUsuario($id);
+
+        if($utilidades->comprobarPermisos($request, "usuario"))
+        {
+            foreach($listaComentarios as $comentario){
+                $comentarioDTO = $converters->comentarioToDTO($comentario);
+                $json = $utilidades->toJson($comentarioDTO, null);
+                $lista_Json[] = json_decode($json);
+        }
+            return new JsonResponse($lista_Json, 200,[], false);
+        }else{
+            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+        }
 
 
     }
+
 }

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comentario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,21 @@ class ComentarioRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function listarComentariosPorIdUsuario( int $id_comentario): array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Comentario', 'c');
+        $rsm->addFieldResult('c', 'id', 'id');
+        $rsm->addFieldResult('c', 'id', 'id');
+
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM comentario WHERE id=? order by id desc', $rsm);
+        $query->setParameter(1, $id_comentario);
+        $comentarios = $query->getResult();
+
+        return $comentarios;
     }
 
 //    /**
