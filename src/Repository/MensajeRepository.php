@@ -39,6 +39,18 @@ class MensajeRepository extends ServiceEntityRepository
         }
     }
 
+    public function findEmail($email)
+    {
+        $usuario = $this->findOneBy(['email' => $email]);
+        return $usuario->getEmail();
+    }
+
+    public function findUsername(string $username)
+    {
+        $usuario = $this->findOneBy(['username' => $username]);
+        return $usuario->getUsername();
+    }
+
 //    /**
 //     * @return Mensaje[] Returns an array of Mensaje objects
 //     */

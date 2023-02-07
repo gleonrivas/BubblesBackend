@@ -27,12 +27,38 @@ class Comentario
 
     public function __construct()
     {
-        $this->id_comentario = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTexto(): ?string
+    {
+        return $this->texto;
+    }
+
+    /**
+     * @param string|null $texto
+     */
+    public function setTexto(?string $texto): void
+    {
+        $this->texto = $texto;
     }
 
     /**
@@ -51,55 +77,23 @@ class Comentario
         $this->id_perfil = $id_perfil;
     }
 
-
-
-    public function getTexto(): ?string
-    {
-        return $this->texto;
-    }
-
-    public function setTexto(string $texto): self
-    {
-        $this->texto = $texto;
-
-        return $this;
-    }
-
-
-    public function setIdUsuario(?Usuario $id_usuario): self
-    {
-        $this->id_usuario = $id_usuario;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Like>
+     * @return Collection
      */
     public function getIdComentario(): Collection
     {
         return $this->id_comentario;
     }
 
-    public function addIdComentario(Like $idComentario): self
+    /**
+     * @param Collection $id_comentario
+     */
+    public function setIdComentario(Collection $id_comentario): void
     {
-        if (!$this->id_comentario->contains($idComentario)) {
-            $this->id_comentario->add($idComentario);
-            $idComentario->setIdComentario($this);
-        }
-
-        return $this;
+        $this->id_comentario = $id_comentario;
     }
 
-    public function removeIdComentario(Like $idComentario): self
-    {
-        if ($this->id_comentario->removeElement($idComentario)) {
-            // set the owning side to null (unless already changed)
-            if ($idComentario->getIdComentario() === $this) {
-                $idComentario->setIdComentario(null);
-            }
-        }
 
-        return $this;
-    }
+
+
 }

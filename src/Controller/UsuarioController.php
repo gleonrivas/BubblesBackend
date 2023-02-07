@@ -18,6 +18,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
 
@@ -169,6 +170,41 @@ class UsuarioController extends AbstractController
 
     }
 
+    /*#[Route('/usuario/contrasena', name: 'app_usuario_cambiar_contrasena', methods: ['POST'])]
+    public function update(AccessTokenRepository $tokenRepository,
+                           Utilidades $utilidades,
+                           Request $request,
+                           UsuarioRepository $userRepository,
+                           RolEntityRepository $rolEntityRepository,
+                           PasswordHasherFactory $hasherFactory): JsonResponse
+    {
+
+        $em = $this->doctrine->getManager();
+
+        $tokenDeLaPeticion = $request->headers->get('token');
+
+        $idUsuario = $tokenRepository->findBy(array('token' => $tokenDeLaPeticion));
+
+        //Obtener Json del body
+        $json  = json_decode($request->getContent(), true);
+
+        //Obtenemos los parámetros del JSON
+        $newPassword = $json['newPassword'];
+
+        $nuevoUsuario = new Usuario();
+
+        $nuevoUsuario->setNombre($usuarioDelToken->);
+        $nuevoUsuario->setApellidos();
+        $nuevoUsuario->setNombre();
+        $nuevoUsuario->setNombre();
+        $nuevoUsuario->setNombre();
+        $nuevoUsuario->setNombre();
+
+
+        $user->setPassword($utilidades->hashPassword($newPassword));
+
+        // execute the queries on the database
+        $em->flush();
 
 
     #[Route('/api/usuario/editar', name: 'app_usuario_editar', methods: ['POST'])]
@@ -200,7 +236,7 @@ class UsuarioController extends AbstractController
 
 
 
+        return new JsonResponse("{ mensaje: No ha indicado usario y contraseña }", 101, [], true);
 
-
-
+    }*/
 }

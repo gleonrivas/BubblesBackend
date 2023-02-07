@@ -45,19 +45,15 @@ class DTOConverters
 
     }
 
-
-    /**
-     * @param Comentario $comentario
-     */
-    public function comentarioToDto(Comentario $comentario):ComentarioDTO
+    public function comentarioToDTO(Comentario $comentario):ComentarioDTO
     {
-       $comentarioDTO = new ComentarioDTO();
-       $comentarioDTO->setId($comentario->getId());
-       $comentarioDTO->setTexto($comentario->getTexto());
-       $comentarioDTO->setIdPerfil($this->perfilToDto($comentario->getIdPerfil()));
+        $comentarioDTO = new ComentarioDTO();
+
+        $comentarioDTO->setId($comentario->getId());
+        $comentarioDTO->setTexto($comentario->getTexto());
+        $comentarioDTO->setIdPerfil($this->perfilToDto($comentario->getIdPerfil()));
 
         return $comentarioDTO;
-
     }
 
 }
