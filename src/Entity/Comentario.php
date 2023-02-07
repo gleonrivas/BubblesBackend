@@ -35,6 +35,24 @@ class Comentario
         return $this->id;
     }
 
+    /**
+     * @return Perfil|null
+     */
+    public function getIdPerfil(): ?Perfil
+    {
+        return $this->id_perfil;
+    }
+
+    /**
+     * @param Perfil|null $id_perfil
+     */
+    public function setIdPerfil(?Perfil $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
+    }
+
+
+
     public function getTexto(): ?string
     {
         return $this->texto;

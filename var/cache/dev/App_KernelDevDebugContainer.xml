@@ -217,6 +217,7 @@
         <argument type="service" id=".service_locator.CshazM0.App\Controller\ComentarioController"/>
       </call>
     </service>
+    <service id="App\Controller\DTO\ComentarioDTO" class="App\Controller\DTO\ComentarioDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\CrearPerfilDTO" class="App\Controller\DTO\CrearPerfilDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\CrearPublicacionDTO" class="App\Controller\DTO\CrearPublicacionDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\CrearPublicacionDTOId" class="App\Controller\DTO\CrearPublicacionDTOId" autowire="true" autoconfigure="true"/>
@@ -4318,6 +4319,14 @@
         <argument key="loader" type="service_closure" id=".errored..service_locator.y4_Zrx..Symfony\Component\Config\Loader\LoaderInterface"/>
       </argument>
     </service>
+    <service id=".service_locator.kz6ZuBB" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="comentarioRepository" type="service_closure" id="App\Repository\ComentarioRepository"/>
+        <argument key="converters" type="service_closure" id="App\Controller\DTO\DTOConverters"/>
+        <argument key="utilidades" type="service_closure" id="App\Utilidades\Utilidades"/>
+      </argument>
+    </service>
     <service id=".service_locator.ICgUdJx" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -4451,9 +4460,10 @@
         <argument key="utilidades" type="service_closure" id="App\Utilidades\Utilidades"/>
       </argument>
     </service>
-    <service id=".service_locator.nrlbvKa" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.XoxaVuq" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
+        <argument key="App\Controller\ComentarioController::listar" type="service_closure" id=".service_locator.kz6ZuBB"/>
         <argument key="App\Controller\LikeController::cantidadlikesdeComentario" type="service_closure" id=".service_locator.q1Amhe4"/>
         <argument key="App\Controller\LikeController::cantidadlikesdePublicacion" type="service_closure" id=".service_locator.q1Amhe4"/>
         <argument key="App\Controller\LikeController::eliminarlikepublicacion" type="service_closure" id=".service_locator.tncbWWT"/>
@@ -4490,6 +4500,7 @@
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.y4_Zrx."/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.y4_Zrx."/>
+        <argument key="App\Controller\ComentarioController:listar" type="service_closure" id=".service_locator.kz6ZuBB"/>
         <argument key="App\Controller\LikeController:cantidadlikesdeComentario" type="service_closure" id=".service_locator.q1Amhe4"/>
         <argument key="App\Controller\LikeController:cantidadlikesdePublicacion" type="service_closure" id=".service_locator.q1Amhe4"/>
         <argument key="App\Controller\LikeController:eliminarlikepublicacion" type="service_closure" id=".service_locator.tncbWWT"/>
@@ -4890,12 +4901,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.nrlbvKa"/>
+      <argument type="service" id=".service_locator.XoxaVuq"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.nrlbvKa"/>
+      <argument type="service" id=".service_locator.XoxaVuq"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -5587,12 +5598,13 @@
     <service id="Symfony\Component\Security\Core\User\UserCheckerInterface" alias="security.user_checker"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.nrlbvKa"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.XoxaVuq"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.9L433w3" alias="nelmio_api_doc.generator_locator"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
+    <service id=".service_locator.4sFfOCp" alias=".service_locator.kz6ZuBB"/>
     <service id=".service_locator.Qu1lG6u" alias=".service_locator.ICgUdJx"/>
     <service id=".service_locator.tKjFv5X" alias=".service_locator.tncbWWT"/>
     <service id=".service_locator._CTlK4R" alias=".service_locator.VQrjO0l"/>
@@ -5605,7 +5617,7 @@
     <service id=".service_locator.Q6ZHncY" alias=".service_locator.nyNxjhi"/>
     <service id=".service_locator.qBSWtr2" alias=".service_locator.nPtAZ4H"/>
     <service id=".service_locator.Q5W6zjw" alias=".service_locator.63NL9lI"/>
-    <service id=".service_locator.CU4VVDv" alias=".service_locator.nrlbvKa"/>
+    <service id=".service_locator.OODL42B" alias=".service_locator.XoxaVuq"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.qBCHs1a" alias=".service_locator.QXcJQkF"/>
     <service id=".service_locator.VZoQk0z" alias=".service_locator.CshazM0"/>
@@ -5629,6 +5641,7 @@
     <service id="argument_resolver.not_tagged_controller" alias="debug.argument_resolver.not_tagged_controller"/>
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id=".service_locator.gFlme_s" alias=".service_locator.y4_Zrx."/>
+    <service id=".service_locator.rH8q15N" alias=".service_locator.kz6ZuBB"/>
     <service id=".service_locator.BPNoktq" alias=".service_locator.ICgUdJx"/>
     <service id=".service_locator.VZiFhQQ" alias=".service_locator.q1Amhe4"/>
     <service id=".service_locator.tuE6L1O" alias=".service_locator.tncbWWT"/>

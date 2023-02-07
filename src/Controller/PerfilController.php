@@ -95,7 +95,6 @@ class PerfilController extends AbstractController
             return new JsonResponse("{message: Unauthorized}", 200,[], false);
         }
 
-
     }
 
     #[Route('api/perfil/listarPorUsuario/', name: 'app_perfil_listarPorUsuario', methods: ['GET'])]
