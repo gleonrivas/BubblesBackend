@@ -250,15 +250,15 @@ class PublicacionController extends AbstractController
             //Obtener Json del body
             $json = json_decode($request->getContent(), true);
 
-            $id_perfil = $json['id_perfil'];
+            $id_perfil = $json['idPerfil'];
             $criterio = array('id' => $id_perfil);
             $perfiles = $repository->findBy($criterio);
             $perfil = $perfiles[0];
-            $datetime = new \DateTime($json['fecha_publicacion']);
+            $datetime = new \DateTime($json['fechaPublicacion']);
 
             //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
             $publicacionNueva = new Publicacion();
-            $publicacionNueva->setTipoPublicacion($json['tipo_publicacion']);
+            $publicacionNueva->setTipoPublicacion($json['tipoPublicacion']);
             $publicacionNueva->setTexto($json['texto']);
             $publicacionNueva->setImagen($json['imagen']);
             $publicacionNueva->setTematica($json['tematica']);
@@ -327,16 +327,16 @@ class PublicacionController extends AbstractController
                 $publicacionantigua = $listapublicaciones[0];
 
                 //buscar usuario y cambiar formato fecha publicacion
-                $id_perfil = $json['id_perfil'];
+                $id_perfil = $json['idPerfil'];
                 $criterio = array('id' => $id_perfil);
                 $perfiles = $repository->findBy($criterio);
                 $perfil = $perfiles[0];
 
-                $datetime = new \DateTime($json['fecha_publicacion']);
+                $datetime = new \DateTime($json['fechaPublicacion']);
 
                 //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
 
-                $publicacionantigua->setTipoPublicacion($json['tipo_publicacion']);
+                $publicacionantigua->setTipoPublicacion($json['tipoPublicacion']);
                 $publicacionantigua->setTexto($json['texto']);
                 $publicacionantigua->setImagen($json['imagen']);
                 $publicacionantigua->setTematica($json['tematica']);
