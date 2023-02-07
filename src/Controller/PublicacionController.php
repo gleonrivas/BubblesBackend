@@ -51,7 +51,7 @@ class PublicacionController extends AbstractController
             foreach ($lista_publicacion as $publicacion) {
                 $publicacionDTO = new PublicacionDTO(
                     $publicacion->getTipoPublicacion(),
-                    $publicacion->getFechaPublicacion(),
+                    $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                     $publicacion->getTexto(),
                     $publicacion->getImagen(),
                     $publicacion->getTematica(),
@@ -92,7 +92,7 @@ class PublicacionController extends AbstractController
             foreach ($lista_publicacion as $publicacion) {
                 $publicacionDTO = new PublicacionDTO(
                     $publicacion->getTipoPublicacion(),
-                    $publicacion->getFechaPublicacion(),
+                    $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                     $publicacion->getTexto(),
                     $publicacion->getImagen(),
                     $publicacion->getTematica(),
@@ -136,7 +136,7 @@ class PublicacionController extends AbstractController
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
                         $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion(),
+                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
@@ -177,7 +177,7 @@ class PublicacionController extends AbstractController
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
                         $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion(),
+                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
@@ -218,7 +218,7 @@ class PublicacionController extends AbstractController
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
                         $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion(),
+                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
