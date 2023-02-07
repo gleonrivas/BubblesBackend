@@ -31,38 +31,71 @@ class Comentario
         $this->id_comentario = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getTexto(): ?string
     {
         return $this->texto;
     }
 
-    public function setTexto(string $texto): self
+    /**
+     * @param string|null $texto
+     */
+    public function setTexto(?string $texto): void
     {
         $this->texto = $texto;
-
-        return $this;
-    }
-
-
-    public function setIdUsuario(?Usuario $id_usuario): self
-    {
-        $this->id_usuario = $id_usuario;
-
-        return $this;
     }
 
     /**
-     * @return Collection<int, Like>
+     * @return Usuario|null
+     */
+    public function getIdUsuario(): ?Usuario
+    {
+        return $this->id_usuario;
+    }
+
+    /**
+     * @param Usuario|null $id_usuario
+     */
+    public function setIdUsuario(?Usuario $id_usuario): void
+    {
+        $this->id_usuario = $id_usuario;
+    }
+
+    /**
+     * @return Collection
      */
     public function getIdComentario(): Collection
     {
         return $this->id_comentario;
     }
+
+    /**
+     * @param Collection $id_comentario
+     */
+    public function setIdComentario(Collection $id_comentario): void
+    {
+        $this->id_comentario = $id_comentario;
+    }
+
+
 
     public function addIdComentario(Like $idComentario): self
     {

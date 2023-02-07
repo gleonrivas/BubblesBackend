@@ -111,7 +111,7 @@ class UsuarioController extends AbstractController
 
     }
 
-    #[Route('/usuario/contrasena', name: 'app_usuario_cambiar_contrasena', methods: ['POST'])]
+    /*#[Route('/usuario/contrasena', name: 'app_usuario_cambiar_contrasena', methods: ['POST'])]
     public function update(AccessTokenRepository $tokenRepository,
                            Utilidades $utilidades,
                            Request $request,
@@ -151,5 +151,5 @@ class UsuarioController extends AbstractController
 
         return new JsonResponse("{ mensaje: No ha indicado usario y contraseña }", 101, [], true);
 
-    }
+    }*/
 }
