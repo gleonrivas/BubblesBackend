@@ -27,7 +27,6 @@ class Comentario
 
     public function __construct()
     {
-        $this->id_comentario = new ArrayCollection();
     }
 
     /**
@@ -63,19 +62,19 @@ class Comentario
     }
 
     /**
-     * @return Usuario|null
+     * @return Perfil|null
      */
-    public function getIdUsuario(): ?Usuario
+    public function getIdPerfil(): ?Perfil
     {
-        return $this->id_usuario;
+        return $this->id_perfil;
     }
 
     /**
-     * @param Usuario|null $id_usuario
+     * @param Perfil|null $id_perfil
      */
-    public function setIdUsuario(?Usuario $id_usuario): void
+    public function setIdPerfil(?Perfil $id_perfil): void
     {
-        $this->id_usuario = $id_usuario;
+        $this->id_perfil = $id_perfil;
     }
 
     /**
@@ -96,25 +95,5 @@ class Comentario
 
 
 
-    public function addIdComentario(Like $idComentario): self
-    {
-        if (!$this->id_comentario->contains($idComentario)) {
-            $this->id_comentario->add($idComentario);
-            $idComentario->setIdComentario($this);
-        }
 
-        return $this;
-    }
-
-    public function removeIdComentario(Like $idComentario): self
-    {
-        if ($this->id_comentario->removeElement($idComentario)) {
-            // set the owning side to null (unless already changed)
-            if ($idComentario->getIdComentario() === $this) {
-                $idComentario->setIdComentario(null);
-            }
-        }
-
-        return $this;
-    }
 }
