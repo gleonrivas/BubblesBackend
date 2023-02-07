@@ -229,7 +229,6 @@ class PublicacionController extends AbstractController
                 }
 
                 $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
-                return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
             return new JsonResponse("{message: Unauthorized}", 200, [], false);
