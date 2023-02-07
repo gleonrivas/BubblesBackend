@@ -7,10 +7,10 @@ class PerfilDTO
 
     private int $id;
     private string $descripcion;
+
     private string $username;
     private string $tipo_cuenta;
     private string $foto_perfil;
-
     private UsuarioDTO $id_usuario;
 
     public function __construct()
