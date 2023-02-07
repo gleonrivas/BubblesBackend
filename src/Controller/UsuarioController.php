@@ -61,16 +61,16 @@ class UsuarioController extends AbstractController
                 $json = $utilidades->toJson($usarioDto, null);
                 $lista_Json[] = json_decode($json);
         }
-            return new JsonResponse($lista_Json, 200,[], true);
+            return new JsonResponse($lista_Json, 200,[], false);
 
         }else{
-            return new JsonResponse("{message: Unauthorized}", 200,[], true);
+            return new JsonResponse("{message: Unauthorized}", 200,[], false);
         }
 
 
     }
 
-    #[Route('/api/usuario/listar/{id}', name: 'app_usuario_buscar_id', methods: ['GET'])]
+    #[Route('/api/usuario/listarPorNombre/{id}', name: 'app_usuario_buscar_id', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
     #[Security(name: "apikey")]
     #[OA\HeaderParameter(name: "apiKey", required: true)]
