@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Seguidor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,20 +40,22 @@ class SeguidorRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
+/**
 //     * @return Seguidor[] Returns an array of Seguidor objects
 //     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+public function buscarSeguidorPorIdPrincipal(int $id_principal): array
+{
+    $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+    $rsm->addRootEntityFromClassMetadata('App\Entity\Seguidor', 's');
+    $rsm->addFieldResult('s', 'id_principal', 'id_principal');
+
+    $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM seguidor WHERE id_principal=?', $rsm);
+    $query->setParameter(1, $id_principal);
+    $seguidores = $query->getResult();
+
+ return $seguidores;
+}
 
 //    public function findOneBySomeField($value): ?Seguidor
 //    {

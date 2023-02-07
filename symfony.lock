@@ -134,7 +134,7 @@
             "ref": "8a5b112826f7d3d5b07027f93786ae11a1c7de48"
         },
         "files": [
-            "config/packages/security.yaml"
+            "./config/packages/security.yaml"
         ]
     },
     "symfony/twig-bundle": {
@@ -171,7 +171,7 @@
             "ref": "a86723ee8d8b2f9437c8ce60a5546a1c267da5ed"
         },
         "files": [
-            "config/packages/twig_extensions.yaml"
+            "./config/packages/twig_extensions.yaml"
         ]
     },
     "twig/extra-bundle": {

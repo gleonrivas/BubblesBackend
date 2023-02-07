@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\PerfilRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PerfilRepository::class)]
@@ -25,62 +26,107 @@ class Perfil
     #[ORM\Column(length: 500)]
     private ?string $foto_perfil = null;
 
-    #[ORM\ManyToOne(inversedBy: 'id_usuario')]
+    #[ORM\ManyToOne(inversedBy: 'perfil')]
     #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
     private ?Usuario $id_usuario;
 
+    #[ORM\OneToMany(mappedBy: 'id_principal', targetEntity: Seguidor::class)]
+    private Collection $seguidor_principal;
+
+    #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
+    private Collection $seguidor_follower;
+
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Publicacion::class)]
+    private Collection $publicacion;
+
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Like::class)]
+    private Collection $id_perfil;
+
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Comentario::class, orphanRemoval: true)]
+    private Collection $comentario;
+
+    public function __construct()
+    {
+    }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getDescripcion(): ?string
     {
         return $this->descripcion;
     }
 
-    public function setDescripcion(?string $descripcion): self
+    /**
+     * @param string|null $descripcion
+     */
+    public function setDescripcion(?string $descripcion): void
     {
         $this->descripcion = $descripcion;
-
-        return $this;
     }
 
-
+    /**
+     * @return string|null
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function setUsername(?string $username): self
+    /**
+     * @param string|null $username
+     */
+    public function setUsername(?string $username): void
     {
         $this->username = $username;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTipoCuenta(): ?string
     {
         return $this->tipo_cuenta;
     }
 
-    public function setTipoCuenta(?string $tipo_cuenta): self
+    /**
+     * @param string|null $tipo_cuenta
+     */
+    public function setTipoCuenta(?string $tipo_cuenta): void
     {
         $this->tipo_cuenta = $tipo_cuenta;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFotoPerfil(): ?string
     {
         return $this->foto_perfil;
     }
 
-    public function setFotoPerfil(?string $foto_perfil): self
+    /**
+     * @param string|null $foto_perfil
+     */
+    public function setFotoPerfil(?string $foto_perfil): void
     {
         $this->foto_perfil = $foto_perfil;
-
-        return $this;
     }
 
     /**
@@ -91,12 +137,61 @@ class Perfil
         return $this->id_usuario;
     }
 
-
-
-    public function setIdUsuario(?Usuario $id_usuario): self
+    /**
+     * @param Usuario|null $id_usuario
+     */
+    public function setIdUsuario(?Usuario $id_usuario): void
     {
         $this->id_usuario = $id_usuario;
-
-        return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getSeguidorPrincipal(): Collection
+    {
+        return $this->seguidor_principal;
+    }
+
+    /**
+     * @param Collection $seguidor_principal
+     */
+    public function setSeguidorPrincipal(Collection $seguidor_principal): void
+    {
+        $this->seguidor_principal = $seguidor_principal;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSeguidorFollower(): Collection
+    {
+        return $this->seguidor_follower;
+    }
+
+    /**
+     * @param Collection $seguidor_follower
+     */
+    public function setSeguidorFollower(Collection $seguidor_follower): void
+    {
+        $this->seguidor_follower = $seguidor_follower;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPublicacion(): Collection
+    {
+        return $this->publicacion;
+    }
+
+    /**
+     * @param Collection $publicacion
+     */
+    public function setPublicacion(Collection $publicacion): void
+    {
+        $this->publicacion = $publicacion;
+    }
+
+
 }

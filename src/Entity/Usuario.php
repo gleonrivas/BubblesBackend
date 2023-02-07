@@ -30,7 +30,7 @@ class Usuario
     #[ORM\Column(length: 9)]
     private ?string $telefono = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 255)]
     private ?string $email = null;
 
     #[ORM\Column(length: 100, nullable: false)]
@@ -43,29 +43,21 @@ class Usuario
     #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
     private ?RolEntity $rol;
 
+
     #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
     private Collection $emisor ;
 
     #[ORM\OneToMany(mappedBy: 'receptor', targetEntity: Mensaje::class)]
     private Collection $receptor;
 
-    #[ORM\OneToOne(mappedBy: 'id_usuario', cascade: ['persist', 'remove'])]
-    private ?AccessToken $token = null;
+    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: AccessToken::class )]
+    private ?Collection $token;
 
-    #[ORM\OneToMany(mappedBy: 'id_principal', targetEntity: Seguidor::class)]
-    private Collection $seguidor_principal;
 
-    #[ORM\OneToMany(mappedBy: 'id_follower', targetEntity: Seguidor::class)]
-    private Collection $seguidor_follower;
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Comentario::class, orphanRemoval: true)]
-    private Collection $comentario;
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Publicacion::class, orphanRemoval: true)]
-    private Collection $publicacion;
 
-    #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Like::class)]
-    private Collection $id_usuario;
+
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Perfil::class)]
     private Collection $perfils;
@@ -104,9 +96,6 @@ class Usuario
         return $this->rol;
     }
 
-
-
-
     /**
      * @param RolEntity|null $rol
      */
@@ -114,6 +103,10 @@ class Usuario
     {
         $this->rol = $rol;
     }
+
+
+
+
 
 
 
@@ -200,6 +193,22 @@ class Usuario
 
 
     /**
+     * @return string|null
+     */
+    public function getTipoCuenta(): ?string
+    {
+        return $this->tipo_cuenta;
+    }
+
+    /**
+     * @param string|null $tipo_cuenta
+     */
+    public function setTipoCuenta(?string $tipo_cuenta): void
+    {
+        $this->tipo_cuenta = $tipo_cuenta;
+    }
+
+    /**
      * @return \DateTimeInterface|null
      */
     public function getFechaNacimiento(): ?\DateTimeInterface
@@ -216,63 +225,61 @@ class Usuario
     }
 
     /**
-     * @return Collection<int, Seguidor>
+     * @return string|null
      */
-    public function getSeguidorPrincipal(): Collection
+    public function getDescripcion(): ?string
     {
-        return $this->seguidor_principal;
-    }
-
-    public function addSeguidorPrincipal(Seguidor $seguidorPrincipal): self
-    {
-        if (!$this->seguidor_principal->contains($seguidorPrincipal)) {
-            $this->seguidor_principal->add($seguidorPrincipal);
-            $seguidorPrincipal->setIdPrincipal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSeguidorPrincipal(Seguidor $seguidorPrincipal): self
-    {
-        if ($this->seguidor_principal->removeElement($seguidorPrincipal)) {
-            // set the owning side to null (unless already changed)
-            if ($seguidorPrincipal->getIdPrincipal() === $this) {
-                $seguidorPrincipal->setIdPrincipal(null);
-            }
-        }
-
-        return $this;
+        return $this->descripcion;
     }
 
     /**
-     * @return Collection<int, Seguidor>
+     * @param string|null $descripcion
      */
-    public function getSeguidorFollower(): Collection
+    public function setDescripcion(?string $descripcion): void
     {
-        return $this->seguidor_follower;
+        $this->descripcion = $descripcion;
     }
 
-    public function addSeguidorFollower(Seguidor $seguidorFollower): self
+    /**
+     * @return string|null
+     */
+    public function getUsername(): ?string
     {
-        if (!$this->seguidor_follower->contains($seguidorFollower)) {
-            $this->seguidor_follower->add($seguidorFollower);
-            $seguidorFollower->setIdFollower($this);
-        }
-
-        return $this;
+        return $this->username;
     }
 
-    public function removeSeguidorFollower(Seguidor $seguidorFollower): self
+    /**
+     * @param string|null $username
+     */
+    public function setUsername(?string $username): void
     {
-        if ($this->seguidor_follower->removeElement($seguidorFollower)) {
-            // set the owning side to null (unless already changed)
-            if ($seguidorFollower->getIdFollower() === $this) {
-                $seguidorFollower->setIdFollower(null);
-            }
-        }
+        $this->username = $username;
+    }
 
-        return $this;
+    /**
+     * @return string|null
+     */
+    public function getFotoPerfil(): ?string
+    {
+        return $this->foto_perfil;
+    }
+
+    /**
+     * @param string|null $foto_perfil
+     */
+    public function setFotoPerfil(?string $foto_perfil): void
+    {
+        $this->foto_perfil = $foto_perfil;
+    }
+
+
+
+    /**
+     * @return Collection<int, Perfil>
+     */
+    public function getPerfils(): Collection
+    {
+        return $this->perfils;
     }
 
     public function addPerfil(Perfil $perfil): self

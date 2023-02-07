@@ -16,31 +16,15 @@ class DTOConverters
      public function perfilToDto(Perfil $perfil):PerfilDTO
      {
 
-         $perfilDto = new PerfilDto();
+         $perfilDto = new PerfilDTO();
          $perfilDto->setFotoPerfil($perfil->getFotoPerfil());
          $perfilDto->setDescripcion($perfil->getDescripcion());
          $perfilDto->setUsername($perfil->getUsername());
          $perfilDto->setIdUsuario($this->usuarioToDto($perfil->getIdUsuario()));
-
         return $perfilDto;
      }
 
 
-
-     /**
-      * @param Seguidor $seguidor
-      */
-     public function seguidorToDto(Seguidor $seguidor):SeguidorDTO
-     {
-
-         $seguidorDTO = new SeguidorDTO();
-         $seguidorDTO->setFechaSeguimiento($seguidor->getFechaSeguimiento());
-         $seguidorDTO->setIdPrincipal($this->usuarioToDto($seguidor->getIdPrincipal()));
-         $seguidorDTO->setIdFollower($this->usuarioToDto($seguidor->getIdFollower()));
-
-         return $seguidorDTO;
-
-     }
 
 
     /**

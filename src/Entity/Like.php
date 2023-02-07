@@ -17,24 +17,20 @@ class Like
     #[ORM\Column]
     private ?int $numero_likes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'id_comentario')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "comentario")]
-    private ?Comentario $id_comentario = null;
+    #[ORM\ManyToOne(inversedBy: 'like')]
+    #[ORM\JoinColumn(name: "id_comentario" , nullable: true)]
+    private ?Comentario $id_comentario;
 
-    #[ORM\ManyToOne(inversedBy: 'id_publicacion')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "publicacion")]
-    private ?publicacion $id_publicacion = null;
+    #[ORM\ManyToOne(inversedBy: 'like')]
+    #[ORM\JoinColumn(name: "id_publicacion" , nullable: true)]
+    private ?Publicacion $id_publicacion;
 
-    #[ORM\ManyToOne(inversedBy: 'id_usuario')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
-    private ?Usuario $id_usuario = null;
+    #[ORM\ManyToOne(inversedBy: 'like')]
+    #[ORM\JoinColumn(name: "id_perfil" , nullable: true)]
+    private ?Perfil $id_perfil;
 
     public function getId(): ?int
     {
-        return $this->id;
     }
 
     public function getNumeroLikes(): ?int
@@ -73,12 +69,23 @@ class Like
         return $this;
     }
 
-
-
-    public function setIdUsuario(?Usuario $id_usuario): self
+    /**
+     * @return Perfil|null
+     */
+    public function getIdPerfil(): ?Perfil
     {
-        $this->id_usuario = $id_usuario;
-
-        return $this;
+        return $this->id_perfil;
     }
+
+    /**
+     * @param Perfil|null $id_perfil
+     */
+    public function setIdPerfil(?Perfil $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
+    }
+
+
+
+
 }

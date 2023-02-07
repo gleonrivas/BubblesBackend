@@ -35,129 +35,163 @@ class Publicacion
     private ?bool $activa;
 
     #[ORM\ManyToOne(inversedBy: 'publicacion')]
-    #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
-    private ?Usuario $id_usuario ;
+    #[ORM\JoinColumn(name: "id_perfil" , nullable: false)]
+    private ?Perfil $id_perfil;
 
     #[ORM\OneToMany(mappedBy: 'id_publicacion', targetEntity: Like::class)]
-    private Collection $id_publicacion;
+    private Collection $publicacion;
 
     public function __construct()
     {
-        $this->id_publicacion = new ArrayCollection();
     }
 
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTipoPublicacion(): ?string
     {
         return $this->tipo_publicacion;
     }
 
-    public function setTipoPublicacion(string $tipo_publicacion): self
-    {
-        $this->tipo_publicacion = $tipo_publicacion;
-
-        return $this;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getTexto(): ?string
     {
         return $this->texto;
     }
 
-    public function setTexto(string $texto): self
-    {
-        $this->texto = $texto;
-
-        return $this;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getImagen(): ?string
     {
         return $this->imagen;
     }
 
-    public function setImagen(?string $imagen): self
-    {
-        $this->imagen = $imagen;
-
-        return $this;
-    }
-
+    /**
+     * @return string|null
+     */
     public function getTematica(): ?string
     {
         return $this->tematica;
     }
 
-    public function setTematica(string $tematica): self
-    {
-        $this->tematica = $tematica;
-
-        return $this;
-    }
-
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getFechaPublicacion(): ?\DateTimeInterface
     {
         return $this->fecha_publicacion;
     }
 
-    public function setFechaPublicacion(\DateTimeInterface $fecha_publicacion): self
-    {
-        $this->fecha_publicacion = $fecha_publicacion;
-
-        return $this;
-    }
-
-    public function isActiva(): ?bool
+    /**
+     * @return bool|null
+     */
+    public function getActiva(): ?bool
     {
         return $this->activa;
     }
 
-    public function setActiva(?bool $activa): self
+    /**
+     * @return Perfil|null
+     */
+    public function getIdPerfil(): ?Perfil
     {
-        $this->activa = $activa;
-
-        return $this;
-    }
-
-
-    public function setIdUsuario(?Usuario $id_usuario): self
-    {
-        $this->id_usuario = $id_usuario;
-
-        return $this;
+        return $this->id_perfil;
     }
 
     /**
-     * @return Collection<int, Like>
+     * @return Collection
      */
-    public function getIdPublicacion(): Collection
+    public function getPublicacion(): Collection
     {
-        return $this->id_publicacion;
+        return $this->publicacion;
     }
 
-    public function addIdPublicacion(Like $idPublicacion): self
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
     {
-        if (!$this->id_publicacion->contains($idPublicacion)) {
-            $this->id_publicacion->add($idPublicacion);
-            $idPublicacion->setIdPublicacion($this);
-        }
-
-        return $this;
+        $this->id = $id;
     }
 
-    public function removeIdPublicacion(Like $idPublicacion): self
+    /**
+     * @param string|null $tipo_publicacion
+     */
+    public function setTipoPublicacion(?string $tipo_publicacion): void
     {
-        if ($this->id_publicacion->removeElement($idPublicacion)) {
-            // set the owning side to null (unless already changed)
-            if ($idPublicacion->getIdPublicacion() === $this) {
-                $idPublicacion->setIdPublicacion(null);
-            }
-        }
-
-        return $this;
+        $this->tipo_publicacion = $tipo_publicacion;
     }
+
+    /**
+     * @param string|null $texto
+     */
+    public function setTexto(?string $texto): void
+    {
+        $this->texto = $texto;
+    }
+
+    /**
+     * @param string|null $imagen
+     */
+    public function setImagen(?string $imagen): void
+    {
+        $this->imagen = $imagen;
+    }
+
+    /**
+     * @param string|null $tematica
+     */
+    public function setTematica(?string $tematica): void
+    {
+        $this->tematica = $tematica;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $fecha_publicacion
+     */
+    public function setFechaPublicacion(?\DateTimeInterface $fecha_publicacion): void
+    {
+        $this->fecha_publicacion = $fecha_publicacion;
+    }
+
+    /**
+     * @param bool|null $activa
+     */
+    public function setActiva(?bool $activa): void
+    {
+        $this->activa = $activa;
+    }
+
+    /**
+     * @param Perfil|null $id_perfil
+     */
+    public function setIdPerfil(?Perfil $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
+    }
+
+    /**
+     * @param Collection $publicacion
+     */
+    public function setPublicacion(Collection $publicacion): void
+    {
+        $this->publicacion = $publicacion;
+    }
+
+
+
+
+
 }

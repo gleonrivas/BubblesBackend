@@ -18,14 +18,12 @@ class Seguidor
     private ?\DateTimeInterface $fecha_seguimiento = null;
 
     #[ORM\ManyToOne(inversedBy: 'seguidor_principal')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
-    private ?Usuario $id_principal = null;
+    #[ORM\JoinColumn(name: "id_principal" , nullable: false)]
+    private ?Perfil $id_principal = null;
 
     #[ORM\ManyToOne(inversedBy: 'seguidor_follower')]
-    #[ORM\JoinColumn(name: "id" , nullable: false)]
-    #[ORM\JoinTable(name: "usuario")]
-    private ?Usuario $id_follower = null;
+    #[ORM\JoinColumn(name: "id_follower" , nullable: false)]
+    private ?Perfil $id_follower = null;
 
     public function getId(): ?int
     {
@@ -44,24 +42,24 @@ class Seguidor
         return $this;
     }
 
-    public function getIdPrincipal(): ?Usuario
+    public function getIdPrincipal(): ?Perfil
     {
         return $this->id_principal;
     }
 
-    public function setIdPrincipal(?Usuario $id_principal): self
+    public function setIdPrincipal(?Perfil $id_principal): self
     {
         $this->id_principal = $id_principal;
 
         return $this;
     }
 
-    public function getIdFollower(): ?Usuario
+    public function getIdFollower(): ?Perfil
     {
         return $this->id_follower;
     }
 
-    public function setIdFollower(?Usuario $id_follower): self
+    public function setIdFollower(?Perfil $id_follower): self
     {
         $this->id_follower = $id_follower;
 
