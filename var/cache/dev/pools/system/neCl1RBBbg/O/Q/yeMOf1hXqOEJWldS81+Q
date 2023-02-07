@@ -1,3 +1,0 @@
-<?php //Symfony%255CComponent%255CValidator%255CConstraint%2523addImplicitGroupName
-
-return [PHP_INT_MAX, []];
