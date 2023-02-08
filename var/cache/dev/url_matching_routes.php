@@ -11,6 +11,7 @@ return [
         '/access/token' => [[['_route' => 'app_access_token', '_controller' => 'App\\Controller\\AccessTokenController::index'], null, null, null, false, false, null]],
         '/comentario' => [[['_route' => 'app_comentario', '_controller' => 'App\\Controller\\ComentarioController::index'], null, null, null, false, false, null]],
         '/api/comentario/listar' => [[['_route' => 'app_comentario_listar', '_controller' => 'App\\Controller\\ComentarioController::listar'], null, ['GET' => 0], null, false, false, null]],
+        '/api/comentario/guardar' => [[['_route' => 'app_comentario_guardar', '_controller' => 'App\\Controller\\ComentarioController::save'], null, ['POST' => 0], null, false, false, null]],
         '/like' => [[['_route' => 'app_like', '_controller' => 'App\\Controller\\LikeController::index'], null, null, null, false, false, null]],
         '/api/login' => [[['_route' => 'app_login', '_controller' => 'App\\Controller\\LoginController::login'], null, ['POST' => 0], null, false, false, null]],
         '/mensaje' => [[['_route' => 'app_mensaje', '_controller' => 'App\\Controller\\MensajeController::index'], null, null, null, false, false, null]],

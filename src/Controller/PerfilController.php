@@ -46,7 +46,6 @@ class PerfilController extends AbstractController
     #[Route('api/perfil/listar', name: 'app_perfil_listar', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
     public function listar(Request $request, DtoConverters $converters,PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
     {
@@ -74,7 +73,6 @@ class PerfilController extends AbstractController
     #[Route('api/perfil/listar/{username}', name: 'app_perfil_listarPorNombre', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
     public function listarPorNombre(string $username,Request $request, DtoConverters $converters,PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
     {
@@ -100,7 +98,6 @@ class PerfilController extends AbstractController
     #[Route('api/perfil/listarPorUsuario/', name: 'app_perfil_listarPorUsuario', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
     public function listarPorUsuario(Request $request, DtoConverters $converters,PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
     {
@@ -127,7 +124,6 @@ class PerfilController extends AbstractController
     #[Route('api/perfil/guardar', name: 'app_perfil_guardar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:CrearPerfilDTO::class)))]
     #[OA\Response(response: 200,description: "Perfil creado correctamente")]
     #[OA\Response(response: 101,description: "No ha indicado los datos necesarios")]
@@ -170,7 +166,6 @@ class PerfilController extends AbstractController
     #[Route('api/perfil/editar', name: 'app_perfil_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:EditarPerfilDTO::class)))]
     #[OA\Response(response: 200,description: "Perfil editado correctamente")]
     #[OA\Response(response: 101,description: "No ha indicado los datos del perfil")]
@@ -194,7 +189,6 @@ class PerfilController extends AbstractController
     #[Route('/api/perfil/eliminar/{id}', name: 'app_perfil_eliminar', methods: ['DELETE'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200,description: "Perfil borrado correctamente")]
     #[OA\Response(response: 101,description: "No se ha borrado correctamente")]
     public function eliminar(Request $request,?int $id, PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse

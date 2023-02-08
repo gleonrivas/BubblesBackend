@@ -42,7 +42,7 @@ class Perfil
     #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Like::class)]
     private Collection $id_perfil;
 
-    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Comentario::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Comentarios::class)]
     private Collection $comentario;
 
     public function __construct()
@@ -192,6 +192,40 @@ class Perfil
     {
         $this->publicacion = $publicacion;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getIdPerfil(): Collection
+    {
+        return $this->id_perfil;
+    }
+
+    /**
+     * @param Collection $id_perfil
+     */
+    public function setIdPerfil(Collection $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getComentario(): Collection
+    {
+        return $this->comentario;
+    }
+
+    /**
+     * @param Collection $comentario
+     */
+    public function setComentario(Collection $comentario): void
+    {
+        $this->comentario = $comentario;
+    }
+
+
 
 
 }

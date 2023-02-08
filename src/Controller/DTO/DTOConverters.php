@@ -3,6 +3,7 @@
 namespace App\Controller\DTO;
 
 use App\Entity\Comentario;
+use App\Entity\Comentarios;
 use App\Entity\Perfil;
 use App\Entity\Seguidor;
 use App\Entity\Usuario;
@@ -47,9 +48,9 @@ class DTOConverters
 
 
     /**
-     * @param Comentario $comentario
+     * @param Comentarios $comentario
      */
-    public function comentarioToDto(Comentario $comentario):ComentarioDTO
+    public function comentarioToDto(Comentarios $comentario):ComentarioDTO
     {
        $comentarioDTO = new ComentarioDTO();
        $comentarioDTO->setId($comentario->getId());
