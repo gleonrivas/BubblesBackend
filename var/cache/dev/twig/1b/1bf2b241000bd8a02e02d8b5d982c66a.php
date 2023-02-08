@@ -65,6 +65,6 @@ class __TwigTemplate_a1ce6d117c30fd3ce43213653e73fcd0 extends \Twig\Template
     <circle cx=\"12\" cy=\"7\" r=\"4\"></circle>
     <path d=\"M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\"></path>
 </svg>
-", "@Security/Collector/icon.svg", "C:\\Users\\orteg\\IdeaProjects\\RedSocial\\vendor\\symfony\\security-bundle\\Resources\\views\\Collector\\icon.svg");
+", "@Security/Collector/icon.svg", "C:\\Users\\celim\\IdeaProjects\\RedSocial\\vendor\\symfony\\security-bundle\\Resources\\views\\Collector\\icon.svg");
     }
 }

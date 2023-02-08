@@ -164,6 +164,6 @@ class __TwigTemplate_c95ce8d2a9e5461de1263f0cb49b7ad5 extends \Twig\Template
         {% block body %}{% endblock %}
     </body>
 </html>
-", "base.html.twig", "C:\\Users\\orteg\\IdeaProjects\\RedSocial\\templates\\base.html.twig");
+", "base.html.twig", "C:\\Users\\celim\\IdeaProjects\\RedSocial\\templates\\base.html.twig");
     }
 }

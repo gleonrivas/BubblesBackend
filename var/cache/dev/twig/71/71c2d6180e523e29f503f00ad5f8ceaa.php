@@ -165,6 +165,6 @@ class __TwigTemplate_5f72aa73850c6b9106b85809755a5de8 extends \Twig\Template
         {%- endfor -%}
     </pre>
 {% endif %}
-", "@Doctrine/Collector/explain.html.twig", "C:\\Users\\orteg\\IdeaProjects\\RedSocial\\vendor\\doctrine\\doctrine-bundle\\Resources\\views\\Collector\\explain.html.twig");
+", "@Doctrine/Collector/explain.html.twig", "C:\\Users\\celim\\IdeaProjects\\RedSocial\\vendor\\doctrine\\doctrine-bundle\\Resources\\views\\Collector\\explain.html.twig");
     }
 }

@@ -415,6 +415,6 @@ file that was distributed with this source code. #}
     {% endblock swagger_initialization %}
 </body>
 </html>
-", "@NelmioApiDoc/SwaggerUi/index.html.twig", "C:\\Users\\orteg\\IdeaProjects\\RedSocial\\vendor\\nelmio\\api-doc-bundle\\Resources\\views\\SwaggerUi\\index.html.twig");
+", "@NelmioApiDoc/SwaggerUi/index.html.twig", "C:\\Users\\celim\\IdeaProjects\\RedSocial\\vendor\\nelmio\\api-doc-bundle\\Resources\\views\\SwaggerUi\\index.html.twig");
     }
 }
