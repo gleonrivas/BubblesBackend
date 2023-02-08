@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Comentarios;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +39,23 @@ class ComentarioRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function listarPorLikesYpublicacion(int $id_publicacion): array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Comentarios', 'c');
+
+        $query = $this->getEntityManager()->createNativeQuery('select c.* from likes l 
+                                                                join comentarios c on l.id_comentario = c.id 
+                                                                join publicacion p on l.id_publicacion = p.id
+                                                                where p.id = ? group by c.id order by count(l.id_comentario) desc', $rsm);
+        $query->setParameter(1, $id_publicacion);
+        $comentarios = $query->getResult();
+        $comentario = $comentarios[0];
+
+        return $comentarios;
     }
 
 //    /**

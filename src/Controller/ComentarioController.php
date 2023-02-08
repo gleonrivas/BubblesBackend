@@ -46,8 +46,8 @@ class ComentarioController extends AbstractController
             $lista_Json = array();
             //se devuelve el Json transformado
             foreach($lista_comentarios as $comentario){
-                $perfilDTO = $converters-> comentarioToDto($comentario);
-                $json = $utilidades->toJson($perfilDTO, null);
+                $comentarioDTO = $converters-> comentarioToDto($comentario);
+                $json = $utilidades->toJson($comentarioDTO, null);
                 $lista_Json[] = json_decode($json);
             }
             return new JsonResponse($lista_Json, 200,[], false);
@@ -55,6 +55,31 @@ class ComentarioController extends AbstractController
             return new JsonResponse("{message: Unauthorized}", 200,[], false);
         }
 
+
+    }
+
+    #[Route('api/comentario/listarPorLikes/{id_publicacion}', name: 'app_comentario_listarPorLikes', methods: ['GET'])]
+    #[OA\Tag(name: 'Comentarios')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: ComentarioDTO::class))))]
+    public function listarPorLikes(int $id_publicacion,Request $request, DtoConverters $converters,ComentarioRepository $comentarioRepository, Utilidades $utilidades):JsonResponse
+    {
+        //Se obtiene la lista de perfiles de la BBDD
+        if($utilidades->comprobarPermisos($request, "usuario"))
+        {
+            $lista_comentarios = $comentarioRepository->listarPorLikesYpublicacion($id_publicacion);
+            //Se transforma a Json
+            $lista_Json = array();
+            //se devuelve el Json transformado
+            foreach($lista_comentarios as $comentario){
+                $comentarioDTO = $converters-> comentarioToDto($comentario);
+                $json = $utilidades->toJson($comentarioDTO, null);
+                $lista_Json[] = json_decode($json);
+            }
+            return new JsonResponse($lista_Json, 200,[], false);
+        }else{
+            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+        }
 
     }
 

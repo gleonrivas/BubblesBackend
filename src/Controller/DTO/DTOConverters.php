@@ -2,7 +2,6 @@
 
 namespace App\Controller\DTO;
 
-use App\Entity\Comentario;
 use App\Entity\Comentarios;
 use App\Entity\Perfil;
 use App\Entity\Seguidor;
@@ -60,5 +59,7 @@ class DTOConverters
         return $comentarioDTO;
 
     }
+
+
 
 }
