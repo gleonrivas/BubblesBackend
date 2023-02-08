@@ -64,7 +64,7 @@ class PublicacionController extends AbstractController
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
             return new JsonResponse($lista_Json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
 
     }
@@ -105,7 +105,7 @@ class PublicacionController extends AbstractController
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
             return new JsonResponse($lista_Json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -150,7 +150,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -191,7 +191,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -232,7 +232,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -271,7 +271,7 @@ class PublicacionController extends AbstractController
 
             return new JsonResponse("{ mensaje: Publicacion creada correctamente }", 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -298,7 +298,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse("{ mensaje: Publicacion eliminada correctamente }", 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -351,7 +351,7 @@ class PublicacionController extends AbstractController
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 

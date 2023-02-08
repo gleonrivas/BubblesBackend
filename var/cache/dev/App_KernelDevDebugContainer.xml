@@ -4511,6 +4511,14 @@
         <argument key="utils" type="service_closure" id="App\Utilidades\Utilidades"/>
       </argument>
     </service>
+    <service id=".service_locator.mDv2mnQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="SeguidorRepository" type="service_closure" id="App\Repository\SeguidorRepository"/>
+        <argument key="repository" type="service_closure" id="App\Repository\PerfilRepository"/>
+        <argument key="utilidades" type="service_closure" id="App\Utilidades\Utilidades"/>
+      </argument>
+    </service>
     <service id=".service_locator.pmf0SsP" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -4544,7 +4552,7 @@
         <argument key="utilidades" type="service_closure" id="App\Utilidades\Utilidades"/>
       </argument>
     </service>
-    <service id=".service_locator.7GnaML2" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.SVjFRhk" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\ComentarioController::listar" type="service_closure" id=".service_locator.4sFfOCp"/>
@@ -4574,6 +4582,7 @@
         <argument key="App\Controller\RolController::saveRol" type="service_closure" id=".service_locator.qYeS34A"/>
         <argument key="App\Controller\SeguidorController::dejardeseguir" type="service_closure" id=".service_locator.nyNxjhi"/>
         <argument key="App\Controller\SeguidorController::eliminarseguidor" type="service_closure" id=".service_locator.nyNxjhi"/>
+        <argument key="App\Controller\SeguidorController::guardarSeguidor" type="service_closure" id=".service_locator.mDv2mnQ"/>
         <argument key="App\Controller\SeguidorController::listarseguidoresporidperfil" type="service_closure" id=".service_locator.pmf0SsP"/>
         <argument key="App\Controller\SeguidorController::listarseguidosporidusuario" type="service_closure" id=".service_locator.pmf0SsP"/>
         <argument key="App\Controller\UsuarioController::buscaPorId" type="service_closure" id=".service_locator.nPtAZ4H"/>
@@ -4611,6 +4620,7 @@
         <argument key="App\Controller\RolController:saveRol" type="service_closure" id=".service_locator.qYeS34A"/>
         <argument key="App\Controller\SeguidorController:dejardeseguir" type="service_closure" id=".service_locator.nyNxjhi"/>
         <argument key="App\Controller\SeguidorController:eliminarseguidor" type="service_closure" id=".service_locator.nyNxjhi"/>
+        <argument key="App\Controller\SeguidorController:guardarSeguidor" type="service_closure" id=".service_locator.mDv2mnQ"/>
         <argument key="App\Controller\SeguidorController:listarseguidoresporidperfil" type="service_closure" id=".service_locator.pmf0SsP"/>
         <argument key="App\Controller\SeguidorController:listarseguidosporidusuario" type="service_closure" id=".service_locator.pmf0SsP"/>
         <argument key="App\Controller\UsuarioController:buscaPorId" type="service_closure" id=".service_locator.nPtAZ4H"/>
@@ -4985,12 +4995,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.7GnaML2"/>
+      <argument type="service" id=".service_locator.SVjFRhk"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.7GnaML2"/>
+      <argument type="service" id=".service_locator.SVjFRhk"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -5682,7 +5692,7 @@
     <service id="Symfony\Component\Security\Core\User\UserCheckerInterface" alias="security.user_checker"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.7GnaML2"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.SVjFRhk"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
@@ -5697,10 +5707,11 @@
     <service id=".service_locator.8FJ2nfX" alias=".service_locator.jdCOyR4"/>
     <service id=".service_locator.8ECVO60" alias=".service_locator.6rnaC2K"/>
     <service id=".service_locator._WGfIkb" alias=".service_locator.qYeS34A"/>
+    <service id=".service_locator.Ebk9t4D" alias=".service_locator.mDv2mnQ"/>
     <service id=".service_locator.Q6ZHncY" alias=".service_locator.nyNxjhi"/>
     <service id=".service_locator.qBSWtr2" alias=".service_locator.nPtAZ4H"/>
     <service id=".service_locator.Q5W6zjw" alias=".service_locator.63NL9lI"/>
-    <service id=".service_locator.dnGGkkj" alias=".service_locator.7GnaML2"/>
+    <service id=".service_locator.6oH3U1w" alias=".service_locator.SVjFRhk"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.qBCHs1a" alias=".service_locator.QXcJQkF"/>
     <service id=".service_locator.VZoQk0z" alias=".service_locator.CshazM0"/>
@@ -5738,6 +5749,7 @@
     <service id=".service_locator.Xn8HKZj" alias=".service_locator.jdCOyR4"/>
     <service id=".service_locator.JPJFBsA" alias=".service_locator.6rnaC2K"/>
     <service id=".service_locator..ySAmr5" alias=".service_locator.qYeS34A"/>
+    <service id=".service_locator.hI3_CAL" alias=".service_locator.mDv2mnQ"/>
     <service id=".service_locator.0jzRGnN" alias=".service_locator.pmf0SsP"/>
     <service id=".service_locator.8GKMgoc" alias=".service_locator.nyNxjhi"/>
     <service id=".service_locator.wgbSxQI" alias=".service_locator.nPtAZ4H"/>

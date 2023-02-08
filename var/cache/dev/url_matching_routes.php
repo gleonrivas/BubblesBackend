@@ -71,15 +71,18 @@ return [
                     .')'
                     .'|seguido(?'
                         .'|r(?'
-                            .'|es/listar/([^/]++)(*:579)'
-                            .'|/eliminar/([^/]++)/([^/]++)(*:614)'
+                            .'|/(?'
+                                .'|crear/([^/]++)/([^/]++)(*:588)'
+                                .'|eliminar/([^/]++)/([^/]++)(*:622)'
+                            .')'
+                            .'|es/listar/([^/]++)(*:649)'
                         .')'
-                        .'|s/listar/([^/]++)(*:640)'
-                        .'|/eliminar/([^/]++)/([^/]++)(*:675)'
+                        .'|s/listar/([^/]++)(*:675)'
+                        .'|/eliminar/([^/]++)/([^/]++)(*:710)'
                     .')'
                     .'|usuario/listar(?'
-                        .'|PorNombre/([^/]++)(*:719)'
-                        .'|/([^/]++)(*:736)'
+                        .'|PorNombre/([^/]++)(*:754)'
+                        .'|/([^/]++)(*:771)'
                     .')'
                 .')'
             .')/?$}sDu',
@@ -101,12 +104,13 @@ return [
         490 => [[['_route' => 'app_publicacaion_listar_tematica', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporTematica'], ['tematica'], ['GET' => 0], null, false, true, null]],
         510 => [[['_route' => 'app_publicacaion_listar_tipo', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporTipo'], ['tipo'], ['GET' => 0], null, false, true, null]],
         537 => [[['_route' => 'app_publicacaion_eliminar', '_controller' => 'App\\Controller\\PublicacionController::eliminarPublicacion'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        579 => [[['_route' => 'app_seguidor', '_controller' => 'App\\Controller\\SeguidorController::listarseguidoresporidperfil'], ['id'], ['GET' => 0], null, false, true, null]],
-        614 => [[['_route' => 'app_eliminar_seguidor', '_controller' => 'App\\Controller\\SeguidorController::eliminarseguidor'], ['id', 'id_seguidor'], ['DELETE' => 0], null, false, true, null]],
-        640 => [[['_route' => 'app_seguidores', '_controller' => 'App\\Controller\\SeguidorController::listarseguidosporidusuario'], ['id'], ['GET' => 0], null, false, true, null]],
-        675 => [[['_route' => 'app_dejar_seguir', '_controller' => 'App\\Controller\\SeguidorController::dejardeseguir'], ['id', 'id_seguido'], ['DELETE' => 0], null, false, true, null]],
-        719 => [[['_route' => 'app_usuario_buscar_id', '_controller' => 'App\\Controller\\UsuarioController::buscaPorId'], ['id'], ['GET' => 0], null, false, true, null]],
-        736 => [
+        588 => [[['_route' => 'app_seguidor_crear', '_controller' => 'App\\Controller\\SeguidorController::guardarSeguidor'], ['id_principal', 'id_follower'], ['POST' => 0], null, false, true, null]],
+        622 => [[['_route' => 'app_eliminar_seguidor', '_controller' => 'App\\Controller\\SeguidorController::eliminarseguidor'], ['id', 'id_seguidor'], ['DELETE' => 0], null, false, true, null]],
+        649 => [[['_route' => 'app_seguidor', '_controller' => 'App\\Controller\\SeguidorController::listarseguidoresporidperfil'], ['id'], ['GET' => 0], null, false, true, null]],
+        675 => [[['_route' => 'app_seguidores', '_controller' => 'App\\Controller\\SeguidorController::listarseguidosporidusuario'], ['id'], ['GET' => 0], null, false, true, null]],
+        710 => [[['_route' => 'app_dejar_seguir', '_controller' => 'App\\Controller\\SeguidorController::dejardeseguir'], ['id', 'id_seguido'], ['DELETE' => 0], null, false, true, null]],
+        754 => [[['_route' => 'app_usuario_buscar_id', '_controller' => 'App\\Controller\\UsuarioController::buscaPorId'], ['id'], ['GET' => 0], null, false, true, null]],
+        771 => [
             [['_route' => 'app_usuario_buscar_nombre', '_controller' => 'App\\Controller\\UsuarioController::buscarPorNombre'], ['nombre'], ['GET' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
