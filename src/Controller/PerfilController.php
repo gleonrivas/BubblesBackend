@@ -90,6 +90,7 @@ class PerfilController extends AbstractController
                 $perfil = $lista_perfiles[0];
 
                 $perfilDTO = new PerfilDTO();
+                $perfilDTO->setId($perfil->getId());
                 $perfilDTO->setFotoPerfil($perfil->getFotoPerfil());
                 $perfilDTO->setUsername($perfil->getUsername());
                 $perfilDTO->setDescripcion($perfil->getDescripcion());
