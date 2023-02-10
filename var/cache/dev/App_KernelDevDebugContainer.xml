@@ -255,6 +255,7 @@
     </service>
     <service id="App\Controller\DTO\ComentarioDTO" class="App\Controller\DTO\ComentarioDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\CrearComentarioDTO" class="App\Controller\DTO\CrearComentarioDTO" autowire="true" autoconfigure="true"/>
+    <service id="App\Controller\DTO\CrearMensajeDTO" class="App\Controller\DTO\CrearMensajeDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\CrearPerfilDTO" class="App\Controller\DTO\CrearPerfilDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\CrearPublicacionDTO" class="App\Controller\DTO\CrearPublicacionDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\CrearPublicacionDTOId" class="App\Controller\DTO\CrearPublicacionDTOId" autowire="true" autoconfigure="true"/>
@@ -262,6 +263,7 @@
     <service id="App\Controller\DTO\DTOConverters" class="App\Controller\DTO\DTOConverters" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\EditarPerfilDTO" class="App\Controller\DTO\EditarPerfilDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\LoginDTO" class="App\Controller\DTO\LoginDTO" autowire="true" autoconfigure="true"/>
+    <service id="App\Controller\DTO\MensajeDTO" class="App\Controller\DTO\MensajeDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\PerfilDTO" class="App\Controller\DTO\PerfilDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\PublicacionDTO" class="App\Controller\DTO\PublicacionDTO" autowire="true" autoconfigure="true"/>
     <service id="App\Controller\DTO\SeguidorDTO" class="App\Controller\DTO\SeguidorDTO" autowire="true" autoconfigure="true"/>
@@ -4484,6 +4486,23 @@
         <argument key="utils" type="service_closure" id="App\Utilidades\Utilidades"/>
       </argument>
     </service>
+    <service id=".service_locator.RcMtqqc" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="converters" type="service_closure" id="App\Controller\DTO\DTOConverters"/>
+        <argument key="mensajeRepository" type="service_closure" id="App\Repository\MensajeRepository"/>
+        <argument key="utilidades" type="service_closure" id="App\Utilidades\Utilidades"/>
+      </argument>
+    </service>
+    <service id=".service_locator.Hvpj1k4" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="converters" type="service_closure" id="App\Controller\DTO\DTOConverters"/>
+        <argument key="mensajeRepository" type="service_closure" id="App\Repository\MensajeRepository"/>
+        <argument key="perfilRepository" type="service_closure" id="App\Repository\PerfilRepository"/>
+        <argument key="utilidades" type="service_closure" id="App\Utilidades\Utilidades"/>
+      </argument>
+    </service>
     <service id=".service_locator.5NPK3Ls" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -4562,7 +4581,7 @@
         <argument key="utilidades" type="service_closure" id="App\Utilidades\Utilidades"/>
       </argument>
     </service>
-    <service id=".service_locator.90n_Bfa" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.X4nQyaM" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\ComentarioController::listar" type="service_closure" id=".service_locator.kz6ZuBB"/>
@@ -4577,7 +4596,9 @@
         <argument key="App\Controller\LikeController::listarlikesdeComentario" type="service_closure" id=".service_locator.ICgUdJx"/>
         <argument key="App\Controller\LikeController::listarlikesdePublicacion" type="service_closure" id=".service_locator.ICgUdJx"/>
         <argument key="App\Controller\LoginController::login" type="service_closure" id=".service_locator.CGq8rmw"/>
-        <argument key="App\Controller\MensajeController::listar" type="service_closure" id=".service_locator.5NPK3Ls"/>
+        <argument key="App\Controller\MensajeController::listar" type="service_closure" id=".service_locator.RcMtqqc"/>
+        <argument key="App\Controller\MensajeController::listarChats" type="service_closure" id=".service_locator.RcMtqqc"/>
+        <argument key="App\Controller\MensajeController::mandarMensajes" type="service_closure" id=".service_locator.Hvpj1k4"/>
         <argument key="App\Controller\PerfilController::editar" type="service_closure" id=".service_locator.kqFTv_Y"/>
         <argument key="App\Controller\PerfilController::eliminar" type="service_closure" id=".service_locator.kqFTv_Y"/>
         <argument key="App\Controller\PerfilController::listar" type="service_closure" id=".service_locator.5NPK3Ls"/>
@@ -4618,7 +4639,9 @@
         <argument key="App\Controller\LikeController:listarlikesdeComentario" type="service_closure" id=".service_locator.ICgUdJx"/>
         <argument key="App\Controller\LikeController:listarlikesdePublicacion" type="service_closure" id=".service_locator.ICgUdJx"/>
         <argument key="App\Controller\LoginController:login" type="service_closure" id=".service_locator.CGq8rmw"/>
-        <argument key="App\Controller\MensajeController:listar" type="service_closure" id=".service_locator.5NPK3Ls"/>
+        <argument key="App\Controller\MensajeController:listar" type="service_closure" id=".service_locator.RcMtqqc"/>
+        <argument key="App\Controller\MensajeController:listarChats" type="service_closure" id=".service_locator.RcMtqqc"/>
+        <argument key="App\Controller\MensajeController:mandarMensajes" type="service_closure" id=".service_locator.Hvpj1k4"/>
         <argument key="App\Controller\PerfilController:editar" type="service_closure" id=".service_locator.kqFTv_Y"/>
         <argument key="App\Controller\PerfilController:eliminar" type="service_closure" id=".service_locator.kqFTv_Y"/>
         <argument key="App\Controller\PerfilController:listar" type="service_closure" id=".service_locator.5NPK3Ls"/>
@@ -5011,12 +5034,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.90n_Bfa"/>
+      <argument type="service" id=".service_locator.X4nQyaM"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.90n_Bfa"/>
+      <argument type="service" id=".service_locator.X4nQyaM"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -5708,7 +5731,7 @@
     <service id="Symfony\Component\Security\Core\User\UserCheckerInterface" alias="security.user_checker"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.90n_Bfa"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.X4nQyaM"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
@@ -5721,6 +5744,7 @@
     <service id=".service_locator._CTlK4R" alias=".service_locator.VQrjO0l"/>
     <service id=".service_locator._WmhwuA" alias=".service_locator.txLU3I6"/>
     <service id=".service_locator.HNamlVU" alias=".service_locator.CGq8rmw"/>
+    <service id=".service_locator.H46umXw" alias=".service_locator.Hvpj1k4"/>
     <service id=".service_locator.bKN2KFz" alias=".service_locator.JcVzCu4"/>
     <service id=".service_locator.8FJ2nfX" alias=".service_locator.jdCOyR4"/>
     <service id=".service_locator.8ECVO60" alias=".service_locator.6rnaC2K"/>
@@ -5728,7 +5752,7 @@
     <service id=".service_locator.Q6ZHncY" alias=".service_locator.nyNxjhi"/>
     <service id=".service_locator.qBSWtr2" alias=".service_locator.nPtAZ4H"/>
     <service id=".service_locator.Q5W6zjw" alias=".service_locator.63NL9lI"/>
-    <service id=".service_locator.hRPspAY" alias=".service_locator.90n_Bfa"/>
+    <service id=".service_locator.mM2Xmts" alias=".service_locator.X4nQyaM"/>
     <service id=".service_locator.9XMoc9I" alias=".service_locator.kzegaci"/>
     <service id=".service_locator.qBCHs1a" alias=".service_locator.QXcJQkF"/>
     <service id=".service_locator.VZoQk0z" alias=".service_locator.CshazM0"/>
@@ -5761,6 +5785,8 @@
     <service id=".service_locator.98CNqS0" alias=".service_locator.txLU3I6"/>
     <service id=".service_locator.BuNdFP7" alias=".service_locator.c_4Rcr2"/>
     <service id=".service_locator.iSMX2av" alias=".service_locator.CGq8rmw"/>
+    <service id=".service_locator.QEMxHe1" alias=".service_locator.RcMtqqc"/>
+    <service id=".service_locator.AZLQqWf" alias=".service_locator.Hvpj1k4"/>
     <service id=".service_locator.xNbzRxu" alias=".service_locator.5NPK3Ls"/>
     <service id=".service_locator.lKU9ShM" alias=".service_locator.JcVzCu4"/>
     <service id=".service_locator.74v1XaZ" alias=".service_locator.kqFTv_Y"/>

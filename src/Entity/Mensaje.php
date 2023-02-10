@@ -32,117 +32,149 @@ class Mensaje
     private ?bool $leido = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'emisor')]
-    private ?Usuario $emisor = null;
+    #[ORM\ManyToOne(inversedBy: 'mensaje')]
+    #[ORM\JoinColumn(name: "emisor" , nullable: false)]
+    private ?Perfil $emisor = null;
 
-    #[ORM\ManyToOne(inversedBy: 'receptor')]
-    private ?Usuario $receptor = null;
+    #[ORM\ManyToOne(inversedBy: 'mensaje')]
+    #[ORM\JoinColumn(name: "receptor" , nullable: false)]
+    private ?Perfil $receptor = null;
 
 
+
+    public function __construct()
+    {
+    }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getMensaje(): ?string
     {
         return $this->mensaje;
     }
 
-    public function setMensaje(string $mensaje): self
+    /**
+     * @param string|null $mensaje
+     */
+    public function setMensaje(?string $mensaje): void
     {
         $this->mensaje = $mensaje;
-
-        return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getFechaEnvio(): ?\DateTimeInterface
     {
         return $this->fecha_envio;
     }
 
-    public function setFechaEnvio(\DateTimeInterface $fecha_envio): self
+    /**
+     * @param \DateTimeInterface|null $fecha_envio
+     */
+    public function setFechaEnvio(?\DateTimeInterface $fecha_envio): void
     {
         $this->fecha_envio = $fecha_envio;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getTipoMensaje(): ?string
     {
         return $this->tipoMensaje;
     }
 
-    public function setTipoMensaje(string $tipoMensaje): self
+    /**
+     * @param string|null $tipoMensaje
+     */
+    public function setTipoMensaje(?string $tipoMensaje): void
     {
         $this->tipoMensaje = $tipoMensaje;
-
-        return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getImagen(): ?string
     {
         return $this->imagen;
     }
 
-    public function setImagen(?string $imagen): self
+    /**
+     * @param string|null $imagen
+     */
+    public function setImagen(?string $imagen): void
     {
         $this->imagen = $imagen;
-
-        return $this;
     }
 
-    public function isLeido(): ?bool
+    /**
+     * @return bool|null
+     */
+    public function getLeido(): ?bool
     {
         return $this->leido;
     }
 
-    public function setLeido(bool $leido): self
+    /**
+     * @param bool|null $leido
+     */
+    public function setLeido(?bool $leido): void
     {
         $this->leido = $leido;
-
-        return $this;
     }
 
     /**
-     * @return Collection<int, Usuario>
+     * @return Perfil|null
      */
-    public function getEmisor(): Collection
+    public function getEmisor(): ?Perfil
     {
         return $this->emisor;
     }
 
-    public function addEmisor(Usuario $emisor): self
+    /**
+     * @param Perfil|null $emisor
+     */
+    public function setEmisor(?Perfil $emisor): void
     {
-        if (!$this->emisor->contains($emisor)) {
-            $this->emisor->add($emisor);
-            $emisor->setEmisor($this);
-        }
-
-        return $this;
+        $this->emisor = $emisor;
     }
 
-    public function removeEmisor(Usuario $emisor): self
-    {
-        if ($this->emisor->removeElement($emisor)) {
-            // set the owning side to null (unless already changed)
-            if ($emisor->getEmisor() === $this) {
-                $emisor->setEmisor(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getReceptor(): ?Usuario
+    /**
+     * @return Perfil|null
+     */
+    public function getReceptor(): ?Perfil
     {
         return $this->receptor;
     }
 
-    public function setReceptor(?Usuario $receptor): self
+    /**
+     * @param Perfil|null $receptor
+     */
+    public function setReceptor(?Perfil $receptor): void
     {
         $this->receptor = $receptor;
-
-        return $this;
     }
+
+
+
+
 }

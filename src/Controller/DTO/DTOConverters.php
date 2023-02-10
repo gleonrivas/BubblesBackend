@@ -3,6 +3,7 @@
 namespace App\Controller\DTO;
 
 use App\Entity\Comentarios;
+use App\Entity\Mensaje;
 use App\Entity\Perfil;
 use App\Entity\Seguidor;
 use App\Entity\Usuario;
@@ -57,6 +58,24 @@ class DTOConverters
        $comentarioDTO->setIdPerfil($this->perfilToDto($comentario->getIdPerfil()));
 
         return $comentarioDTO;
+
+    }
+
+    /**
+     * @param Mensaje $mensaje
+     */
+    public function mensajeToDTO(Mensaje $mensaje):MensajeDTO
+    {
+        $mensajeDTO = new MensajeDTO();
+        $mensajeDTO->setMensaje($mensaje->getMensaje());
+        $mensajeDTO->setTipoMensaje($mensaje->getTipoMensaje());
+        $mensajeDTO->setImagen($mensaje->getImagen());
+        $mensajeDTO->setLeido($mensaje->getLeido());
+        $mensajeDTO->setFechaEnvio($mensaje->getFechaEnvio()->format('Y-m-d H:i:s'));
+        $mensajeDTO->setEmisor($this->perfilToDto($mensaje->getEmisor()));
+        $mensajeDTO->setReceptor($this->perfilToDto($mensaje->getReceptor()));
+
+        return $mensajeDTO;
 
     }
 

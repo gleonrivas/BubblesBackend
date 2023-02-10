@@ -44,11 +44,6 @@ class Usuario
     private ?RolEntity $rol;
 
 
-    #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
-    private Collection $emisor ;
-
-    #[ORM\OneToMany(mappedBy: 'receptor', targetEntity: Mensaje::class)]
-    private Collection $receptor;
 
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: AccessToken::class )]
     private ?Collection $token;
