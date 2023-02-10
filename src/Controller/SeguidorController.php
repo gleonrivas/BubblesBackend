@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Controller\DTO\PerfilDTO;
 use App\Controller\DTO\PublicacionDTO;
+use App\Controller\DTO\SeguidorDTO;
 use App\Controller\DTO\UsuarioDTO;
+use App\Entity\Seguidor;
 use App\Repository\PerfilRepository;
 use App\Repository\SeguidorRepository;
 use App\Repository\UsuarioRepository;
@@ -27,6 +29,47 @@ class SeguidorController extends AbstractController
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/SeguidorController.php',
         ]);
+    }
+
+    #[Route('/api/seguidor/crear/{id_principal}/{id_follower}', name: 'app_seguidor_crear', methods: ['POST'])]
+    #[OA\Tag(name: 'Seguidores')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response: 200, description: "Seguidor creado correctamente")]
+    #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
+    public function guardarSeguidor(\Symfony\Component\HttpFoundation\Request $request, int $id_principal, int $id_follower, Utilidades $utilidades, PerfilRepository $repository,
+                                       SeguidorRepository $SeguidorRepository): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+            //Obtener Json del body
+            $json = json_decode($request->getContent(), true);
+
+            $idPerfilPrincipal = $id_principal;
+            $criterio = array('id' => $idPerfilPrincipal);
+            $perfiles = $repository->findBy($criterio);
+            $perfilPrincipal = $perfiles[0];
+
+            $idPerfilSeguidor = $id_follower;
+            $criterio = array('id' => $idPerfilSeguidor);
+            $perfiles2 = $repository->findBy($criterio);
+            $perfilSeguidor = $perfiles2[0];
+
+            $fechaSeguimiento = new \DateTime();
+
+
+            //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
+            $seguidorNuevo = new Seguidor();
+            $seguidorNuevo->setIdPrincipal($perfilPrincipal);
+            $seguidorNuevo->setIdFollower($perfilSeguidor);
+            $seguidorNuevo->setFechaSeguimiento($fechaSeguimiento);
+
+
+            //GUARDAR
+            $SeguidorRepository->save($seguidorNuevo, true);
+
+            return new JsonResponse("{ mensaje: Seguidor creado correctamente }", 200, [], true);
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+        }
     }
 
     #[Route('/api/seguidores/listar/{id}', name: 'app_seguidor', methods: ['GET'])]
@@ -66,7 +109,7 @@ class SeguidorController extends AbstractController
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
 
 
@@ -111,7 +154,7 @@ class SeguidorController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -139,7 +182,7 @@ class SeguidorController extends AbstractController
                 return new JsonResponse("{ mensaje: seguidor eliminado correctamente }", 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
 
     }
@@ -171,7 +214,7 @@ class SeguidorController extends AbstractController
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 }

@@ -43,7 +43,7 @@ return [
     'app_dejar_seguir' => [['id', 'id_seguido'], ['_controller' => 'App\\Controller\\SeguidorController::dejardeseguir'], [], [['variable', '/', '[^/]++', 'id_seguido', true], ['variable', '/', '[^/]++', 'id', true], ['text', '/api/seguido/eliminar']], [], [], []],
     'app_usuario' => [[], ['_controller' => 'App\\Controller\\UsuarioController::index'], [], [['text', '/usuario']], [], [], []],
     'app_usuario_listar' => [[], ['_controller' => 'App\\Controller\\UsuarioController::listar'], [], [['text', '/api/usuario/listar']], [], [], []],
-    'app_usuario_buscar_id' => [['id'], ['_controller' => 'App\\Controller\\UsuarioController::buscaPorId'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/usuario/listar']], [], [], []],
+    'app_usuario_buscar_id' => [['id'], ['_controller' => 'App\\Controller\\UsuarioController::buscaPorId'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/usuario/listarPorNombre']], [], [], []],
     'app_usuario_buscar_nombre' => [['nombre'], ['_controller' => 'App\\Controller\\UsuarioController::buscarPorNombre'], [], [['variable', '/', '[^/]++', 'nombre', true], ['text', '/api/usuario/listar']], [], [], []],
     'app_usuario_crear' => [[], ['_controller' => 'App\\Controller\\UsuarioController::save'], [], [['text', '/api/usuario/guardar']], [], [], []],
     'app.swagger_ui' => [[], ['_controller' => 'nelmio_api_doc.controller.swagger_ui'], [], [['text', '/api/doc']], [], [], []],

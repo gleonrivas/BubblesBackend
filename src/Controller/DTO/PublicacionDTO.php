@@ -14,7 +14,7 @@ class PublicacionDTO
      * @Assert\NotBlank()
      * @Assert\DateTime()
      */
-    public ?\DateTime $fecha_publicacion;
+    public string $fecha_publicacion;
 
     public string $texto;
 
@@ -30,7 +30,7 @@ class PublicacionDTO
      * @param string $tematica
      * @param bool $activa
      */
-    public function __construct(string $tipo_publicacion, ?\DateTime $fecha_publicacion, string $texto, string $imagen, string $tematica, bool $activa)
+    public function __construct(string $tipo_publicacion, string $fecha_publicacion, string $texto, string $imagen, string $tematica, bool $activa)
     {
         $this->tipo_publicacion = $tipo_publicacion;
         $this->fecha_publicacion = $fecha_publicacion;
@@ -59,7 +59,7 @@ class PublicacionDTO
     /**
      * @return \DateTime|null
      */
-    public function getFechaPublicacion(): ?\DateTime
+    public function getFechaPublicacion(): string
     {
         return $this->fecha_publicacion;
     }
@@ -67,7 +67,7 @@ class PublicacionDTO
     /**
      * @param \DateTime|null $fecha_publicacion
      */
-    public function setFechaPublicacion(?\DateTime $fecha_publicacion): void
+    public function setFechaPublicacion(string $fecha_publicacion): void
     {
         $this->fecha_publicacion = $fecha_publicacion;
     }

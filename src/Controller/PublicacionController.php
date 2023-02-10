@@ -51,7 +51,7 @@ class PublicacionController extends AbstractController
             foreach ($lista_publicacion as $publicacion) {
                 $publicacionDTO = new PublicacionDTO(
                     $publicacion->getTipoPublicacion(),
-                    $publicacion->getFechaPublicacion(),
+                    $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                     $publicacion->getTexto(),
                     $publicacion->getImagen(),
                     $publicacion->getTematica(),
@@ -64,7 +64,7 @@ class PublicacionController extends AbstractController
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
             return new JsonResponse($lista_Json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
 
     }
@@ -92,7 +92,7 @@ class PublicacionController extends AbstractController
             foreach ($lista_publicacion as $publicacion) {
                 $publicacionDTO = new PublicacionDTO(
                     $publicacion->getTipoPublicacion(),
-                    $publicacion->getFechaPublicacion(),
+                    $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                     $publicacion->getTexto(),
                     $publicacion->getImagen(),
                     $publicacion->getTematica(),
@@ -105,7 +105,7 @@ class PublicacionController extends AbstractController
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
             return new JsonResponse($lista_Json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -136,7 +136,7 @@ class PublicacionController extends AbstractController
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
                         $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion(),
+                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
@@ -150,7 +150,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -177,7 +177,7 @@ class PublicacionController extends AbstractController
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
                         $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion(),
+                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
@@ -191,7 +191,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -218,7 +218,7 @@ class PublicacionController extends AbstractController
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
                         $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion(),
+                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
@@ -232,7 +232,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -250,15 +250,15 @@ class PublicacionController extends AbstractController
             //Obtener Json del body
             $json = json_decode($request->getContent(), true);
 
-            $id_perfil = $json['id_perfil'];
+            $id_perfil = $json['idPerfil'];
             $criterio = array('id' => $id_perfil);
             $perfiles = $repository->findBy($criterio);
             $perfil = $perfiles[0];
-            $datetime = new \DateTime($json['fecha_publicacion']);
+            $datetime = new \DateTime($json['fechaPublicacion']);
 
             //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
             $publicacionNueva = new Publicacion();
-            $publicacionNueva->setTipoPublicacion($json['tipo_publicacion']);
+            $publicacionNueva->setTipoPublicacion($json['tipoPublicacion']);
             $publicacionNueva->setTexto($json['texto']);
             $publicacionNueva->setImagen($json['imagen']);
             $publicacionNueva->setTematica($json['tematica']);
@@ -271,7 +271,7 @@ class PublicacionController extends AbstractController
 
             return new JsonResponse("{ mensaje: Publicacion creada correctamente }", 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -298,7 +298,7 @@ class PublicacionController extends AbstractController
                 return new JsonResponse("{ mensaje: Publicacion eliminada correctamente }", 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 
@@ -327,16 +327,16 @@ class PublicacionController extends AbstractController
                 $publicacionantigua = $listapublicaciones[0];
 
                 //buscar usuario y cambiar formato fecha publicacion
-                $id_perfil = $json['id_perfil'];
+                $id_perfil = $json['idPerfil'];
                 $criterio = array('id' => $id_perfil);
                 $perfiles = $repository->findBy($criterio);
                 $perfil = $perfiles[0];
 
-                $datetime = new \DateTime($json['fecha_publicacion']);
+                $datetime = new \DateTime($json['fechaPublicacion']);
 
                 //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
 
-                $publicacionantigua->setTipoPublicacion($json['tipo_publicacion']);
+                $publicacionantigua->setTipoPublicacion($json['tipoPublicacion']);
                 $publicacionantigua->setTexto($json['texto']);
                 $publicacionantigua->setImagen($json['imagen']);
                 $publicacionantigua->setTematica($json['tematica']);
@@ -351,7 +351,7 @@ class PublicacionController extends AbstractController
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
     }
 

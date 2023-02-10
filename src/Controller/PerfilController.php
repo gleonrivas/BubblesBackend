@@ -70,7 +70,41 @@ class PerfilController extends AbstractController
 
     }
 
+    #[Route('api/perfil/{id}', name: 'app_perfil_id', methods: ['GET'])]
+    #[OA\Tag(name: 'Perfiles')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
+    public function perfilPorId(Request $request, DtoConverters $converters,int $id, PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
+    {
+        //Se obtiene la lista de perfiles de la BBDD
+        if($utilidades->comprobarPermisos($request, "usuario"))
+        {
+            $criterio = array('id'=> $id);
 
+            if($perfilRepository->findBy($criterio)==null){
+                return new JsonResponse("{message: No existe el perfil}", 400,[], false);
+            }else{
+                $lista_perfiles = $perfilRepository->findBy($criterio);
+                //Se transforma a Json
+                $perfil = $lista_perfiles[0];
+
+                $perfilDTO = new PerfilDTO();
+                $perfilDTO->setId($perfil->getId());
+                $perfilDTO->setFotoPerfil($perfil->getFotoPerfil());
+                $perfilDTO->setUsername($perfil->getUsername());
+                $perfilDTO->setDescripcion($perfil->getDescripcion());
+                $perfilDTO->setTipoCuenta($perfil->getTipoCuenta());
+                $json = $utilidades->toJson($perfilDTO, null);
+
+                return new JsonResponse($json, 200, [], true);}
+
+        }else{
+            return new JsonResponse("{message: Unauthorized}", 401,[], false);
+        }
+
+
+    }
     #[Route('api/perfil/listar/{username}', name: 'app_perfil_listarPorNombre', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
@@ -81,20 +115,19 @@ class PerfilController extends AbstractController
         //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
-            $lista_perfiles = $perfilRepository->findOneBy(array('username'=>$username));
+            $perfil = $perfilRepository->findOneBy(array('username'=>$username));
             //Se transforma a Json
             $lista_Json = array();
             //se devuelve el Json transformado
-            foreach($lista_perfiles as $perfil){
-                $perfilDTO = $converters-> perfilToDto($perfil);
-                $json = $utilidades->toJson($perfilDTO, null);
-                $lista_Json[] = json_decode($json);
-            }
+
+            $perfilDTO = $converters-> perfilToDto($perfil);
+            $json = $utilidades->toJson($perfilDTO, null);
+            $lista_Json[] = json_decode($json);
+
             return new JsonResponse($lista_Json, 200,[], false);
         }else{
             return new JsonResponse("{message: Unauthorized}", 200,[], false);
         }
-
 
     }
 
