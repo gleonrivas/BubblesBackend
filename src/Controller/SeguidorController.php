@@ -74,7 +74,7 @@ class SeguidorController extends AbstractController
             $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
 
             $json = $utilidades->toJson($mensaje,null);
-            return new JsonResponse($json, 401, [], false);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
@@ -121,7 +121,7 @@ class SeguidorController extends AbstractController
             $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
 
             $json = $utilidades->toJson($mensaje,null);
-            return new JsonResponse($json, 401, [], false);
+            return new JsonResponse($json, 401, [], true);
         }
 
 
@@ -172,7 +172,7 @@ class SeguidorController extends AbstractController
             $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
 
             $json = $utilidades->toJson($mensaje,null);
-            return new JsonResponse("$json", 401, [], false);
+            return new JsonResponse("$json", 401, [], true);
         }
     }
 
@@ -208,7 +208,7 @@ class SeguidorController extends AbstractController
 
             $json = $utilidades->toJson($mensaje,null);
 
-            return new JsonResponse( $json, 401, [], false);
+            return new JsonResponse( $json, 401, [], true);
         }
 
     }
@@ -248,7 +248,7 @@ class SeguidorController extends AbstractController
             $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
 
             $json = $utilidades->toJson($mensaje,null);
-            return new JsonResponse($json, 401, [], false);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 }
