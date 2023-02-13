@@ -2,27 +2,28 @@
 
 namespace App\Repository;
 
-use App\Entity\Comentario;
+use App\Entity\Comentarios;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Comentario>
+ * @extends ServiceEntityRepository<Comentarios>
  *
- * @method Comentario|null find($id, $lockMode = null, $lockVersion = null)
- * @method Comentario|null findOneBy(array $criteria, array $orderBy = null)
- * @method Comentario[]    findAll()
- * @method Comentario[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Comentarios|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Comentarios|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Comentarios[]    findAll()
+ * @method Comentarios[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ComentarioRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Comentario::class);
+        parent::__construct($registry, Comentarios::class);
     }
 
-    public function save(Comentario $entity, bool $flush = false): void
+    public function save(Comentarios $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -31,7 +32,7 @@ class ComentarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Comentario $entity, bool $flush = false): void
+    public function remove(Comentarios $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,17 +41,19 @@ class ComentarioRepository extends ServiceEntityRepository
         }
     }
 
-    public function listarComentariosPorIdUsuario( int $id_comentario): array
+    public function listarPorLikesYpublicacion(int $id_publicacion): array
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
 
-        $rsm->addRootEntityFromClassMetadata('App\Entity\Comentario', 'c');
-        $rsm->addFieldResult('c', 'id', 'id');
-        $rsm->addFieldResult('c', 'id', 'id');
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Comentarios', 'c');
 
-        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM comentario WHERE id=? order by id desc', $rsm);
-        $query->setParameter(1, $id_comentario);
+        $query = $this->getEntityManager()->createNativeQuery('select c.* from likes l 
+                                                                join comentarios c on l.id_comentario = c.id 
+                                                                join publicacion p on l.id_publicacion = p.id
+                                                                where p.id = ? group by c.id order by count(l.id_comentario) desc', $rsm);
+        $query->setParameter(1, $id_publicacion);
         $comentarios = $query->getResult();
+        $comentario = $comentarios[0];
 
         return $comentarios;
     }

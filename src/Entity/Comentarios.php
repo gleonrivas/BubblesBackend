@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ComentarioRepository::class)]
-class Comentario
+class Comentarios
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,7 +18,7 @@ class Comentario
     #[ORM\Column(length: 500)]
     private ?string $texto = null;
 
-    #[ORM\ManyToOne(inversedBy: 'comentario')]
+    #[ORM\ManyToOne(inversedBy: 'comentarios')]
     #[ORM\JoinColumn(name: "id_perfil" , nullable: false)]
     private ?Perfil $id_perfil = null;
 
@@ -92,8 +92,5 @@ class Comentario
     {
         $this->id_comentario = $id_comentario;
     }
-
-
-
 
 }

@@ -47,7 +47,6 @@ class UsuarioController extends AbstractController
     #[Route('/api/usuario/listar', name: 'app_usuario_listar', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
     public function listar(Request $request, Utilidades $utils, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
@@ -73,7 +72,6 @@ class UsuarioController extends AbstractController
     #[Route('/api/usuario/listarPorNombre/{id}', name: 'app_usuario_buscar_id', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
     public function buscaPorId(Request $request, Utilidades $utils, int $id, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
@@ -96,7 +94,6 @@ class UsuarioController extends AbstractController
     #[Route('/api/usuario/listar/{nombre}', name: 'app_usuario_buscar_nombre', methods: ['GET'])]
     #[OA\Tag(name: 'Usuarios')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
     public function buscarPorNombre(Request $request, Utilidades $utils, string $nombre, UsuarioRepository $repository,DtoConverters $converters, Utilidades $utilidades):JsonResponse
     {
@@ -210,7 +207,6 @@ class UsuarioController extends AbstractController
     #[Route('/api/usuario/editar', name: 'app_usuario_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Usuarios')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\RequestBody(description:"DTO del usuario" ,required: true, content: new OA\JsonContent(ref: new Model(type:CrearUsuarioDTO::class)))]
     #[OA\Response(response: 200,description: "Usuario editado correctamente")]
     #[OA\Response(response: 101,description: "No ha indicado los datos del usuario")]

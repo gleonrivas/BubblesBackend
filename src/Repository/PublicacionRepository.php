@@ -42,6 +42,7 @@ class PublicacionRepository extends ServiceEntityRepository
         }
     }
 
+
     public function findPublicacionesConLikes(int $id_perfil):array
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
@@ -58,6 +59,7 @@ class PublicacionRepository extends ServiceEntityRepository
 
 
     }
+
 
 //    /**
 //     * @return Publicacion[] Returns an array of Publicacion objects

@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Mensaje;
+use App\Entity\Usuario;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,6 +40,23 @@ class MensajeRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findChats( int $id_perfil): array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
+
+
+        $query = $this->getEntityManager()->createNativeQuery('select p.* from mensaje m 
+                                                                join perfil p on m.receptor = p.id
+                                                                where emisor = ? group by p.id', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $chats = $query->getResult();
+
+        return $chats;
+    }
+
+
 
     public function findEmail($email)
     {

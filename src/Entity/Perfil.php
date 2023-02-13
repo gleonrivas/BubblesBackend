@@ -42,12 +42,52 @@ class Perfil
     #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Like::class)]
     private Collection $id_perfil;
 
-    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Comentario::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'id_perfil', targetEntity: Comentarios::class)]
     private Collection $comentario;
+
+    #[ORM\OneToMany(mappedBy: 'emisor', targetEntity: Mensaje::class)]
+    private Collection $emisor ;
+
+    #[ORM\OneToMany(mappedBy: 'receptor', targetEntity: Mensaje::class)]
+    private Collection $receptor;
 
     public function __construct()
     {
     }
+
+    /**
+     * @return Collection
+     */
+    public function getEmisor(): Collection
+    {
+        return $this->emisor;
+    }
+
+    /**
+     * @param Collection $emisor
+     */
+    public function setEmisor(Collection $emisor): void
+    {
+        $this->emisor = $emisor;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getReceptor(): Collection
+    {
+        return $this->receptor;
+    }
+
+    /**
+     * @param Collection $receptor
+     */
+    public function setReceptor(Collection $receptor): void
+    {
+        $this->receptor = $receptor;
+    }
+
+
 
     /**
      * @return int|null
@@ -192,6 +232,40 @@ class Perfil
     {
         $this->publicacion = $publicacion;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getIdPerfil(): Collection
+    {
+        return $this->id_perfil;
+    }
+
+    /**
+     * @param Collection $id_perfil
+     */
+    public function setIdPerfil(Collection $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getComentario(): Collection
+    {
+        return $this->comentario;
+    }
+
+    /**
+     * @param Collection $comentario
+     */
+    public function setComentario(Collection $comentario): void
+    {
+        $this->comentario = $comentario;
+    }
+
+
 
 
 }

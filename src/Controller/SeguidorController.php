@@ -81,7 +81,6 @@ class SeguidorController extends AbstractController
     #[Route('/api/seguidores/listar/{id}', name: 'app_seguidor', methods: ['GET'])]
     #[OA\Tag(name: 'Seguidores')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
     public function listarseguidoresporidperfil(\Symfony\Component\HttpFoundation\Request $request, PerfilRepository $perfilrepository,
@@ -130,7 +129,6 @@ class SeguidorController extends AbstractController
     #[Route('/api/seguidos/listar/{id}', name: 'app_seguidores', methods: ['GET'])]
     #[OA\Tag(name: 'Seguidores')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
     public function listarseguidosporidusuario(\Symfony\Component\HttpFoundation\Request $request, PerfilRepository $perfilrepository,
@@ -179,7 +177,6 @@ class SeguidorController extends AbstractController
     #[Route('/api/seguidor/eliminar/{id}/{id_seguidor}', name: 'app_eliminar_seguidor', methods: ['DELETE'])]
     #[OA\Tag(name: 'Seguidores')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description:"El usuario no te sigue" )]
     #[OA\Response(response: 100, description: "Seguidor eliminado correctamente")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
@@ -216,7 +213,6 @@ class SeguidorController extends AbstractController
     #[Route('/api/seguido/eliminar/{id}/{id_seguido}', name: 'app_dejar_seguir', methods: ['DELETE'])]
     #[OA\Tag(name: 'Seguidores')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "No sigues a ese perfil")]
     #[OA\Response(response: 100, description: "Has dejado de seguir a este perfil")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
