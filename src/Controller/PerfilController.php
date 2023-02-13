@@ -6,6 +6,7 @@ use App\Controller\DTO\CrearPerfilDTO;
 use App\Controller\DTO\CrearUsuarioDTO;
 use App\Controller\DTO\DTOConverters;
 use App\Controller\DTO\EditarPerfilDTO;
+use App\Controller\DTO\MensajeRespuestaDTO;
 use App\Controller\DTO\PerfilDTO;
 use App\Controller\DTO\UsuarioDTO;
 use App\Entity\Perfil;
@@ -100,6 +101,7 @@ class PerfilController extends AbstractController
                 return new JsonResponse($json, 200, [], true);}
 
         }else{
+
             return new JsonResponse("{message: Unauthorized}", 401,[], false);
         }
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\DTO\MensajeRespuestaDTO;
 use App\Controller\DTO\PerfilDTO;
 use App\Controller\DTO\PublicacionDTO;
 use App\Controller\DTO\SeguidorDTO;
@@ -65,10 +66,15 @@ class SeguidorController extends AbstractController
 
             //GUARDAR
             $SeguidorRepository->save($seguidorNuevo, true);
+            $mensaje = new MensajeRespuestaDTO("mensaje: seguidor creado correctamente");
 
-            return new JsonResponse("{ mensaje: Seguidor creado correctamente }", 200, [], true);
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], false);
         }
     }
 
@@ -86,7 +92,10 @@ class SeguidorController extends AbstractController
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             $lista_seguidores = $seguidorRepository->findBy(['id_principal' => $id]);
             if (count($lista_seguidores) == 0) {
-                return new JsonResponse("{ mensaje: no tienes seguidores }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: No tienes seguidores");
+
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $lista_follower = [];
                 foreach ($lista_seguidores as $value) {
@@ -109,7 +118,10 @@ class SeguidorController extends AbstractController
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], false);
         }
 
 
@@ -131,7 +143,10 @@ class SeguidorController extends AbstractController
             $lista_seguidores = $seguidorRepository->findBy(['id_follower' => $id]);
 
             if (count($lista_seguidores) == 0) {
-                return new JsonResponse("{ mensaje: no sigues a nadie todavía }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: No sigues a nadie todavia");
+
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $lista_follower = [];
                 foreach ($lista_seguidores as $value) {
@@ -154,7 +169,10 @@ class SeguidorController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse("$json", 401, [], false);
         }
     }
 
@@ -171,7 +189,9 @@ class SeguidorController extends AbstractController
             $criterioseguidor = array('id_principal' => $id,
                 'id_follower' => $id_seguidor);
             if ($seguidorRepository->findBy($criterioseguidor) == null) {
-                return new JsonResponse("{ mensaje: el usuario no te sigue}", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: el usuario no te sigue");
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $listaseguidores = $seguidorRepository->findBy($criterioseguidor);
                 $seguidor = $listaseguidores[0];
@@ -179,10 +199,16 @@ class SeguidorController extends AbstractController
                 //ELIMINAR
                 $seguidorRepository->remove($seguidor, true);
 
-                return new JsonResponse("{ mensaje: seguidor eliminado correctamente }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: seguidor eliminado correctamente");
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+
+            return new JsonResponse( $json, 401, [], false);
         }
 
     }
@@ -201,7 +227,10 @@ class SeguidorController extends AbstractController
                 'id_principal' => $id_seguido);
 
             if ($seguidorRepository->findBy($criterioseguidor) == null) {
-                return new JsonResponse("{ mensaje:no sigues a ese perfil }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: No sigues a este perfil");
+
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $listaseguidores = $seguidorRepository->findBy($criterioseguidor);
                 $seguidor = $listaseguidores[0];
@@ -209,12 +238,17 @@ class SeguidorController extends AbstractController
 
                 //ELIMINAR
                 $seguidorRepository->remove($seguidor, true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: Has dejado de seguir a este perfil");
 
-                return new JsonResponse("{ mensaje: has dejado de seguir a este perfil }", 200, [], true);
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], false);
         }
     }
 }

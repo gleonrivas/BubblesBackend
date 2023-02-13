@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Publicacion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,6 +40,23 @@ class PublicacionRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findPublicacionesConLikes(int $id_perfil):array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Publicacion', 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery('select p.* from likes l
+                                                                join publicacion p on l.id_publicacion = p.id
+                                                                where l.id_perfil = ? ', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $publicaciones = $query->getResult();
+
+        return $publicaciones;
+
+
     }
 
 //    /**

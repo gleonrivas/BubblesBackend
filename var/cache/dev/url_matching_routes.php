@@ -48,46 +48,47 @@ return [
                         .')'
                         .'|publicacion/guardar/([^/]++)/([^/]++)(*:291)'
                         .'|comentario/guardar/([^/]++)/([^/]++)(*:335)'
+                        .'|Publicacion/listar/([^/]++)(*:370)'
                     .')'
                     .'|p(?'
                         .'|erfil/(?'
-                            .'|([^/]++)(*:365)'
+                            .'|([^/]++)(*:400)'
                             .'|listar(?'
-                                .'|/([^/]++)(*:391)'
-                                .'|PorUsuario(*:409)'
+                                .'|/([^/]++)(*:426)'
+                                .'|PorUsuario(*:444)'
                             .')'
-                            .'|guardar(*:425)'
+                            .'|guardar(*:460)'
                             .'|e(?'
-                                .'|ditar(*:442)'
-                                .'|liminar/([^/]++)(*:466)'
+                                .'|ditar(*:477)'
+                                .'|liminar/([^/]++)(*:501)'
                             .')'
                         .')'
                         .'|ublicacion/(?'
                             .'|listar/(?'
-                                .'|([^/]++)(*:508)'
-                                .'|activas/([^/]++)(*:532)'
+                                .'|([^/]++)(*:543)'
+                                .'|activas/([^/]++)(*:567)'
                                 .'|t(?'
-                                    .'|ematica/([^/]++)(*:560)'
-                                    .'|ipo/([^/]++)(*:580)'
+                                    .'|ematica/([^/]++)(*:595)'
+                                    .'|ipo/([^/]++)(*:615)'
                                 .')'
                             .')'
-                            .'|eliminar/([^/]++)(*:607)'
+                            .'|eliminar/([^/]++)(*:642)'
                         .')'
                     .')'
                     .'|seguido(?'
                         .'|r(?'
                             .'|/(?'
-                                .'|crear/([^/]++)/([^/]++)(*:658)'
-                                .'|eliminar/([^/]++)/([^/]++)(*:692)'
+                                .'|crear/([^/]++)/([^/]++)(*:693)'
+                                .'|eliminar/([^/]++)/([^/]++)(*:727)'
                             .')'
-                            .'|es/listar/([^/]++)(*:719)'
+                            .'|es/listar/([^/]++)(*:754)'
                         .')'
-                        .'|s/listar/([^/]++)(*:745)'
-                        .'|/eliminar/([^/]++)/([^/]++)(*:780)'
+                        .'|s/listar/([^/]++)(*:780)'
+                        .'|/eliminar/([^/]++)/([^/]++)(*:815)'
                     .')'
                     .'|usuario/listar(?'
-                        .'|PorNombre/([^/]++)(*:824)'
-                        .'|/([^/]++)(*:841)'
+                        .'|PorNombre/([^/]++)(*:859)'
+                        .'|/([^/]++)(*:876)'
                     .')'
                 .')'
             .')/?$}sDu',
@@ -102,24 +103,25 @@ return [
         245 => [[['_route' => 'app_like_eliminar', '_controller' => 'App\\Controller\\LikeController::eliminarlikepublicacion'], ['id'], ['DELETE' => 0], null, false, true, null]],
         291 => [[['_route' => 'app_likepublicacaion_crear', '_controller' => 'App\\Controller\\LikeController::guardarLikePublicacion'], ['id_publicacion', 'id_perfil'], ['POST' => 0], null, false, true, null]],
         335 => [[['_route' => 'app_likecomentario_crear', '_controller' => 'App\\Controller\\LikeController::guardarLikeComentario'], ['id_comentario', 'id_perfil'], ['POST' => 0], null, false, true, null]],
-        365 => [[['_route' => 'app_perfil_id', '_controller' => 'App\\Controller\\PerfilController::perfilPorId'], ['id'], ['GET' => 0], null, false, true, null]],
-        391 => [[['_route' => 'app_perfil_listarPorNombre', '_controller' => 'App\\Controller\\PerfilController::listarPorNombre'], ['username'], ['GET' => 0], null, false, true, null]],
-        409 => [[['_route' => 'app_perfil_listarPorUsuario', '_controller' => 'App\\Controller\\PerfilController::listarPorUsuario'], [], ['GET' => 0], null, true, false, null]],
-        425 => [[['_route' => 'app_perfil_guardar', '_controller' => 'App\\Controller\\PerfilController::save'], [], ['POST' => 0], null, false, false, null]],
-        442 => [[['_route' => 'app_perfil_editar', '_controller' => 'App\\Controller\\PerfilController::editar'], [], ['POST' => 0], null, false, false, null]],
-        466 => [[['_route' => 'app_perfil_eliminar', '_controller' => 'App\\Controller\\PerfilController::eliminar'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        508 => [[['_route' => 'app_publicacaion_listar_usuario', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporPerfil'], ['id'], ['GET' => 0], null, false, true, null]],
-        532 => [[['_route' => 'app_publicacaion_listar_activas', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporPerfilActivas'], ['id'], ['GET' => 0], null, false, true, null]],
-        560 => [[['_route' => 'app_publicacaion_listar_tematica', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporTematica'], ['tematica'], ['GET' => 0], null, false, true, null]],
-        580 => [[['_route' => 'app_publicacaion_listar_tipo', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporTipo'], ['tipo'], ['GET' => 0], null, false, true, null]],
-        607 => [[['_route' => 'app_publicacaion_eliminar', '_controller' => 'App\\Controller\\PublicacionController::eliminarPublicacion'], ['id'], ['DELETE' => 0], null, false, true, null]],
-        658 => [[['_route' => 'app_seguidor_crear', '_controller' => 'App\\Controller\\SeguidorController::guardarSeguidor'], ['id_principal', 'id_follower'], ['POST' => 0], null, false, true, null]],
-        692 => [[['_route' => 'app_eliminar_seguidor', '_controller' => 'App\\Controller\\SeguidorController::eliminarseguidor'], ['id', 'id_seguidor'], ['DELETE' => 0], null, false, true, null]],
-        719 => [[['_route' => 'app_seguidor', '_controller' => 'App\\Controller\\SeguidorController::listarseguidoresporidperfil'], ['id'], ['GET' => 0], null, false, true, null]],
-        745 => [[['_route' => 'app_seguidores', '_controller' => 'App\\Controller\\SeguidorController::listarseguidosporidusuario'], ['id'], ['GET' => 0], null, false, true, null]],
-        780 => [[['_route' => 'app_dejar_seguir', '_controller' => 'App\\Controller\\SeguidorController::dejardeseguir'], ['id', 'id_seguido'], ['DELETE' => 0], null, false, true, null]],
-        824 => [[['_route' => 'app_usuario_buscar_id', '_controller' => 'App\\Controller\\UsuarioController::buscaPorId'], ['id'], ['GET' => 0], null, false, true, null]],
-        841 => [
+        370 => [[['_route' => 'app_likePublicacion_listar', '_controller' => 'App\\Controller\\LikeController::listarPublicacion'], ['id_perfil'], ['GET' => 0], null, false, true, null]],
+        400 => [[['_route' => 'app_perfil_id', '_controller' => 'App\\Controller\\PerfilController::perfilPorId'], ['id'], ['GET' => 0], null, false, true, null]],
+        426 => [[['_route' => 'app_perfil_listarPorNombre', '_controller' => 'App\\Controller\\PerfilController::listarPorNombre'], ['username'], ['GET' => 0], null, false, true, null]],
+        444 => [[['_route' => 'app_perfil_listarPorUsuario', '_controller' => 'App\\Controller\\PerfilController::listarPorUsuario'], [], ['GET' => 0], null, true, false, null]],
+        460 => [[['_route' => 'app_perfil_guardar', '_controller' => 'App\\Controller\\PerfilController::save'], [], ['POST' => 0], null, false, false, null]],
+        477 => [[['_route' => 'app_perfil_editar', '_controller' => 'App\\Controller\\PerfilController::editar'], [], ['POST' => 0], null, false, false, null]],
+        501 => [[['_route' => 'app_perfil_eliminar', '_controller' => 'App\\Controller\\PerfilController::eliminar'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        543 => [[['_route' => 'app_publicacaion_listar_usuario', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporPerfil'], ['id'], ['GET' => 0], null, false, true, null]],
+        567 => [[['_route' => 'app_publicacaion_listar_activas', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporPerfilActivas'], ['id'], ['GET' => 0], null, false, true, null]],
+        595 => [[['_route' => 'app_publicacaion_listar_tematica', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporTematica'], ['tematica'], ['GET' => 0], null, false, true, null]],
+        615 => [[['_route' => 'app_publicacaion_listar_tipo', '_controller' => 'App\\Controller\\PublicacionController::listarPublicacionporTipo'], ['tipo'], ['GET' => 0], null, false, true, null]],
+        642 => [[['_route' => 'app_publicacaion_eliminar', '_controller' => 'App\\Controller\\PublicacionController::eliminarPublicacion'], ['id'], ['DELETE' => 0], null, false, true, null]],
+        693 => [[['_route' => 'app_seguidor_crear', '_controller' => 'App\\Controller\\SeguidorController::guardarSeguidor'], ['id_principal', 'id_follower'], ['POST' => 0], null, false, true, null]],
+        727 => [[['_route' => 'app_eliminar_seguidor', '_controller' => 'App\\Controller\\SeguidorController::eliminarseguidor'], ['id', 'id_seguidor'], ['DELETE' => 0], null, false, true, null]],
+        754 => [[['_route' => 'app_seguidor', '_controller' => 'App\\Controller\\SeguidorController::listarseguidoresporidperfil'], ['id'], ['GET' => 0], null, false, true, null]],
+        780 => [[['_route' => 'app_seguidores', '_controller' => 'App\\Controller\\SeguidorController::listarseguidosporidusuario'], ['id'], ['GET' => 0], null, false, true, null]],
+        815 => [[['_route' => 'app_dejar_seguir', '_controller' => 'App\\Controller\\SeguidorController::dejardeseguir'], ['id', 'id_seguido'], ['DELETE' => 0], null, false, true, null]],
+        859 => [[['_route' => 'app_usuario_buscar_id', '_controller' => 'App\\Controller\\UsuarioController::buscaPorId'], ['id'], ['GET' => 0], null, false, true, null]],
+        876 => [
             [['_route' => 'app_usuario_buscar_nombre', '_controller' => 'App\\Controller\\UsuarioController::buscarPorNombre'], ['nombre'], ['GET' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],

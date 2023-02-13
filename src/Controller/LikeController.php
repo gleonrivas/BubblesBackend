@@ -276,4 +276,34 @@ class LikeController extends AbstractController
             return new JsonResponse("{message: Unauthorized}", 200, [], false);
         }
     }
+    #[Route('/api/likePublicacion/listar/{id_perfil}', name: 'app_likePublicacion_listar', methods: ['GET'])]
+    #[OA\Tag(name: 'Likes')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array", items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
+    public function listarPublicacion(int $id_perfil,Request $request, PublicacionRepository $repository, Utilidades $utilidades): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+            //se obtiene la lista de publicacion
+            $lista_publicacion = $repository->findPublicacionesConLikes($id_perfil);
+            $lista_dto_publicacion = [];
+            foreach ($lista_publicacion as $publicacion) {
+                $publicacionDTO = new PublicacionDTO(
+                    $publicacion->getTipoPublicacion(),
+                    $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
+                    $publicacion->getTexto(),
+                    $publicacion->getImagen(),
+                    $publicacion->getTematica(),
+                    $publicacion->getActiva()
+                );
+
+                array_push($lista_dto_publicacion, $publicacionDTO);
+            }
+
+            $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
+            return new JsonResponse($lista_Json, 200, [], true);
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+        }
+
+    }
 }
