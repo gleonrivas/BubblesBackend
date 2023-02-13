@@ -36,6 +36,7 @@ class LikeController extends AbstractController
     #[Route('/api/like/listar/publicacion/{id_publicacion}', name: 'app_like_publicacion', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
     public function listarlikesdePublicacion(Request    $request, LikeRepository $repository, PerfilRepository $perfilRepository,
@@ -78,6 +79,7 @@ class LikeController extends AbstractController
     #[Route('/api/like/cantidad/publicacion/{id_publicacion}', name: 'app_like_cantidad_publicacion', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: Integer::class))))]
     public function cantidadlikesdePublicacion(Request    $request, LikeRepository $repository,
@@ -103,6 +105,7 @@ class LikeController extends AbstractController
     #[Route('/api/like/listar/comentario/{id_comentario}', name: 'app_like_comentario', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
     public function listarlikesdeComentario(Request    $request, LikeRepository $repository, PerfilRepository $perfilRepository,
@@ -145,6 +148,7 @@ class LikeController extends AbstractController
     #[Route('/api/like/cantidad/comentario/{id_comentario}', name: 'app_like_cantidad_comentario', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: Integer::class))))]
     public function cantidadlikesdeComentario(Request    $request, LikeRepository $repository,
@@ -170,6 +174,7 @@ class LikeController extends AbstractController
     #[Route('/api/like/eliminar/{id}', name: 'app_like_eliminar', methods: ['DELETE'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "Like eliminado correctamente")]
     #[OA\Response(response: 101, description: "El like ya no existe")]
     public function eliminarlikepublicacion(Utilidades $utilidades, Request $request, LikeRepository $likeRepository, int $id): JsonResponse
@@ -195,6 +200,7 @@ class LikeController extends AbstractController
     #[Route('/api/likepublicacion/guardar/{id_publicacion}/{id_perfil}', name: 'app_likepublicacaion_crear', methods: ['POST'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "Like creado correctamente")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
     public function guardarLikePublicacion(Request               $request, int $id_publicacion, int $id_perfil,
@@ -234,6 +240,7 @@ class LikeController extends AbstractController
     #[Route('/api/likecomentario/guardar/{id_comentario}/{id_perfil}', name: 'app_likecomentario_crear', methods: ['POST'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "Like creado correctamente")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
     public function guardarLikeComentario(Request              $request, int $id_comentario, int $id_perfil,
@@ -270,8 +277,6 @@ class LikeController extends AbstractController
             return new JsonResponse("{message: Unauthorized}", 200, [], false);
         }
     }
-
-
     #[Route('/api/likePublicacion/listar/{id_perfil}', name: 'app_likePublicacion_listar', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
@@ -302,9 +307,4 @@ class LikeController extends AbstractController
         }
 
     }
-
-
-
-
-
 }

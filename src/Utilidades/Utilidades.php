@@ -10,6 +10,7 @@ use App\Repository\AccessTokenRepository;
 use App\Repository\UsuarioRepository;
 use DateTime;
 use Doctrine\ORM\Mapping\Entity;
+use phpDocumentor\Reflection\Types\Integer;
 use Doctrine\Persistence\ManagerRegistry;
 use ReallySimpleJWT\Token;
 use Symfony\Component\HttpFoundation\Request;

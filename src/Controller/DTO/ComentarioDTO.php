@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Controller\DTO;
-use App\Entity\Perfil;
+
 
 class ComentarioDTO
 {
+
     private int $id;
     private string $texto;
-
     private ?PerfilDTO $id_perfil;
 
     public function __construct()
@@ -61,6 +61,7 @@ class ComentarioDTO
     {
         $this->id_perfil = $id_perfil;
     }
+
 
 
 }

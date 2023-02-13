@@ -68,14 +68,14 @@ class LoginController extends AbstractController
                     }
                 }else{
                     return $this->json([
-                        'message' => "Contraseña no válida" ,
-                    ]);
+                        'message' => "Contraseña no válida"
+                    ], 401);
                 }
 
             }
             return $this->json([
-                'message' => "Usuario no válido" ,
-            ]);
+                'message' => "Usuario no válido"
+            ], 401);
 
 
         }else{
