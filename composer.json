@@ -10,6 +10,8 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "*",
         "doctrine/orm": "^2.14",
+        "google/apiclient": "^2.13",
+        "google/cloud-storage": "^1.30",
         "nelmio/api-doc-bundle": "^4.10",
         "nelmio/cors-bundle": "^2.2",
         "rbdwllr/reallysimplejwt": "^5.0",
