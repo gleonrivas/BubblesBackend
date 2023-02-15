@@ -8,6 +8,7 @@ use App\Controller\DTO\PublicacionDTO;
 use App\Controller\DTO\UsuarioDTO;
 use App\Entity\Publicacion;
 use App\Entity\Usuario;
+use App\Repository\AccessTokenRepository;
 use App\Repository\PerfilRepository;
 use App\Repository\PublicacionRepository;
 use App\Repository\UsuarioRepository;
@@ -353,6 +354,33 @@ class PublicacionController extends AbstractController
         } else {
             return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
+    }
+
+    #[Route('/api/publicacion/{id_publicacion}', name: 'app_publicacaion_id', methods: ['GET'])]
+    #[OA\Tag(name: 'Publicaciones')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
+        items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
+    public function obtenerPublicacion(Request $request, PublicacionRepository $publicacionRepository, Utilidades $utilidades, int $id_publicacion): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+            //se obtiene la lista de publicacion
+            $repo = $publicacionRepository->find(['id'=>$id_publicacion]);
+
+            $publicacionDTO = new PublicacionDTO(
+                $repo->getTipoPublicacion(),
+                $repo->getFechaPublicacion()->format('Y-m-d H:i:s'),
+                $repo->getTexto(),
+                $repo->getImagen(),
+                $repo->getTematica(),
+                $repo->getActiva());
+
+            return new JsonResponse($utilidades->toJson($publicacionDTO, null), 200, [], true);
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+        }
+
     }
 
 }
