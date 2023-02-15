@@ -1,46 +1,22 @@
 <?php
 
-namespace App\Entity;
+namespace App\Controller\DTO;
 
-use App\Repository\MensajeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Usuario;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MensajeRepository::class)]
-class Mensaje
+class MensajeDTO
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
-    #[ORM\Column(length: 800)]
-    private ?string $mensaje = null;
+    private ?int $id ;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $fecha_envio = null;
-
-    #[ORM\Column(length: 50)]
-    private ?string $tipoMensaje = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $imagen = null;
-
-    #[ORM\Column]
-    private ?bool $leido = null;
-
-
-    #[ORM\ManyToOne(inversedBy: 'mensaje')]
-    #[ORM\JoinColumn(name: "emisor" , nullable: false)]
-    private ?Perfil $emisor = null;
-
-    #[ORM\ManyToOne(inversedBy: 'mensaje')]
-    #[ORM\JoinColumn(name: "receptor" , nullable: false)]
-    private ?Perfil $receptor = null;
-
-
+    private ?string $mensaje ;
+    private ?string $fecha_envio;
+    private ?string $tipoMensaje ;
+    private ?string $imagen ;
+    private ?bool $leido;
+    private PerfilDTO $emisor;
+    private PerfilDTO $receptor;
 
     public function __construct()
     {
@@ -79,17 +55,17 @@ class Mensaje
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return string|null
      */
-    public function getFechaEnvio(): ?\DateTimeInterface
+    public function getFechaEnvio(): ?string
     {
         return $this->fecha_envio;
     }
 
     /**
-     * @param \DateTimeInterface|null $fecha_envio
+     * @param string|null $fecha_envio
      */
-    public function setFechaEnvio(?\DateTimeInterface $fecha_envio): void
+    public function setFechaEnvio(?string $fecha_envio): void
     {
         $this->fecha_envio = $fecha_envio;
     }
@@ -143,36 +119,37 @@ class Mensaje
     }
 
     /**
-     * @return Perfil|null
+     * @return PerfilDTO
      */
-    public function getEmisor(): ?Perfil
+    public function getEmisor(): PerfilDTO
     {
         return $this->emisor;
     }
 
     /**
-     * @param Perfil|null $emisor
+     * @param PerfilDTO $emisor
      */
-    public function setEmisor(?Perfil $emisor): void
+    public function setEmisor(PerfilDTO $emisor): void
     {
         $this->emisor = $emisor;
     }
 
     /**
-     * @return Perfil|null
+     * @return PerfilDTO
      */
-    public function getReceptor(): ?Perfil
+    public function getReceptor(): PerfilDTO
     {
         return $this->receptor;
     }
 
     /**
-     * @param Perfil|null $receptor
+     * @param PerfilDTO $receptor
      */
-    public function setReceptor(?Perfil $receptor): void
+    public function setReceptor(PerfilDTO $receptor): void
     {
         $this->receptor = $receptor;
     }
+
 
 
 

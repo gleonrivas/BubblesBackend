@@ -40,7 +40,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/listar', name: 'app_publicacaion', methods: ['GET'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacion(Request $request, PublicacionRepository $repository, Utilidades $utilidades): JsonResponse
@@ -73,7 +72,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/listar/{id}', name: 'app_publicacaion_listar_usuario', methods: ['GET'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporPerfil(Request    $request, PublicacionRepository $repository,
@@ -113,7 +111,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/listar/activas/{id}', name: 'app_publicacaion_listar_activas', methods: ['GET'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporPerfilActivas(Request    $request, PublicacionRepository $repository,
@@ -158,7 +155,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/listar/tematica/{tematica}', name: 'app_publicacaion_listar_tematica', methods: ['GET'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporTematica(Request    $request, PublicacionRepository $repository,
@@ -199,7 +195,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/listar/tipo/{tipo}', name: 'app_publicacaion_listar_tipo', methods: ['GET'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporTipo(Request    $request, PublicacionRepository $repository,
@@ -240,7 +235,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/guardar', name: 'app_publicacaion_crear', methods: ['POST'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\RequestBody(description: "clase Publicacion", required: true, content: new OA\JsonContent(ref: new Model(type: CrearPublicacionDTO::class)))]
     #[OA\Response(response: 200, description: "Publicacion creada correctamente")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
@@ -279,7 +273,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/eliminar/{id}', name: 'app_publicacaion_eliminar', methods: ['DELETE'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "Publicacion eliminada correctamente")]
     #[OA\Response(response: 100, description: "La publicacion no existe")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
@@ -306,7 +299,6 @@ class PublicacionController extends AbstractController
     #[Route('/api/publicacion/editar', name: 'app_publicacaion_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Publicaciones')]
     #[Security(name: "apikey")]
-    #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\RequestBody(description: "clase Publicacion", required: true, content: new OA\JsonContent(ref: new Model(type: CrearPublicacionDTOId::class)))]
     #[OA\Response(response: 200, description: "Publicacion editada correctamente")]
     #[OA\Response(response: 101, description: "No existe la publicacion")]

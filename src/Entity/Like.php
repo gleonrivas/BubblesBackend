@@ -6,7 +6,7 @@ use App\Repository\LikeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LikeRepository::class)]
-#[ORM\Table(name: '`likes`')]
+#[ORM\Table(name: 'likes')]
 class Like
 {
     #[ORM\Id]
@@ -19,7 +19,7 @@ class Like
 
     #[ORM\ManyToOne(inversedBy: 'like')]
     #[ORM\JoinColumn(name: "id_comentario" , nullable: true)]
-    private ?Comentario $id_comentario;
+    private ?Comentarios $id_comentario;
 
     #[ORM\ManyToOne(inversedBy: 'like')]
     #[ORM\JoinColumn(name: "id_publicacion" , nullable: true)]
@@ -29,8 +29,14 @@ class Like
     #[ORM\JoinColumn(name: "id_perfil" , nullable: true)]
     private ?Perfil $id_perfil;
 
+    public function __construct()
+    {
+    }
+
+
     public function getId(): ?int
     {
+        return $this->id;
     }
 
     public function getNumeroLikes(): ?int
@@ -45,12 +51,12 @@ class Like
         return $this;
     }
 
-    public function getIdComentario(): ?Comentario
+    public function getIdComentario(): ?Comentarios
     {
         return $this->id_comentario;
     }
 
-    public function setIdComentario(?Comentario $id_comentario): self
+    public function setIdComentario(?Comentarios $id_comentario): self
     {
         $this->id_comentario = $id_comentario;
 

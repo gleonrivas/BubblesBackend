@@ -24,7 +24,7 @@ class PublicacionDTO
 
     /**
      * @param string $tipo_publicacion
-     * @param \DateTime|null $fecha_publicacion
+     * @param string $fecha_publicacion
      * @param string $texto
      * @param string $imagen
      * @param string $tematica
@@ -57,7 +57,7 @@ class PublicacionDTO
     }
 
     /**
-     * @return \DateTime|null
+     * @return string
      */
     public function getFechaPublicacion(): string
     {
@@ -65,7 +65,7 @@ class PublicacionDTO
     }
 
     /**
-     * @param \DateTime|null $fecha_publicacion
+     * @param string $fecha_publicacion
      */
     public function setFechaPublicacion(string $fecha_publicacion): void
     {
