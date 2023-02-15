@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\DTO\CrearPublicacionDTO;
 use App\Controller\DTO\CrearPublicacionDTOId;
+use App\Controller\DTO\MensajeRespuestaDTO;
 use App\Controller\DTO\PublicacionDTO;
 use App\Controller\DTO\UsuarioDTO;
 use App\Entity\Publicacion;
@@ -63,7 +64,10 @@ class PublicacionController extends AbstractController
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
             return new JsonResponse($lista_Json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
 
     }
@@ -103,7 +107,10 @@ class PublicacionController extends AbstractController
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
             return new JsonResponse($lista_Json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
@@ -127,7 +134,10 @@ class PublicacionController extends AbstractController
             //se obtiene la lista de publicacion
             $lista_publicacion = $repository->findBy($parametrosBusqueda);
             if (count($lista_publicacion) == 0) {
-                return new JsonResponse("{ mensaje: No existen publicaciones con esas características }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: No existen publicaciones con esas características");
+
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
@@ -147,7 +157,10 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
@@ -167,7 +180,10 @@ class PublicacionController extends AbstractController
             //se obtiene la lista de publicacion
             $lista_publicacion = $repository->findBy($parametrosBusqueda);
             if (count($lista_publicacion) == 0) {
-                return new JsonResponse("{ mensaje: No existen publicaciones con esas características }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: No existen publicaciones con esas características");
+
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
@@ -187,7 +203,10 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
@@ -207,7 +226,10 @@ class PublicacionController extends AbstractController
             //se obtiene la lista de publicacion
             $lista_publicacion = $repository->findBy($parametrosBusqueda);
             if (count($lista_publicacion) == 0) {
-                return new JsonResponse("{ mensaje: No existen publicaciones con esas características }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: No existen publicaciones con esas características");
+
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
@@ -227,7 +249,10 @@ class PublicacionController extends AbstractController
                 return new JsonResponse($lista_Json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
@@ -263,9 +288,16 @@ class PublicacionController extends AbstractController
             //GUARDAR
             $publicacionRepository->save($publicacionNueva, true);
 
-            return new JsonResponse("{ mensaje: Publicacion creada correctamente }", 200, [], true);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Publicacion creada correctamente");
+
+            $json = $utilidades->toJson($mensaje,null);
+
+            return new JsonResponse($json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
@@ -288,10 +320,17 @@ class PublicacionController extends AbstractController
                 //ELIMINAR
                 $publicacionRepository->remove($publicacion, true);
 
-                return new JsonResponse("{ mensaje: Publicacion eliminada correctamente }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: Publicacion eliminada correctamente");
+
+                $json = $utilidades->toJson($mensaje,null);
+
+                return new JsonResponse($json, 200, [], true);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
@@ -313,7 +352,10 @@ class PublicacionController extends AbstractController
             $id = $json['id'];
             $publicaciones = array('id' => $id);
             if ($publicacionRepository->findBy($publicaciones) == null) {
-                return new JsonResponse("{ mensaje: No existe la publicación }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: No existe la publicación");
+
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse($json, 200, [], true);
             } else {
                 $listapublicaciones = $publicacionRepository->findBy($publicaciones);
                 $publicacionantigua = $listapublicaciones[0];
@@ -339,11 +381,18 @@ class PublicacionController extends AbstractController
                 //GUARDAR
                 $publicacionRepository->save($publicacionantigua, true);
 
-                return new JsonResponse("{ mensaje: Publicacion editada correctamente }", 200, [], true);
+                $mensaje = new MensajeRespuestaDTO("mensaje: Pubicación editada correctamente");
+
+                $json = $utilidades->toJson($mensaje,null);
+
+                return new JsonResponse($json, 200, [], true);
             }
 
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401, [], true);
         }
     }
 
