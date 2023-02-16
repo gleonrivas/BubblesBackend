@@ -9,6 +9,7 @@ use App\Utilidades\Utilidades;
 use Exception;
 use Google\Auth\AccessToken;
 use Google\Service\CloudNaturalLanguage\Token;
+use http\Env\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use phpDocumentor\Reflection\Types\String_;
@@ -30,7 +31,7 @@ class GoogleDriveController extends AbstractController
     {
 
         try {
-            putenv('GOOGLE_APPLICATION_CREDENTIALS=C:\Users\orteg\Desktop\bubbles-377817-2e196d93ff9e.json');
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
             $client = new Client();
             $client->useApplicationDefaultCredentials();
             $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
