@@ -9,6 +9,7 @@ use App\Utilidades\Utilidades;
 use Exception;
 use Google\Auth\AccessToken;
 use Google\Service\CloudNaturalLanguage\Token;
+use Google_Service_Drive_Channel;
 use http\Env\Response;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -26,7 +27,7 @@ class GoogleDriveController extends AbstractController
 {
 
     //EL name del imput tiene que ser file
-    #[Route('/google/drive/save', name: 'drive_create_folder', methods: ['POST'])]
+    #[Route('/google/drive/save', name: 'drive_create_file', methods: ['POST'])]
     public function Subir_Archivo(): string
     {
 
@@ -63,6 +64,25 @@ class GoogleDriveController extends AbstractController
         }
 
         return printf('algo anda mal');
+    }
 
+    #[Route('/google/drive/view', name: 'drive_view_file', methods: ['POST'])]
+    function watchFile($fileId, $channelId, $channelType, $channelAddress) {
+
+        putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+        $client = new Client();
+        $client->useApplicationDefaultCredentials();
+        $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+        $service = new \Google_Service_Drive($client);
+        $channel = new Google_Service_Drive_Channel();
+        $channel->setId($channelId);
+        $channel->setType($channelType);
+        $channel->setAddress($channelAddress);
+        try {
+            return $service->files->watch($fileId, $channel);
+        } catch(Exception $e) {
+            print "An error occurred: " . $e->getMessage();
+        }
+        return NULL;
     }
 }

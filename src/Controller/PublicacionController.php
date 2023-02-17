@@ -256,6 +256,8 @@ class PublicacionController extends AbstractController
             $mimeType = $_FILES["file"]["type"];
             $file->setMimeType($mimeType);
 
+
+
             $service = new \Google_Service_Drive($client);
             $resultado = $service->files->create(
                 $file,
@@ -279,7 +281,7 @@ class PublicacionController extends AbstractController
             $publicacionNueva = new Publicacion();
             $publicacionNueva->setTipoPublicacion($_POST['tipoPublicacion']);
             $publicacionNueva->setTexto($_POST['texto']);
-            $publicacionNueva->setImagen($file_path);
+            $publicacionNueva->setImagen('https://drive.google.com/uc?id='.$resultado->getId());
             $publicacionNueva->setTematica($_POST['tematica']);
             $publicacionNueva->setFechaPublicacion($datetime);
             $publicacionNueva->setActiva($_POST['activa']);
