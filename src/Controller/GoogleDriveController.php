@@ -25,7 +25,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 class GoogleDriveController extends AbstractController
 {
 
-
+    //EL name del imput tiene que ser file
     #[Route('/google/drive/save', name: 'drive_create_folder', methods: ['POST'])]
     public function Subir_Archivo(): string
     {
@@ -35,13 +35,16 @@ class GoogleDriveController extends AbstractController
             $client = new Client();
             $client->useApplicationDefaultCredentials();
             $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+            $nombre_tmp = $_FILES["file"]["tmp_name"];
 
-            $file_path = "..\src\img\photo.jpg";
+
+            $file_path = $_FILES["file"]["tmp_name"];
             $file = new \Google_Service_Drive_DriveFile();
             $file->setName($file_path);
             $file->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
             $file->setDescription('Archivo cargado desde PHP');
-            $file->setMimeType('image/png');
+            $mimeType = $_FILES["file"]["type"];
+            $file->setMimeType($mimeType);
 
             $service = new \Google_Service_Drive($client);
             $resultado = $service->files->create(
@@ -53,6 +56,7 @@ class GoogleDriveController extends AbstractController
                 )
             );
             return printf($resultado->id);
+
         } catch (\Google_Service_Exception $gs){
             $mensaje = json_decode($gs->getMessage());
             printf($mensaje);
