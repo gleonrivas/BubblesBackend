@@ -246,7 +246,6 @@ class PublicacionController extends AbstractController
             $client = new Client();
             $client->useApplicationDefaultCredentials();
             $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
-            $nombre_tmp = $_FILES["file"]["tmp_name"];
 
 
             $file_path = $_FILES["file"]["tmp_name"];
@@ -262,10 +261,11 @@ class PublicacionController extends AbstractController
                 $file,
                 array(
                     'data'=> file_get_contents($file_path),
-                    'mimeType'=> 'image/png',
+                    'mimeType'=> $mimeType,
                     'uploadType' => 'media'
                 )
             );
+
             //Obtener Json del body
             $json = json_decode($request->getContent(), true);
 
