@@ -318,6 +318,12 @@ class PublicacionController extends AbstractController
                 $listapublicaciones = $publicacionRepository->findBy($publicaciones);
                 $publicacion = $listapublicaciones[0];
                 //ELIMINAR
+                putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+                $client = new Client();
+                $client->useApplicationDefaultCredentials();
+                $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+                $service = new \Google_Service_Drive($client);
+                $service->files->delete(substr($publicacion->getImagen(), strlen('https://drive.google.com/uc?id=')));
                 $publicacionRepository->remove($publicacion, true);
 
                 return new JsonResponse("{ mensaje: Publicacion eliminada correctamente }", 200, [], true);
