@@ -242,6 +242,11 @@ class PublicacionController extends AbstractController
                                        PublicacionRepository $publicacionRepository): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
+
+            $id_perfil = $_POST['idPerfil'];
+            $perfilActual = $repository->findOneBy(array('id'=>$id_perfil));
+            $publicacionesPorPerfil = count($publicacionRepository->findBy(array('id_perfil'=>$id_perfil)));
+
             putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
             $client = new Client();
             $client->useApplicationDefaultCredentials();
@@ -250,7 +255,7 @@ class PublicacionController extends AbstractController
 
             $file_path = $_FILES["file"]["tmp_name"];
             $file = new \Google_Service_Drive_DriveFile();
-            $file->setName($file_path);
+            $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
             $file->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
             $file->setDescription('Archivo cargado desde PHP');
             $mimeType = $_FILES["file"]["type"];
@@ -271,7 +276,7 @@ class PublicacionController extends AbstractController
             //Obtener Json del body
             $json = json_decode($request->getContent(), true);
 
-            $id_perfil = $_POST['idPerfil'];
+
             $criterio = array('id' => $id_perfil);
             $perfiles = $repository->findBy($criterio);
             $perfil = $perfiles[0];
