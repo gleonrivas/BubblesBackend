@@ -50,12 +50,14 @@ class PublicacionController extends AbstractController
             $lista_dto_publicacion = [];
             foreach ($lista_publicacion as $publicacion) {
                 $publicacionDTO = new PublicacionDTO(
+                    $publicacion->getId(),
                     $publicacion->getTipoPublicacion(),
                     $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                     $publicacion->getTexto(),
                     $publicacion->getImagen(),
                     $publicacion->getTematica(),
-                    $publicacion->getActiva()
+                    $publicacion->getActiva(),
+                    $publicacion->getIdPerfil()->getId()
                 );
 
                 array_push($lista_dto_publicacion, $publicacionDTO);
@@ -90,12 +92,14 @@ class PublicacionController extends AbstractController
             $lista_dto_publicacion = [];
             foreach ($lista_publicacion as $publicacion) {
                 $publicacionDTO = new PublicacionDTO(
+                    $publicacion->getId(),
                     $publicacion->getTipoPublicacion(),
                     $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                     $publicacion->getTexto(),
                     $publicacion->getImagen(),
                     $publicacion->getTematica(),
-                    $publicacion->getActiva()
+                    $publicacion->getActiva(),
+                    $publicacion->getIdPerfil()->getId()
                 );
 
                 array_push($lista_dto_publicacion, $publicacionDTO);
@@ -133,12 +137,14 @@ class PublicacionController extends AbstractController
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
+                        $publicacion->getId(),
                         $publicacion->getTipoPublicacion(),
                         $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
-                        $publicacion->getActiva()
+                        $publicacion->getActiva(),
+                        $publicacion->getIdPerfil()->getId()
                     );
 
                     array_push($lista_dto_publicacion, $publicacionDTO);
@@ -173,12 +179,14 @@ class PublicacionController extends AbstractController
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
+                        $publicacion->getId(),
                         $publicacion->getTipoPublicacion(),
                         $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
-                        $publicacion->getActiva()
+                        $publicacion->getActiva(),
+                        $publicacion->getIdPerfil()->getId()
                     );
 
                     array_push($lista_dto_publicacion, $publicacionDTO);
@@ -213,12 +221,14 @@ class PublicacionController extends AbstractController
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
                     $publicacionDTO = new PublicacionDTO(
+                        $publicacion->getId(),
                         $publicacion->getTipoPublicacion(),
                         $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
                         $publicacion->getTexto(),
                         $publicacion->getImagen(),
                         $publicacion->getTematica(),
-                        $publicacion->getActiva()
+                        $publicacion->getActiva(),
+                        $publicacion->getIdPerfil()->getId()
                     );
 
                     array_push($lista_dto_publicacion, $publicacionDTO);
@@ -361,12 +371,16 @@ class PublicacionController extends AbstractController
             $repo = $publicacionRepository->find(['id'=>$id_publicacion]);
 
             $publicacionDTO = new PublicacionDTO(
+                $repo->getId(),
                 $repo->getTipoPublicacion(),
                 $repo->getFechaPublicacion()->format('Y-m-d H:i:s'),
                 $repo->getTexto(),
                 $repo->getImagen(),
                 $repo->getTematica(),
-                $repo->getActiva());
+                $repo->getActiva(),
+                $repo->getIdPerfil()->getId()
+            );
+
 
             return new JsonResponse($utilidades->toJson($publicacionDTO, null), 200, [], true);
         } else {
