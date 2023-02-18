@@ -5,6 +5,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PublicacionDTO
 {
+    public int $id;
     /**
      * @Assert\NotBlank()
      */
@@ -15,29 +16,48 @@ class PublicacionDTO
      * @Assert\DateTime()
      */
     public string $fecha_publicacion;
-
     public string $texto;
-
     public string $imagen;
     public string $tematica;
     public bool $activa;
+    public int $id_prefil;
 
     /**
+     * @param int $id
      * @param string $tipo_publicacion
      * @param string $fecha_publicacion
      * @param string $texto
      * @param string $imagen
      * @param string $tematica
      * @param bool $activa
+     * @param int $id_perfil
      */
-    public function __construct(string $tipo_publicacion, string $fecha_publicacion, string $texto, string $imagen, string $tematica, bool $activa)
+    public function __construct(int $id, string $tipo_publicacion, string $fecha_publicacion, string $texto, string $imagen, string $tematica, bool $activa, int $id_perfil)
     {
+        $this->id = $id;
         $this->tipo_publicacion = $tipo_publicacion;
         $this->fecha_publicacion = $fecha_publicacion;
         $this->texto = $texto;
         $this->imagen = $imagen;
         $this->tematica = $tematica;
         $this->activa = $activa;
+        $this->id_prefil = $id_perfil;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     /**
@@ -136,6 +156,21 @@ class PublicacionDTO
         $this->activa = $activa;
     }
 
+    /**
+     * @return int
+     */
+    public function getIdPrefil(): int
+    {
+        return $this->id_prefil;
+    }
+
+    /**
+     * @param int $id_prefil
+     */
+    public function setIdPrefil(int $id_prefil): void
+    {
+        $this->id_prefil = $id_prefil;
+    }
 
 
 }
