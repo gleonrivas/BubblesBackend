@@ -114,9 +114,30 @@ class ComentarioController extends AbstractController
         }else{
             return new JsonResponse("{message: Unauthorized}", 401,[], false);
         }
+    }
 
 
+    #[Route('/api/comentario/eliminar/{id}', name: 'app_comentario_eliminar', methods: ['DELETE'])]
+    #[OA\Tag(name: 'Comentarios')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response: 200, description: "Comentario eliminado correctamente")]
+    #[OA\Response(response: 100, description: "El comentario no existe")]
+    #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
+    public function eliminarComentario(Request $request, Utilidades $utilidades, ComentarioRepository $comentarioRepository, int $id): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
 
+            if ($comentarioRepository->findBy(array('id' => $id)) == null) {
+                return new JsonResponse("{ mensaje: El comentario no existe }", 200, [], true);
+            } else {
+
+                $comentarioRepository->remove($comentarioRepository->findOneBy(array('id' => $id)), true);
+
+                return new JsonResponse("{ mensaje: Comentario eliminado correctamente }", 200, [], true);
+            }
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+        }
     }
 
 
