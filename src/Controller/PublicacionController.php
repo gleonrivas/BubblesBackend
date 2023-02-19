@@ -248,7 +248,7 @@ class PublicacionController extends AbstractController
     #[OA\RequestBody(description: "clase Publicacion", required: true, content: new OA\JsonContent(ref: new Model(type: CrearPublicacionDTO::class)))]
     #[OA\Response(response: 200, description: "Publicacion creada correctamente")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
-    public function guardarPublicacion(Request               $request, Utilidades $utilidades, PerfilRepository $repository,
+    public function guardarPublicacion(Request $request, Utilidades $utilidades, PerfilRepository $repository,
                                        PublicacionRepository $publicacionRepository): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
