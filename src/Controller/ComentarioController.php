@@ -86,21 +86,20 @@ class ComentarioController extends AbstractController
     #[Route('api/comentario/guardar', name: 'app_comentario_guardar', methods: ['POST'])]
     #[OA\Tag(name: 'Comentarios')]
     #[Security(name: "apikey")]
-    #[OA\RequestBody(description:"DTO del comentario" ,required: true, content: new OA\JsonContent(ref: new Model(type:CrearComentarioDTO::class)))]
+    #[OA\RequestBody(description:"DTO del comentario" ,required: true,
+        content: new OA\JsonContent(ref: new Model(type:CrearComentarioDTO::class)))]
     #[OA\Response(response: 200,description: "Comentario creado correctamente")]
     #[OA\Response(response: 101,description: "No ha indicado los datos necesarios")]
-    public function save(Utilidades $utilidades, Request $request,ComentarioRepository $comentarioRepository, PerfilRepository $perfilRepository, UsuarioRepository $usuarioRepository): JsonResponse
-    {
-
+    public function save(Utilidades $utilidades,
+                         Request $request,
+                         ComentarioRepository $comentarioRepository,
+                         PerfilRepository $perfilRepository): JsonResponse{
 
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
 
             //Obtener Json del body
             $json  = json_decode($request->getContent(), true);
-            //Obtenemos los parámetros del JSON
-            $comentario = $json['texto'];
-            $perfil = $json['id_perfil'];
 
             //Guardamos el comentario
             $comentarioNuevo = new Comentarios();
