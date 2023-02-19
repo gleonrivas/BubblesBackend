@@ -100,12 +100,12 @@ class ComentarioController extends AbstractController
             $json  = json_decode($request->getContent(), true);
             //Obtenemos los parámetros del JSON
             $comentario = $json['texto'];
-            $perfil = $json['perfil'];
+            $perfil = $json['id_perfil'];
 
             //Guardamos el comentario
             $comentarioNuevo = new Comentarios();
-            $comentarioNuevo->setTexto($comentario);
-            $comentarioNuevo->setIdPerfil($perfilRepository->findOneBy(array('id'=>$perfil)));
+            $comentarioNuevo->setTexto($json['texto']);
+            $comentarioNuevo->setIdPerfil($perfilRepository->findOneBy(['id' => $json['id_perfil']]));
 
             $comentarioRepository->save($comentarioNuevo, true);
 
