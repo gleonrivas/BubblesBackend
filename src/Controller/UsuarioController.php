@@ -113,6 +113,23 @@ class UsuarioController extends AbstractController
 
     }
 
+    #[Route('/api/usuario/getIdUsuarioDelToken', name: 'app_usuario_buscar_nombre', methods: ['GET'])]
+    #[OA\Tag(name: 'Usuarios')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: UsuarioDTO::class))))]
+    public function buscarIdUsuarioPorToken(Request $request, Utilidades $utils, AccessTokenRepository $repository, Utilidades $utilidades):JsonResponse
+    {
+
+        if($utils->comprobarPermisos($request, "usuario"))
+        {
+            $json = $utilidades->toJson($repository->sacarIdUsuarioDelToken($request->headers->get("apikey")),null);
+            return new JsonResponse(json_decode($json), 200,[], false);
+        }
+        else{
+            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+        }
+    }
+
     #[Route('/api/usuario/guardar', name: 'app_usuario_crear', methods: ['POST'])]
     #[OA\Tag(name: 'Usuarios')]
     #[OA\RequestBody(description:"DTO del usuario" ,required: true, content: new OA\JsonContent(ref: new Model(type:CrearUsuarioDTO::class)))]
