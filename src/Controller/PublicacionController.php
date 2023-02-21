@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\DTO\CrearPublicacionDTO;
 use App\Controller\DTO\CrearPublicacionDTOId;
+use App\Controller\DTO\DTOConverters;
 use App\Controller\DTO\MensajeRespuestaDTO;
 use App\Controller\DTO\PublicacionDTO;
 use App\Controller\DTO\UsuarioDTO;
@@ -43,25 +44,16 @@ class PublicacionController extends AbstractController
     #[Security(name: "apikey")]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
-    public function listarPublicacion(Request $request, PublicacionRepository $repository, Utilidades $utilidades): JsonResponse
+    public function listarPublicacion(Request $request, PublicacionRepository $repository, Utilidades $utilidades, DTOConverters $converters): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             //se obtiene la lista de publicacion
             $lista_publicacion = $repository->findAll();
             $lista_dto_publicacion = [];
             foreach ($lista_publicacion as $publicacion) {
-                $publicacionDTO = new PublicacionDTO(
-                    $publicacion->getId(),
-                    $publicacion->getTipoPublicacion(),
-                    $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
-                    $publicacion->getTexto(),
-                    $publicacion->getImagen(),
-                    $publicacion->getTematica(),
-                    $publicacion->getActiva(),
-                    $publicacion->getIdPerfil()->getId()
-                );
+                $publicacionDTO = $converters->publicacionToDTO($publicacion);
 
-                array_push($lista_dto_publicacion, $publicacionDTO);
+                $lista_dto_publicacion[] = $publicacionDTO;
             }
 
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
@@ -81,7 +73,7 @@ class PublicacionController extends AbstractController
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporPerfil(Request    $request, PublicacionRepository $repository,
-                                               Utilidades $utilidades, int $id): JsonResponse
+                                               Utilidades $utilidades, int $id, DTOConverters $converters): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             //se obtiene el parametro
@@ -95,18 +87,10 @@ class PublicacionController extends AbstractController
             $lista_publicacion = $repository->findBy($parametrosBusqueda);
             $lista_dto_publicacion = [];
             foreach ($lista_publicacion as $publicacion) {
-                $publicacionDTO = new PublicacionDTO(
-                    $publicacion->getId(),
-                    $publicacion->getTipoPublicacion(),
-                    $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
-                    $publicacion->getTexto(),
-                    $publicacion->getImagen(),
-                    $publicacion->getTematica(),
-                    $publicacion->getActiva(),
-                    $publicacion->getIdPerfil()->getId()
-                );
 
-                array_push($lista_dto_publicacion, $publicacionDTO);
+                $publicacionDTO = $converters->publicacionToDTO($publicacion);
+
+                $lista_dto_publicacion[] = $publicacionDTO;
             }
 
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
@@ -125,7 +109,8 @@ class PublicacionController extends AbstractController
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporPerfilActivas(Request    $request, PublicacionRepository $repository,
-                                                      Utilidades $utilidades, int $id): JsonResponse
+                                                      Utilidades $utilidades, int $id,
+                                                      DTOConverters $converters): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             //se obtiene el parametro
@@ -146,18 +131,9 @@ class PublicacionController extends AbstractController
             } else {
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
-                    $publicacionDTO = new PublicacionDTO(
-                        $publicacion->getId(),
-                        $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
-                        $publicacion->getTexto(),
-                        $publicacion->getImagen(),
-                        $publicacion->getTematica(),
-                        $publicacion->getActiva(),
-                        $publicacion->getIdPerfil()->getId()
-                    );
+                    $publicacionDTO = $converters->publicacionToDTO($publicacion);
 
-                    array_push($lista_dto_publicacion, $publicacionDTO);
+                    $lista_dto_publicacion[] = $publicacionDTO;
                 }
 
                 $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
@@ -177,7 +153,8 @@ class PublicacionController extends AbstractController
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporTematica(Request    $request, PublicacionRepository $repository,
-                                                 Utilidades $utilidades, string $tematica): JsonResponse
+                                                 Utilidades $utilidades, string $tematica,
+                                                 DTOConverters $converters): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             //se obtiene el parametro
@@ -194,18 +171,9 @@ class PublicacionController extends AbstractController
             } else {
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
-                    $publicacionDTO = new PublicacionDTO(
-                        $publicacion->getId(),
-                        $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
-                        $publicacion->getTexto(),
-                        $publicacion->getImagen(),
-                        $publicacion->getTematica(),
-                        $publicacion->getActiva(),
-                        $publicacion->getIdPerfil()->getId()
-                    );
+                    $publicacionDTO = $converters->publicacionToDTO($publicacion);
 
-                    array_push($lista_dto_publicacion, $publicacionDTO);
+                    $lista_dto_publicacion[] = $publicacionDTO;
                 }
 
                 $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
@@ -225,7 +193,8 @@ class PublicacionController extends AbstractController
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
     public function listarPublicacionporTipo(Request    $request, PublicacionRepository $repository,
-                                             Utilidades $utilidades, string $tipo): JsonResponse
+                                             Utilidades $utilidades, string $tipo,
+                                             DTOConverters $converters): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             //se obtiene el parametro
@@ -242,18 +211,9 @@ class PublicacionController extends AbstractController
             } else {
                 $lista_dto_publicacion = [];
                 foreach ($lista_publicacion as $publicacion) {
-                    $publicacionDTO = new PublicacionDTO(
-                        $publicacion->getId(),
-                        $publicacion->getTipoPublicacion(),
-                        $publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'),
-                        $publicacion->getTexto(),
-                        $publicacion->getImagen(),
-                        $publicacion->getTematica(),
-                        $publicacion->getActiva(),
-                        $publicacion->getIdPerfil()->getId()
-                    );
+                    $publicacionDTO = $converters->publicacionToDTO($publicacion);
 
-                    array_push($lista_dto_publicacion, $publicacionDTO);
+                    $lista_dto_publicacion[] = $publicacionDTO;
                 }
 
                 $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
@@ -413,22 +373,13 @@ class PublicacionController extends AbstractController
     #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
-    public function obtenerPublicacion(Request $request, PublicacionRepository $publicacionRepository, Utilidades $utilidades, int $id_publicacion): JsonResponse
+    public function obtenerPublicacion(Request $request, PublicacionRepository $publicacionRepository, Utilidades $utilidades, int $id_publicacion, DTOConverters $converter): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             //se obtiene la lista de publicacion
             $repo = $publicacionRepository->find(['id'=>$id_publicacion]);
 
-            $publicacionDTO = new PublicacionDTO(
-                $repo->getId(),
-                $repo->getTipoPublicacion(),
-                $repo->getFechaPublicacion()->format('Y-m-d H:i:s'),
-                $repo->getTexto(),
-                $repo->getImagen(),
-                $repo->getTematica(),
-                $repo->getActiva(),
-                $repo->getIdPerfil()->getId()
-            );
+            $publicacionDTO = $converter->publicacionToDTO($repo);
 
 
             return new JsonResponse($utilidades->toJson($publicacionDTO, null), 200, [], true);
