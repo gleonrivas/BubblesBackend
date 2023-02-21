@@ -66,23 +66,4 @@ class GoogleDriveController extends AbstractController
         return printf('algo anda mal');
     }
 
-    #[Route('/google/drive/view', name: 'drive_view_file', methods: ['POST'])]
-    function watchFile($fileId, $channelId, $channelType, $channelAddress) {
-
-        putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
-        $client = new Client();
-        $client->useApplicationDefaultCredentials();
-        $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
-        $service = new \Google_Service_Drive($client);
-        $channel = new Google_Service_Drive_Channel();
-        $channel->setId($channelId);
-        $channel->setType($channelType);
-        $channel->setAddress($channelAddress);
-        try {
-            return $service->files->watch($fileId, $channel);
-        } catch(Exception $e) {
-            print "An error occurred: " . $e->getMessage();
-        }
-        return NULL;
-    }
 }
