@@ -20,28 +20,13 @@ class PublicacionDTO
     public string $imagen;
     public string $tematica;
     public bool $activa;
-    public int $id_prefil;
+    public PerfilDTO $id_perfil;
 
     /**
-     * @param int $id
-     * @param string $tipo_publicacion
-     * @param string $fecha_publicacion
-     * @param string $texto
-     * @param string $imagen
-     * @param string $tematica
-     * @param bool $activa
-     * @param int $id_perfil
      */
-    public function __construct(int $id, string $tipo_publicacion, string $fecha_publicacion, string $texto, string $imagen, string $tematica, bool $activa, int $id_perfil)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->tipo_publicacion = $tipo_publicacion;
-        $this->fecha_publicacion = $fecha_publicacion;
-        $this->texto = $texto;
-        $this->imagen = $imagen;
-        $this->tematica = $tematica;
-        $this->activa = $activa;
-        $this->id_prefil = $id_perfil;
+
     }
 
     /**
@@ -157,20 +142,27 @@ class PublicacionDTO
     }
 
     /**
-     * @return int
+     * @return PerfilDTO
      */
-    public function getIdPrefil(): int
+    public function getIdPerfil(): PerfilDTO
     {
-        return $this->id_prefil;
+        return $this->id_perfil;
     }
 
     /**
-     * @param int $id_prefil
+     * @param PerfilDTO $id_perfil
      */
-    public function setIdPrefil(int $id_prefil): void
+    public function setIdPerfil(PerfilDTO $id_perfil): void
     {
-        $this->id_prefil = $id_prefil;
+        $this->id_perfil = $id_perfil;
     }
+
+    /**
+     * @return int
+     */
+
+
+
 
 
 }
