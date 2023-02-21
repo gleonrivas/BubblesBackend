@@ -6,7 +6,6 @@ class CrearMensajeDTO
 {
 
     private ?string $mensaje ;
-    private ?string $fecha_envio;
     private ?string $tipoMensaje ;
     private ?string $imagen ;
     private ?bool $leido;
@@ -36,18 +35,6 @@ class CrearMensajeDTO
     /**
      * @return string|null
      */
-    public function getFechaEnvio(): ?string
-    {
-        return $this->fecha_envio;
-    }
-
-    /**
-     * @param string|null $fecha_envio
-     */
-    public function setFechaEnvio(?string $fecha_envio): void
-    {
-        $this->fecha_envio = $fecha_envio;
-    }
 
     /**
      * @return string|null

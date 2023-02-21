@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "bubbles-377817",
+  "private_key_id": "2e196d93ff9ec67dfa14ff5157d81a231a8c805c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCwJ0Ysn83Lkewg\n4MOztCufk6mvSdHYeayuV0HDN2WbfHrQerzIMdK/xD0C9di8gruWuirpu8OHzWDa\nHClxoG07VD1EYCUlokydw/AJFDmu0+oVLZDv8UZJIEni4qSBwBbNWRRsFB75/g/5\n6rOnukC89TpIHCohuaFIFzjd9zlXc/mhrtx/xJPezkiWMUBsg6+Ujaz5LUKu2LYN\npcLT4it3yLVYFyQLm1HbIi0957q5QE9PSUP2P/0w0m+KfNpibnR5xKKYJnyZPSmh\nKi5qvEz2S3bJMXlRha/YOoU8QleawfA/8rxD6lnSj45i9W5l5JRs0U/TNwAGiBvo\no49LIVEnAgMBAAECggEAIh6ZUw9o9yM+j2e5wFcHlBMv7MnpoXp/3gz8qelS/vjv\neO4tHsG3xnkmMCqaXnkcCKfqo/dAek9nkRefV2jxf2pjq5jL2SxEltJa7gdC3QAi\n+RMoXbFoIcXlSdMIdjFUuVWlxQFotpdlVM0HG1fSLkd5kHoUFxAzkxkcZLH8I1n7\nHnAhhUOuRS4/++iHEPI2XlR5cAUJzvQ4n9kxkHaz8ostq9V+d9jlHdeAg2qARE1P\nxsBvzhyySvMBMvIwYsVyID2wPFg6Kvlocqd0RJtqdZd8zol6AMvMIy+M2QZMzhaZ\nNCr8jSKML4fhe6lZI/J3CgtJyp3KqbcQ9a2+5XRKoQKBgQDUhhF6wdLtY09bkUSx\niubJYkGzTHcnEyxxvKvhRTOt4+1/QpN716WiRpZy5gFM9SXIT/eQDYx9SbttUHIy\nSBhbB7HgXvGH8cc6sE8Jpgj0RgKteK0bOJyor3IB+7vTejUxpo0bfoecPnut6UV7\nrSRokTwB+AA8W6eWEt984ouybwKBgQDUMHuK2sIvwxQEaObZ9Bm022Z6u8lkFqaW\nmKc/n4ksXCwymEtDlTfGHLNzIqOFYrSaCKHLfko4PH28h9FlVKmnRC1J8l75MApL\nJKWaDvY9M2lJndTnWTTq8i1jLMdqv8zuIzboHpUXUe2zT3ss0R7Qu6HPnN2uVzrR\nKfgXWG1IyQKBgQCT+BynedggTGrueEB51RpG0NCpw+2aGTFyp0iM+h+3TOEJIBOL\nwGOkjr0llpsFOBJsW7EkbSqJ+RI0VDSOab/7cWoZrEFCw8ZRSHxfXWkSmsQ2f7UX\nJN1+XVllpB3sakQrI6lPoVNOJ/r45Vfpem3FGInNXRzc6XvPc6iDTUCypQKBgGE+\nku/xD7u56KuYs+vBTiKvxkiLVWG0a8Zq0YN8Bu64k1zgpOWlNjlqH+etQUm5EdHi\nENxk1XjuaCWGDTYmVdYdja/tDw+er6j+c5KmNr2XmTIuzkr0fCcMtDZWaFII8s9U\nfi5lDajxWEGsNGQ2tquswhyW5JWozoDbfiKc2QDZAoGAQI/CBCBKqjIUZpNsIjQ3\nBNaPqTii9gkkaJpMz5ElUmOI74qpLhhvAZqffNkQ5apGK8TxpnUufgkFGw7UJD4a\n5BlLGP2fWQLFYdNHlaRVjxtyvX4jL94W32A2jM+R6ZFE846DkoW4TwI5wvEhG44W\nAGd5SP9IETkXmPbLgtyzyRM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "publicaciones-bubbles@bubbles-377817.iam.gserviceaccount.com",
+  "client_id": "101318013668622479844",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/publicaciones-bubbles%40bubbles-377817.iam.gserviceaccount.com"
+}
