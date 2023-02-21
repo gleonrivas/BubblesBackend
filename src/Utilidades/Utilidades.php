@@ -69,7 +69,7 @@ class Utilidades
 
     }
 
-    public function  verify($passwordPlain, $passwordBD):bool
+    public function verify($passwordPlain, $passwordBD):bool
     {
         $factory = new PasswordHasherFactory([
             'common' => ['algorithm' => 'bcrypt'],
@@ -112,6 +112,38 @@ class Utilidades
 
         return $token;
     }
+
+    public function  cambiarAccessToken(int $id_perfil ,Usuario $user, AccessTokenRepository $apiKeyRepository):string
+    {
+
+        //GENERO UN OBJETO CON API KEY NUEVO
+        $accessToken = new AccessToken();
+        $accessToken->setIdUsuario($user);
+        $fechaActual5hour = date("Y-m-d H:i:s");
+        $fechaExpiracion = DateTime::createFromFormat('Y-m-d H:i:s', $fechaActual5hour);
+        $fechaExpiracion->modify('+5 hours');
+        $accessToken->setFechaExpiracion($fechaExpiracion);
+
+        $tokenData = [
+            'user_id' => $user->getId(),
+            'username' => $user->getNombre(),
+            'user_rol' => $user->getRol()->getNombre(),
+            'fecha_expiracion' => $fechaExpiracion,
+            'id_perfil' => $id_perfil
+        ];
+
+        $secret = $user->getContrasena();
+
+        $token = Token::customPayload($tokenData, $secret);
+
+        $accessToken->setToken($token);
+
+        $apiKeyRepository->save($accessToken,true);
+
+        return $token;
+    }
+
+
 
     public function infoToken(Request $request):UsuarioTokenInfoDTO{
         $token = $request->headers->get("apikey");

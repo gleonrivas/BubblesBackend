@@ -9,10 +9,12 @@ use App\Controller\DTO\PublicacionDTO;
 use App\Controller\DTO\UsuarioDTO;
 use App\Entity\Publicacion;
 use App\Entity\Usuario;
+use App\Repository\AccessTokenRepository;
 use App\Repository\PerfilRepository;
 use App\Repository\PublicacionRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
+use Google\Client;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -266,23 +268,54 @@ class PublicacionController extends AbstractController
                                        PublicacionRepository $publicacionRepository): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
+
+            $id_perfil = $_POST['idPerfil'];
+            $perfilActual = $repository->findOneBy(array('id'=>$id_perfil));
+            $publicacionesPorPerfil = count($publicacionRepository->findBy(array('id_perfil'=>$id_perfil)));
+
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+            $client = new Client();
+            $client->useApplicationDefaultCredentials();
+            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+
+
+            $file_path = $_FILES["file"]["tmp_name"];
+            $file = new \Google_Service_Drive_DriveFile();
+            $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
+            $file->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+            $file->setDescription('Archivo cargado desde PHP');
+            $mimeType = $_FILES["file"]["type"];
+            $file->setMimeType($mimeType);
+
+
+
+            $service = new \Google_Service_Drive($client);
+            $resultado = $service->files->create(
+                $file,
+                array(
+                    'data'=> file_get_contents($file_path),
+                    'mimeType'=> $mimeType,
+                    'uploadType' => 'media'
+                )
+            );
+
             //Obtener Json del body
             $json = json_decode($request->getContent(), true);
 
-            $id_perfil = $json['idPerfil'];
+
             $criterio = array('id' => $id_perfil);
             $perfiles = $repository->findBy($criterio);
             $perfil = $perfiles[0];
-            $datetime = new \DateTime($json['fechaPublicacion']);
+            $datetime = new \DateTime(date("Y-m-d H:i:s"));
 
             //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
             $publicacionNueva = new Publicacion();
-            $publicacionNueva->setTipoPublicacion($json['tipoPublicacion']);
-            $publicacionNueva->setTexto($json['texto']);
-            $publicacionNueva->setImagen($json['imagen']);
-            $publicacionNueva->setTematica($json['tematica']);
+            $publicacionNueva->setTipoPublicacion($_POST['tipoPublicacion']);
+            $publicacionNueva->setTexto($_POST['texto']);
+            $publicacionNueva->setImagen('https://drive.google.com/uc?id='.$resultado->getId());
+            $publicacionNueva->setTematica($_POST['tematica']);
             $publicacionNueva->setFechaPublicacion($datetime);
-            $publicacionNueva->setActiva($json['activa']);
+            $publicacionNueva->setActiva($_POST['activa']);
             $publicacionNueva->setIdPerfil($perfil);
 
             //GUARDAR
@@ -318,6 +351,12 @@ class PublicacionController extends AbstractController
                 $listapublicaciones = $publicacionRepository->findBy($publicaciones);
                 $publicacion = $listapublicaciones[0];
                 //ELIMINAR
+                putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+                $client = new Client();
+                $client->useApplicationDefaultCredentials();
+                $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+                $service = new \Google_Service_Drive($client);
+                $service->files->delete(substr($publicacion->getImagen(), strlen('https://drive.google.com/uc?id=')));
                 $publicacionRepository->remove($publicacion, true);
 
                 $mensaje = new MensajeRespuestaDTO("mensaje: Publicacion eliminada correctamente");
@@ -394,6 +433,33 @@ class PublicacionController extends AbstractController
             $json = $utilidades->toJson($mensaje,null);
             return new JsonResponse($json, 401, [], true);
         }
+    }
+
+    #[Route('/api/publicacion/{id_publicacion}', name: 'app_publicacaion_id', methods: ['GET'])]
+    #[OA\Tag(name: 'Publicaciones')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
+        items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
+    public function obtenerPublicacion(Request $request, PublicacionRepository $publicacionRepository, Utilidades $utilidades, int $id_publicacion): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+            //se obtiene la lista de publicacion
+            $repo = $publicacionRepository->find(['id'=>$id_publicacion]);
+
+            $publicacionDTO = new PublicacionDTO(
+                $repo->getTipoPublicacion(),
+                $repo->getFechaPublicacion()->format('Y-m-d H:i:s'),
+                $repo->getTexto(),
+                $repo->getImagen(),
+                $repo->getTematica(),
+                $repo->getActiva());
+
+            return new JsonResponse($utilidades->toJson($publicacionDTO, null), 200, [], true);
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+        }
+
     }
 
 }

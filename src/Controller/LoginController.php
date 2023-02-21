@@ -6,6 +6,7 @@ use App\Controller\DTO\LoginDTO;
 use App\Entity\AccessToken;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
+use App\Repository\PerfilRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,7 +25,7 @@ class LoginController extends AbstractController
 
     public function __construct(ManagerRegistry $managerRegistry)
     {
-        $this-> doctrine = $managerRegistry;
+        $this->doctrine = $managerRegistry;
     }
 
 
@@ -35,7 +36,7 @@ class LoginController extends AbstractController
     {
 
         //CARGAR REPOSITORIOS
-        $em = $this-> doctrine->getManager();
+        $em = $this->doctrine->getManager();
 
 
         //Cargar datos del cuerpo
@@ -46,27 +47,27 @@ class LoginController extends AbstractController
         $password = $json_body["password"];
 
         //Validar que los credenciales son correcto
-        if($email != null and $password !=null){
+        if ($email != null and $password != null) {
 
-            $user = $usuarioRepository->findOneBy(array("email"=> $email));
+            $user = $usuarioRepository->findOneBy(array("email" => $email));
 
-            if($user != null){
-                $verify = $utils-> verify($password, $user->getContrasena());
-                if($verify){
+            if ($user != null) {
+                $verify = $utils->verify($password, $user->getContrasena());
+                if ($verify) {
 
-                    $token = $accessTokenRepository-> findAccessTokenValida($user);
+                    $token = $accessTokenRepository->findAccessTokenValida($user);
 
-                    if($token != null){
+                    if ($token != null) {
                         return $this->json([
                             'token' => $token->getToken()
                         ]);
-                    }else{
+                    } else {
                         $tokenNuevo = $utils->generateAccessToken($user, $accessTokenRepository);
                         return $this->json([
                             'token' => $tokenNuevo
                         ]);
                     }
-                }else{
+                } else {
                     return $this->json([
                         'message' => "Contraseña no válida"
                     ], 401);
@@ -78,15 +79,45 @@ class LoginController extends AbstractController
             ], 401);
 
 
-        }else{
+        } else {
             return $this->json([
-                'message' => "No ha indicado usuario y contraseña" ,
+                'message' => "No ha indicado usuario y contraseña",
             ]);
 
         }
 
 
-
     }
 
+
+    #[Route('/api/login/cambiar/{id_usuario}/{id_perfil}', name: 'app_login_cambiar', methods: ["POST"])]
+    #[OA\Tag(name: 'Login')]
+    public function loginPerfil(int $id_usuario, int $id_perfil, Request $request, Utilidades $utils, PerfilRepository $perfilRepository, UsuarioRepository $usuarioRepository, AccessTokenRepository $accessTokenRepository): JsonResponse
+    {
+
+        //CARGAR REPOSITORIOS
+        $em = $this->doctrine->getManager();
+        //Cargar datos del cuerpo
+        $json_body = json_decode($request->getContent(), true);
+
+        $usuario = $usuarioRepository->findOneBy(array('id' => $id_usuario));
+
+        $token = $accessTokenRepository->findAccessTokenValida($usuario);
+
+
+        if ($token != null) {
+            $accessTokenRepository->remove($token, true);
+            $tokenNuevo = $utils->cambiarAccessToken($id_perfil, $usuario, $accessTokenRepository);
+            return $this->json([
+                'token' => $tokenNuevo
+            ]);
+        } else {
+            $tokenNuevo = $utils->cambiarAccessToken($id_perfil, $usuario, $accessTokenRepository);
+            return $this->json([
+                'token' => $tokenNuevo
+            ]);
+        }
+    }
 }
+
+
