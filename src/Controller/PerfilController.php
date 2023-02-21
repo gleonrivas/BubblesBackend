@@ -151,7 +151,47 @@ class PerfilController extends AbstractController
             }
             return new JsonResponse($lista_Json, 200,[], false);
         }else{
-            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 200,[], true);
+        }
+
+
+    }
+    #[Route('api/perfil/listarPorUsuarioId/{id}', name: 'app_perfil_listarPorIdUsuario', methods: ['GET'])]
+    #[OA\Tag(name: 'Perfiles')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
+    public function listarPorIdUsuario(Request $request, int $id,
+                                       PerfilRepository $perfilRepository,
+                                       Utilidades $utilidades):JsonResponse
+    {
+        //Se obtiene la lista de perfiles de la BBDD
+        if($utilidades->comprobarPermisos($request, "usuario"))
+        {
+            $lista_perfiles = $perfilRepository->findBy(array('id_usuario'=>$id));
+            //Se transforma a Json
+            //se devuelve el Json transformado
+            $lista_perfiles_dto = [];
+            foreach ($lista_perfiles as $perfil){
+                $perfilDTO = new PerfilDTO();
+                $perfilDTO->setId($perfil->getId());
+                $perfilDTO->setFotoPerfil($perfil->getFotoPerfil());
+                $perfilDTO->setDescripcion($perfil->getDescripcion());
+                $perfilDTO->setUsername($perfil->getUsername());
+                $perfilDTO->setTipoCuenta($perfil->getTipoCuenta());
+                array_push($lista_perfiles_dto, $perfilDTO);
+            }
+
+            $lista_Json = $utilidades->toJson($lista_perfiles_dto, null);
+            return new JsonResponse($lista_Json, 200, [], true);
+
+        }else{
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 401,[], true);
         }
 
 
