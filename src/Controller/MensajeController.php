@@ -97,7 +97,7 @@ class MensajeController extends AbstractController
             $json  = json_decode($request->getContent(), true);
             //Obtenemos los parámetros del JSON
             $mensaje = $json['mensaje'];
-            $fecha_envio = new \DateTime($json['fechaEnvio']);
+            $fecha_envio = new \DateTime(date("Y-m-d H:i:s"));
             $tipo_mensaje = $json['tipoMensaje'];
             $imagen = $json['imagen'];
             $leido = $json['leido'];
