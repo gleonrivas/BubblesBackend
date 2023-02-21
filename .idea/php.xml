@@ -67,7 +67,6 @@
       <path value="$PROJECT_DIR$/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/vendor/psr/container" />
       <path value="$PROJECT_DIR$/vendor/psr/cache" />
-      <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" />
       <path value="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" />
@@ -88,7 +87,6 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/common" />
       <path value="$PROJECT_DIR$/vendor/doctrine/collections" />
       <path value="$PROJECT_DIR$/vendor/doctrine/persistence" />
-      <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/symfony/stopwatch" />
       <path value="$PROJECT_DIR$/vendor/laminas/laminas-code" />
       <path value="$PROJECT_DIR$/vendor/friendsofphp/proxy-manager-lts" />
@@ -113,6 +111,34 @@
       <path value="$PROJECT_DIR$/vendor/google/cloud-core" />
       <path value="$PROJECT_DIR$/vendor/google/cloud-storage" />
       <path value="$PROJECT_DIR$/vendor/google/crc32" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/vendor/symfony/cache-contracts~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-bundle~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/event-manager~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/service-contracts~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/collections~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/cache~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/flex~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/psr/cache~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/psr/log~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/dbal~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/nikic/php-parser~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/event-dispatcher-contracts~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/psr/container~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/psr/event-dispatcher~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/lexer~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-grapheme~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/common~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/deprecations~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/orm~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/instantiator~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/inflector~desarrollo" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/sql-formatter~desarrollo" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
