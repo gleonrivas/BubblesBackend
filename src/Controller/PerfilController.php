@@ -106,7 +106,7 @@ class PerfilController extends AbstractController
         }
     }
 
-    #[Route('api/perfilesDeUsuario/{id}', name: 'app_perfil_id', methods: ['GET'])]
+    #[Route('api/perfilesDeUsuario/{id}', name: 'app_perfiles_id_usuario', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\HeaderParameter(name: "apiKey", required: true)]
@@ -122,11 +122,10 @@ class PerfilController extends AbstractController
                     $json = $utilidades->toJson($converters->perfilToDto($perfil), null);
                     $lista_Json[] = json_decode($json);
                 }
-
                 return new JsonResponse($lista_Json, 200, [], false);} else{
-            return new JsonResponse("{message: Unauthorized}", 401,[], false);
-        }
+            return new JsonResponse("{message: Unauthorized}", 401,[], false);}
     }
+
 
     #[Route('api/perfil/listar/{username}', name: 'app_perfil_listarPorNombre', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
