@@ -25,6 +25,9 @@ class Comentarios
     #[ORM\OneToMany(mappedBy: 'id_comentario', targetEntity: Like::class)]
     private Collection $id_comentario;
 
+    #[ORM\ManyToOne(inversedBy: 'comentarios')]
+    #[ORM\JoinColumn(name: "id_publicacion" , nullable: true)]
+    private ?Publicacion $id_publicacion;
     public function __construct()
     {
     }
@@ -91,6 +94,22 @@ class Comentarios
     public function setIdComentario(Collection $id_comentario): void
     {
         $this->id_comentario = $id_comentario;
+    }
+
+    /**
+     * @return Publicacion|null
+     */
+    public function getIdPublicacion(): ?Publicacion
+    {
+        return $this->id_publicacion;
+    }
+
+    /**
+     * @param Publicacion|null $id_publicacion
+     */
+    public function setIdPublicacion(?Publicacion $id_publicacion): void
+    {
+        $this->id_publicacion = $id_publicacion;
     }
 
 }

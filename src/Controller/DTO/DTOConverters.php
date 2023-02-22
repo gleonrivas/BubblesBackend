@@ -57,6 +57,8 @@ class DTOConverters
        $comentarioDTO->setId($comentario->getId());
        $comentarioDTO->setTexto($comentario->getTexto());
        $comentarioDTO->setIdPerfil($this->perfilToDto($comentario->getIdPerfil()));
+       $comentarioDTO->setIdPublicacion($this->publicacionToDTO($comentario->getIdPublicacion()));
+
 
         return $comentarioDTO;
 

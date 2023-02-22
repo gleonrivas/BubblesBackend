@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\PublicacionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -41,10 +40,12 @@ class Publicacion
     #[ORM\OneToMany(mappedBy: 'id_publicacion', targetEntity: Like::class)]
     private Collection $publicacion;
 
+    #[ORM\OneToMany(mappedBy: 'id_publicacion', targetEntity: Comentarios::class)]
+    private Collection $comentario;
+
     public function __construct()
     {
     }
-
 
     /**
      * @return int|null
@@ -52,70 +53,6 @@ class Publicacion
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getTipoPublicacion(): ?string
-    {
-        return $this->tipo_publicacion;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getTexto(): ?string
-    {
-        return $this->texto;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getImagen(): ?string
-    {
-        return $this->imagen;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getTematica(): ?string
-    {
-        return $this->tematica;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getFechaPublicacion(): ?\DateTimeInterface
-    {
-        return $this->fecha_publicacion;
-    }
-
-    /**
-     * @return bool|null
-     */
-    public function getActiva(): ?bool
-    {
-        return $this->activa;
-    }
-
-    /**
-     * @return Perfil|null
-     */
-    public function getIdPerfil(): ?Perfil
-    {
-        return $this->id_perfil;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getPublicacion(): Collection
-    {
-        return $this->publicacion;
     }
 
     /**
@@ -127,11 +64,27 @@ class Publicacion
     }
 
     /**
+     * @return string|null
+     */
+    public function getTipoPublicacion(): ?string
+    {
+        return $this->tipo_publicacion;
+    }
+
+    /**
      * @param string|null $tipo_publicacion
      */
     public function setTipoPublicacion(?string $tipo_publicacion): void
     {
         $this->tipo_publicacion = $tipo_publicacion;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTexto(): ?string
+    {
+        return $this->texto;
     }
 
     /**
@@ -143,11 +96,27 @@ class Publicacion
     }
 
     /**
+     * @return string|null
+     */
+    public function getImagen(): ?string
+    {
+        return $this->imagen;
+    }
+
+    /**
      * @param string|null $imagen
      */
     public function setImagen(?string $imagen): void
     {
         $this->imagen = $imagen;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTematica(): ?string
+    {
+        return $this->tematica;
     }
 
     /**
@@ -159,11 +128,27 @@ class Publicacion
     }
 
     /**
+     * @return \DateTimeInterface|null
+     */
+    public function getFechaPublicacion(): ?\DateTimeInterface
+    {
+        return $this->fecha_publicacion;
+    }
+
+    /**
      * @param \DateTimeInterface|null $fecha_publicacion
      */
     public function setFechaPublicacion(?\DateTimeInterface $fecha_publicacion): void
     {
         $this->fecha_publicacion = $fecha_publicacion;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getActiva(): ?bool
+    {
+        return $this->activa;
     }
 
     /**
@@ -175,11 +160,27 @@ class Publicacion
     }
 
     /**
+     * @return Perfil|null
+     */
+    public function getIdPerfil(): ?Perfil
+    {
+        return $this->id_perfil;
+    }
+
+    /**
      * @param Perfil|null $id_perfil
      */
     public function setIdPerfil(?Perfil $id_perfil): void
     {
         $this->id_perfil = $id_perfil;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPublicacion(): Collection
+    {
+        return $this->publicacion;
     }
 
     /**
@@ -190,6 +191,21 @@ class Publicacion
         $this->publicacion = $publicacion;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getComentario(): Collection
+    {
+        return $this->comentario;
+    }
+
+    /**
+     * @param Collection $comentario
+     */
+    public function setComentario(Collection $comentario): void
+    {
+        $this->comentario = $comentario;
+    }
 
 
 
