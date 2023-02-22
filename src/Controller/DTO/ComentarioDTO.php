@@ -3,12 +3,15 @@
 namespace App\Controller\DTO;
 
 
+use App\Entity\Publicacion;
+
 class ComentarioDTO
 {
 
     private int $id;
     private string $texto;
     private ?PerfilDTO $id_perfil;
+    private ?PublicacionDTO $id_publicacion;
 
     public function __construct()
     {
@@ -61,6 +64,23 @@ class ComentarioDTO
     {
         $this->id_perfil = $id_perfil;
     }
+
+    /**
+     * @return PublicacionDTO|null
+     */
+    public function getIdPublicacion(): ?PublicacionDTO
+    {
+        return $this->id_publicacion;
+    }
+
+    /**
+     * @param PublicacionDTO|null $id_publicacion
+     */
+    public function setIdPublicacion(?PublicacionDTO $id_publicacion): void
+    {
+        $this->id_publicacion = $id_publicacion;
+    }
+
 
 
 

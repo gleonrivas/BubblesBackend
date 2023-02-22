@@ -5,6 +5,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PublicacionDTO
 {
+    public int $id;
     /**
      * @Assert\NotBlank()
      */
@@ -15,29 +16,33 @@ class PublicacionDTO
      * @Assert\DateTime()
      */
     public string $fecha_publicacion;
-
     public string $texto;
-
     public string $imagen;
     public string $tematica;
     public bool $activa;
+    public PerfilDTO $id_perfil;
 
     /**
-     * @param string $tipo_publicacion
-     * @param string $fecha_publicacion
-     * @param string $texto
-     * @param string $imagen
-     * @param string $tematica
-     * @param bool $activa
      */
-    public function __construct(string $tipo_publicacion, string $fecha_publicacion, string $texto, string $imagen, string $tematica, bool $activa)
+    public function __construct()
     {
-        $this->tipo_publicacion = $tipo_publicacion;
-        $this->fecha_publicacion = $fecha_publicacion;
-        $this->texto = $texto;
-        $this->imagen = $imagen;
-        $this->tematica = $tematica;
-        $this->activa = $activa;
+
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 
     /**
@@ -135,6 +140,28 @@ class PublicacionDTO
     {
         $this->activa = $activa;
     }
+
+    /**
+     * @return PerfilDTO
+     */
+    public function getIdPerfil(): PerfilDTO
+    {
+        return $this->id_perfil;
+    }
+
+    /**
+     * @param PerfilDTO $id_perfil
+     */
+    public function setIdPerfil(PerfilDTO $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
+    }
+
+    /**
+     * @return int
+     */
+
+
 
 
 

@@ -5,6 +5,7 @@ namespace App\Controller\DTO;
 use App\Entity\Comentarios;
 use App\Entity\Mensaje;
 use App\Entity\Perfil;
+use App\Entity\Publicacion;
 use App\Entity\Seguidor;
 use App\Entity\Usuario;
 
@@ -56,6 +57,8 @@ class DTOConverters
        $comentarioDTO->setId($comentario->getId());
        $comentarioDTO->setTexto($comentario->getTexto());
        $comentarioDTO->setIdPerfil($this->perfilToDto($comentario->getIdPerfil()));
+       $comentarioDTO->setIdPublicacion($this->publicacionToDTO($comentario->getIdPublicacion()));
+
 
         return $comentarioDTO;
 
@@ -76,6 +79,22 @@ class DTOConverters
         $mensajeDTO->setReceptor($this->perfilToDto($mensaje->getReceptor()));
 
         return $mensajeDTO;
+
+    }
+
+    public function publicacionToDTO(Publicacion $publicacion):PublicacionDTO
+    {
+        $publicacionDTO = new PublicacionDTO();
+        $publicacionDTO->setId($publicacion->getId());
+        $publicacionDTO->setTipoPublicacion($publicacion->getTipoPublicacion());
+        $publicacionDTO->setFechaPublicacion($publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'));
+        $publicacionDTO->setTexto($publicacion->getTexto());
+        $publicacionDTO->setImagen($publicacion->getImagen());
+        $publicacionDTO->setTematica($publicacion->getTematica());
+        $publicacionDTO->setActiva($publicacion->getActiva());
+        $publicacionDTO->setIdPerfil($this->perfilToDto($publicacion->getIdPerfil()));
+
+        return $publicacionDTO;
 
     }
 

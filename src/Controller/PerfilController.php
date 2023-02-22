@@ -16,6 +16,7 @@ use App\Repository\PerfilRepository;
 use App\Repository\RolEntityRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
+use Doctrine\DBAL\Portability\Converter;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -103,9 +104,29 @@ class PerfilController extends AbstractController
 
             return new JsonResponse("{message: Unauthorized}", 401,[], false);
         }
-
-
     }
+
+    #[Route('api/perfilesDeUsuario/{id}', name: 'app_perfiles_id_usuario', methods: ['GET'])]
+    #[OA\Tag(name: 'Perfiles')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
+    public function perfilesPorIdUsuario(Request $request,int $id,DTOConverters $converters, PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
+    {
+        if($utilidades->comprobarPermisos($request, "usuario"))
+            if($perfilRepository->findBy(['id_usuario'=>$id])==null || $perfilRepository->findBy(['id_usuario'=>$id])==0)
+                return new JsonResponse("{message: No tiene ningún perfil}", 400,[], false); else{
+                $lista_perfiles = $perfilRepository->findBy(['id_usuario'=>$id]);
+                $lista_Json = [];
+                foreach ($lista_perfiles as $perfil){
+                    $json = $utilidades->toJson($converters->perfilToDto($perfil), null);
+                    $lista_Json[] = json_decode($json);
+                }
+                return new JsonResponse($lista_Json, 200, [], false);} else{
+            return new JsonResponse("{message: Unauthorized}", 401,[], false);}
+    }
+
+
     #[Route('api/perfil/listar/{username}', name: 'app_perfil_listarPorNombre', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
