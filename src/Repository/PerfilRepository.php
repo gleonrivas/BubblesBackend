@@ -80,6 +80,17 @@ class PerfilRepository extends ServiceEntityRepository
         $query->setParameter(5, $id_perfil);
         $query->execute();
 
+    }
+
+    public function insertarCarpeta(string $carpeta, int $id)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery('update perfil set carpeta = ? where id = ?', $rsm);
+        $query->setParameter(1, $carpeta);
+        $query->setParameter(2, $id);
+        $query->execute();
 
     }
 

@@ -16,6 +16,7 @@ use App\Repository\PublicacionRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
 use Google\Client;
+use Google_Service_Drive_DriveFile;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -247,19 +248,38 @@ class PublicacionController extends AbstractController
             $client = new Client();
             $client->useApplicationDefaultCredentials();
             $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
-
-
-            $file_path = $_FILES["file"]["tmp_name"];
-            $file = new \Google_Service_Drive_DriveFile();
-            $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
-            $file->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
-            $file->setDescription('Archivo cargado desde PHP');
-            $mimeType = $_FILES["file"]["type"];
-            $file->setMimeType($mimeType);
-
-
-
             $service = new \Google_Service_Drive($client);
+
+            if ($perfilActual->getCarpeta() == null){
+
+                $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                    'name' => $perfilActual->getUsername(),
+                    'mimeType' => 'application/vnd.google-apps.folder'));
+                $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+                $fileFolder = $service->files->create($fileMetadata, array(
+                    'fields' => 'id'));
+                $repository->insertarCarpeta($fileFolder->getId(), $perfilActual->getId());
+                $file_path = $_FILES["file"]["tmp_name"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
+                $file->setParents(array($fileFolder->getId()));
+                $file->setDescription('Archivo cargado desde PHP');
+                $mimeType = $_FILES["file"]["type"];
+                $file->setMimeType($mimeType);
+
+            }else{
+
+                $file_path = $_FILES["file"]["tmp_name"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
+                $file->setParents(array($perfilActual->getCarpeta()));
+                $file->setDescription('Archivo cargado desde PHP');
+                $mimeType = $_FILES["file"]["type"];
+                $file->setMimeType($mimeType);
+            }
+
+
+
             $resultado = $service->files->create(
                 $file,
                 array(

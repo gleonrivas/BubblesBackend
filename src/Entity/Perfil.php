@@ -26,6 +26,9 @@ class Perfil
     #[ORM\Column(length: 500)]
     private ?string $foto_perfil = null;
 
+    #[ORM\Column(length: 500)]
+    private ?string $carpeta = null;
+
     #[ORM\ManyToOne(inversedBy: 'perfil')]
     #[ORM\JoinColumn(name: "id_usuario" , nullable: false)]
     private ?Usuario $id_usuario;
@@ -56,12 +59,31 @@ class Perfil
     }
 
     /**
+     * @return string|null
+     */
+    public function getCarpeta(): ?string
+    {
+        return $this->carpeta;
+    }
+
+    /**
+     * @param string|null $carpeta
+     */
+    public function setCarpeta(?string $carpeta): void
+    {
+        $this->carpeta = $carpeta;
+    }
+
+
+
+    /**
      * @return Collection
      */
     public function getEmisor(): Collection
     {
         return $this->emisor;
     }
+
 
     /**
      * @param Collection $emisor
