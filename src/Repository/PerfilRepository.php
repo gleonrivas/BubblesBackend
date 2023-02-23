@@ -94,6 +94,20 @@ class PerfilRepository extends ServiceEntityRepository
 
     }
 
+    public function encontrarPorUsername( string $username): array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM perfil WHERE username = ? LIMIT 1', $rsm);
+        $query->setParameter(1, $username);
+        $perfiles = $query->getResult();
+
+
+        return $perfiles;
+    }
+
 
 //    /**
 //     * @return Perfil[] Returns an array of Perfil objects

@@ -132,38 +132,42 @@ class UsuarioController extends AbstractController
         $email = $json['email'];
         $fecha_nacimiento = new \DateTime($json['fechaNacimiento']);
 
+        if (count($userRepository->encontrarporEmail($email))==0){
+            //CREAR NUEVO USUARIO A PARTIR DEL JSON
+            if($nombre != null and $password != null) {
+                $usuarioNuevo = new Usuario();
+                $usuarioNuevo->setNombre($nombre);
+                $usuarioNuevo->setContrasena($utilidades->hashPassword($password));
+                $usuarioNuevo->setApellidos($apellidos);
+                $usuarioNuevo->setEmail($email);
+                $usuarioNuevo->setTelefono($telefono);
+                $usuarioNuevo->setFechaNacimiento($fecha_nacimiento);
 
-        //CREAR NUEVO USUARIO A PARTIR DEL JSON
-        if($nombre != null and $password != null) {
-            $usuarioNuevo = new Usuario();
-            $usuarioNuevo->setNombre($nombre);
-            $usuarioNuevo->setContrasena($utilidades->hashPassword($password));
-            $usuarioNuevo->setApellidos($apellidos);
-            $usuarioNuevo->setEmail($email);
-            $usuarioNuevo->setTelefono($telefono);
-            $usuarioNuevo->setFechaNacimiento($fecha_nacimiento);
+                //GESTION DEL ROL
+                if ($rolname == null) {
+                    //Obtenemos el rol de usuario por defecto
+                    $rolUser = $rolEntityRepository->findOneByIdentificador("usuario");
+                    $usuarioNuevo->setRol($rolUser);
 
-            //GESTION DEL ROL
-            if ($rolname == null) {
-                //Obtenemos el rol de usuario por defecto
-                $rolUser = $rolEntityRepository->findOneByIdentificador("usuario");
-                $usuarioNuevo->setRol($rolUser);
+                } else {
+                    $rol = $rolEntityRepository->findOneByIdentificador($rolname);
+                    $usuarioNuevo->setRol($rol);
+                }
 
-            } else {
-                $rol = $rolEntityRepository->findOneByIdentificador($rolname);
-                $usuarioNuevo->setRol($rol);
+                //GUARDAR
+
+                $userRepository->save($usuarioNuevo, true);
+
+                $utilidades-> generateAccessToken($usuarioNuevo, $accessTokenRepository);
+
+                return new JsonResponse("{ mensaje: Usuario creado correctamente }", 200, [], true);
+            }else{
+                return new JsonResponse("{ mensaje: No ha indicado usario y contraseña }", 101, [], true);
             }
-
-            //GUARDAR
-
-            $userRepository->save($usuarioNuevo, true);
-
-            $utilidades-> generateAccessToken($usuarioNuevo, $accessTokenRepository);
-
-            return new JsonResponse("{ mensaje: Usuario creado correctamente }", 200, [], true);
         }else{
-            return new JsonResponse("{ mensaje: No ha indicado usario y contraseña }", 101, [], true);
+            return new JsonResponse("{ mensaje: Este usuario ya existe }", 101, [], true);
         }
+
 
     }
 
