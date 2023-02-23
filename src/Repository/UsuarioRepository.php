@@ -61,6 +61,21 @@ class UsuarioRepository extends ServiceEntityRepository
         return $usuario;
     }
 
+    public function encontrarporEmail( string $email): array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Usuario', 'u');
+        $rsm->addFieldResult('u', 'id', 'id');
+        $rsm->addFieldResult('u', 'nombre', 'nombre');
+
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM usuario WHERE email = ? LIMIT 1', $rsm);
+        $query->setParameter(1, $email);
+        $usuarios = $query->getResult();
+
+        return $usuarios;
+    }
+
     public function editar(string $nombre,string $telefono,string $apellidos, string $email, string $contrasena, \DateTimeInterface $fecha_nacimiento, int $id_usuario)
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());

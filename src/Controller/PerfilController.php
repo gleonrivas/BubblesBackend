@@ -238,55 +238,59 @@ class PerfilController extends AbstractController
             $descripcion = $_POST['descripcion'];
             $tipo_cuenta = $_POST['tipoCuenta'];
 
-            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
-            $client = new Client();
-            $client->useApplicationDefaultCredentials();
-            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
-            $service = new \Google_Service_Drive($client);
+            if (count($perfilRepository->encontrarPorUsername($username))==0){
+                putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+                $client = new Client();
+                $client->useApplicationDefaultCredentials();
+                $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+                $service = new \Google_Service_Drive($client);
 
 
-            $fileMetadata = new Google_Service_Drive_DriveFile(array(
-                'name' => $username,
-                'mimeType' => 'application/vnd.google-apps.folder'));
-            $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
-            $fileFolder = $service->files->create($fileMetadata, array(
-                'fields' => 'id'));
-            $file_path = $_FILES["file"]["tmp_name"];
-            $file = new \Google_Service_Drive_DriveFile();
-            $file->setName($username.'_imgPerfil');
-            $file->setParents(array($fileFolder->getId()));
-            $file->setDescription('Archivo cargado desde PHP');
-            $mimeType = $_FILES["file"]["type"];
-            $file->setMimeType($mimeType);
-
-
-
-
-
-            $resultado = $service->files->create(
-                $file,
-                array(
-                    'data'=> file_get_contents($file_path),
-                    'mimeType'=> $mimeType,
-                    'uploadType' => 'media'
-                )
-            );
+                $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                    'name' => $username,
+                    'mimeType' => 'application/vnd.google-apps.folder'));
+                $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+                $fileFolder = $service->files->create($fileMetadata, array(
+                    'fields' => 'id'));
+                $file_path = $_FILES["file"]["tmp_name"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($username.'_imgPerfil');
+                $file->setParents(array($fileFolder->getId()));
+                $file->setDescription('Archivo cargado desde PHP');
+                $mimeType = $_FILES["file"]["type"];
+                $file->setMimeType($mimeType);
 
 
 
 
-            //GUARDAR
-            $nuevoPerfil = new Perfil();
-            $nuevoPerfil->setUsername($username);
-            $nuevoPerfil->setFotoPerfil('https://drive.google.com/uc?id='.$resultado->getId());
-            $nuevoPerfil->setTipoCuenta($tipo_cuenta);
-            $nuevoPerfil->setDescripcion($descripcion);
-            $nuevoPerfil->setCarpeta($fileFolder->getId());
-            $nuevoPerfil->setIdUsuario($usuarioRepository->findOneBy(array('id'=>$utilidades->infoToken($request)->getId())));
 
-            $perfilRepository->save($nuevoPerfil, true);
+                $resultado = $service->files->create(
+                    $file,
+                    array(
+                        'data'=> file_get_contents($file_path),
+                        'mimeType'=> $mimeType,
+                        'uploadType' => 'media'
+                    )
+                );
 
-            return new JsonResponse("{ mensaje: Perfil creado correctamente }", 200, [], true);
+
+
+
+                //GUARDAR
+                $nuevoPerfil = new Perfil();
+                $nuevoPerfil->setUsername($username);
+                $nuevoPerfil->setFotoPerfil('https://drive.google.com/uc?id='.$resultado->getId());
+                $nuevoPerfil->setTipoCuenta($tipo_cuenta);
+                $nuevoPerfil->setDescripcion($descripcion);
+                $nuevoPerfil->setCarpeta($fileFolder->getId());
+                $nuevoPerfil->setIdUsuario($usuarioRepository->findOneBy(array('id'=>$utilidades->infoToken($request)->getId())));
+
+                $perfilRepository->save($nuevoPerfil, true);
+
+                return new JsonResponse("{ mensaje: Perfil creado correctamente }", 200, [], true);
+            } else{
+                return new JsonResponse("{ mensaje: Este username no esta disponible}", 200, [], true);
+            }
 
         }else{
 
