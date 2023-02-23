@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Google\Service\AdMob\Date;
 
 /**
  * @extends ServiceEntityRepository<AccessToken>
@@ -57,18 +58,9 @@ class AccessTokenRepository extends ServiceEntityRepository
             ;
     }
 
-    public function sacarIdUsuarioDelToken(string $token)
-    {
-        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
 
-        $rsm->addRootEntityFromClassMetadata('App\Entity\AccessToken', 'a');
 
-        $query = $this->getEntityManager()->createNativeQuery('select "id_usuario" from access_token where "token" like ? order by id desc limit 1', $rsm);
-        $query->setParameter(1, $token);
-        $idUsuario = $query->getResult();
 
-        return $idUsuario;
-    }
 
 //    /**
 //     * @return AccessToken[] Returns an array of AccessToken objects
