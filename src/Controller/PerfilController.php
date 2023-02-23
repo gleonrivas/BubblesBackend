@@ -19,6 +19,8 @@ use App\Utilidades\Utilidades;
 use Doctrine\DBAL\Portability\Converter;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use Google\Client;
+use Google_Service_Drive_DriveFile;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -231,21 +233,55 @@ class PerfilController extends AbstractController
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
             $em = $this->doctrine->getManager();
-
-            //Obtener Json del body
-            $json  = json_decode($request->getContent(), true);
             //Obtenemos los parámetros del JSON
-            $username = $json['username'];
-            $descripcion = $json['descripcion'];
-            $tipo_cuenta = $json['tipoCuenta'];
-            $foto_perfil = $json['fotoPerfil'];
+            $username = $_POST['username'];
+            $descripcion = $_POST['descripcion'];
+            $tipo_cuenta = $_POST['tipoCuenta'];
+
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+            $client = new Client();
+            $client->useApplicationDefaultCredentials();
+            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+            $service = new \Google_Service_Drive($client);
+
+
+            $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                'name' => $username,
+                'mimeType' => 'application/vnd.google-apps.folder'));
+            $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+            $fileFolder = $service->files->create($fileMetadata, array(
+                'fields' => 'id'));
+            $file_path = $_FILES["file"]["tmp_name"];
+            $file = new \Google_Service_Drive_DriveFile();
+            $file->setName($username.'_imgPerfil');
+            $file->setParents(array($fileFolder->getId()));
+            $file->setDescription('Archivo cargado desde PHP');
+            $mimeType = $_FILES["file"]["type"];
+            $file->setMimeType($mimeType);
+
+
+
+
+
+            $resultado = $service->files->create(
+                $file,
+                array(
+                    'data'=> file_get_contents($file_path),
+                    'mimeType'=> $mimeType,
+                    'uploadType' => 'media'
+                )
+            );
+
+
+
 
             //GUARDAR
             $nuevoPerfil = new Perfil();
             $nuevoPerfil->setUsername($username);
-            $nuevoPerfil->setFotoPerfil($foto_perfil);
+            $nuevoPerfil->setFotoPerfil('https://drive.google.com/uc?id='.$resultado->getId());
             $nuevoPerfil->setTipoCuenta($tipo_cuenta);
             $nuevoPerfil->setDescripcion($descripcion);
+            $nuevoPerfil->setCarpeta($fileFolder->getId());
             $nuevoPerfil->setIdUsuario($usuarioRepository->findOneBy(array('id'=>$utilidades->infoToken($request)->getId())));
 
             $perfilRepository->save($nuevoPerfil, true);
@@ -295,6 +331,15 @@ class PerfilController extends AbstractController
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
             $perfilEncontrado = $perfilRepository->encontrarporId($id);
+
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+            $client = new Client();
+            $client->useApplicationDefaultCredentials();
+            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+            $service = new \Google_Service_Drive($client);
+            if ($perfilEncontrado->getCarpeta() != null){
+                $service->files->delete($perfilEncontrado->getCarpeta());
+            }
 
             $perfilRepository->remove($perfilEncontrado, true);
 
