@@ -239,8 +239,8 @@ class PublicacionController extends AbstractController
                                        PublicacionRepository $publicacionRepository): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
-
-            $id_perfil = $_POST['idPerfil'];
+            $json  = json_decode($request->getContent(), true);
+            $id_perfil = $json['idPerfil'];
             $perfilActual = $repository->findOneBy(array('id'=>$id_perfil));
             $publicacionesPorPerfil = count($publicacionRepository->findBy(array('id_perfil'=>$id_perfil)));
 
@@ -269,13 +269,12 @@ class PublicacionController extends AbstractController
 
             }else{
 
-                $file_path = $_FILES["file"]["tmp_name"];
+                $file_path = $json["file"];
                 $file = new \Google_Service_Drive_DriveFile();
                 $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
                 $file->setParents(array($perfilActual->getCarpeta()));
                 $file->setDescription('Archivo cargado desde PHP');
-                $mimeType = $_FILES["file"]["type"];
-                $file->setMimeType($mimeType);
+
             }
 
 
@@ -284,7 +283,7 @@ class PublicacionController extends AbstractController
                 $file,
                 array(
                     'data'=> file_get_contents($file_path),
-                    'mimeType'=> $mimeType,
+                    'mimeType'=> 'image/jpg',
                     'uploadType' => 'media'
                 )
             );
@@ -300,12 +299,12 @@ class PublicacionController extends AbstractController
 
             //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
             $publicacionNueva = new Publicacion();
-            $publicacionNueva->setTipoPublicacion($_POST['tipoPublicacion']);
-            $publicacionNueva->setTexto($_POST['texto']);
+            $publicacionNueva->setTipoPublicacion($json['tipoPublicacion']);
+            $publicacionNueva->setTexto($json['texto']);
             $publicacionNueva->setImagen('https://drive.google.com/uc?id='.$resultado->getId());
-            $publicacionNueva->setTematica($_POST['tematica']);
+            $publicacionNueva->setTematica($json['tematica']);
             $publicacionNueva->setFechaPublicacion($datetime);
-            $publicacionNueva->setActiva($_POST['activa']);
+            $publicacionNueva->setActiva($json['activa']);
             $publicacionNueva->setIdPerfil($perfil);
 
             //GUARDAR
