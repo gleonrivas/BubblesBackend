@@ -152,7 +152,7 @@ class ComentarioController extends AbstractController
         //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
-            $lista_comentarios = $comentarioRepository->findBy(['id_publicacion' => $id_publicacion]);
+            $lista_comentarios = $comentarioRepository->findBy(['id_publicacion' => $id_publicacion], orderBy: ['id' => 'DESC']);
             //Se transforma a Json
             $lista_Json = array();
             //se devuelve el Json transformado
