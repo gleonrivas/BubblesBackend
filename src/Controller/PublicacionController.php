@@ -259,12 +259,12 @@ class PublicacionController extends AbstractController
                 $fileFolder = $service->files->create($fileMetadata, array(
                     'fields' => 'id'));
                 $repository->insertarCarpeta($fileFolder->getId(), $perfilActual->getId());
-                $file_path = $_FILES["file"]["tmp_name"];
+                $file_path = $json["file"];
                 $file = new \Google_Service_Drive_DriveFile();
                 $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
                 $file->setParents(array($fileFolder->getId()));
                 $file->setDescription('Archivo cargado desde PHP');
-                $mimeType = $_FILES["file"]["type"];
+                $mimeType = $json["file"];
                 $file->setMimeType($mimeType);
 
             }else{
