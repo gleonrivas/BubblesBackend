@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
+use function Webmozart\Assert\Tests\StaticAnalysis\string;
 
 class LikeController extends AbstractController
 {
@@ -90,6 +91,7 @@ class LikeController extends AbstractController
             //se obtiene la lista de perfiles que han dado like
             if ($publicacionRepository->tematicaPorLikes($id_perfil) != null) {
                 $lista_tematica = $publicacionRepository->tematicaPorLikes($id_perfil);
+                $lista_tematica = array_unique( $lista_tematica,  $sort_flags = SORT_STRING);
                 $lista_Json = $utilidades->toJson($lista_tematica, null);
                 return new JsonResponse($lista_Json, 200, [], true);
             } else {
