@@ -4,6 +4,8 @@ namespace App\Controller\DTO;
 
 class CrearPerfilDTO
 {
+
+    private string $file;
     private string $descripcion;
     private string $username;
     private string $tipoCuenta;
@@ -13,6 +15,22 @@ class CrearPerfilDTO
 
     public function __construct()
     {
+    }
+
+    /**
+     * @return string
+     */
+    public function getFile(): string
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param string $file
+     */
+    public function setFile(string $file): void
+    {
+        $this->file = $file;
     }
 
 

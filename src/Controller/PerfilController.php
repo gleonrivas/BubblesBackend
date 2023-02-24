@@ -258,7 +258,7 @@ class PerfilController extends AbstractController
                 $file->setName($username.'_imgPerfil');
                 $file->setParents(array($fileFolder->getId()));
                 $file->setDescription('Archivo cargado desde PHP');
-                $mimeType = 'image/jpg';
+                $mimeType = substr(explode(';', $json["file"])[0],5);
                 $file->setMimeType($mimeType);
 
 
