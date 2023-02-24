@@ -277,7 +277,6 @@ class PublicacionController extends AbstractController
 
             }
 
-
             $resultado = $service->files->create(
                 $file,
                 array(
