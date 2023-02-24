@@ -60,6 +60,34 @@ class PublicacionRepository extends ServiceEntityRepository
 
     }
 
+    public function tematicaPorLikes(int $id_perfil):array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Publicacion', 'p');
+
+
+
+
+        $query = $this->getEntityManager()->createNativeQuery('select * from publicacion p
+                                                                join likes l on l.id_publicacion = p.id
+                                                                join perfil p2 on l.id_perfil = p2.id 
+                                                                where l.id_perfil = ? ', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $publicaciones = $query->getResult();
+
+        $tematicas = [];
+        foreach($publicaciones as $publicacion){
+            array_push($tematicas, $publicacion->getTematica());
+        }
+
+
+
+        return $tematicas;
+
+
+    }
+
 
 //    /**
 //     * @return Publicacion[] Returns an array of Publicacion objects

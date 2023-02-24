@@ -4,39 +4,5 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/php-driver" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/php-driver/lib/cpp-driver" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/dependency-injection" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/doctrine-bridge" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/dotenv" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/error-handler" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/event-dispatcher" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/filesystem" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/finder" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/framework-bundle" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/http-foundation" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/http-kernel" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/options-resolver" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/password-hasher" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/property-access" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/property-info" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/routing" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/runtime" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/security-bundle" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/security-core" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/security-csrf" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/security-http" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/serializer" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/stopwatch" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/string" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/twig-bridge" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/twig-bundle" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/validator" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/var-dumper" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/var-exporter" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/symfony/yaml" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/twig/extensions" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/twig/extra-bundle" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/twig/twig" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/webmozart/assert" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/vendor_antigua/zircote/swagger-php" vcs="Git" />
   </component>
 </project>
