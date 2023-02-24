@@ -233,10 +233,11 @@ class PerfilController extends AbstractController
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
             $em = $this->doctrine->getManager();
+            $json  = json_decode($request->getContent(), true);
             //Obtenemos los parámetros del JSON
-            $username = $_POST['username'];
-            $descripcion = $_POST['descripcion'];
-            $tipo_cuenta = $_POST['tipoCuenta'];
+            $username = $json['username'];
+            $descripcion = $json['descripcion'];
+            $tipo_cuenta = $json['tipoCuenta'];
 
             if (count($perfilRepository->encontrarPorUsername($username))==0){
                 putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
@@ -252,12 +253,12 @@ class PerfilController extends AbstractController
                 $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
                 $fileFolder = $service->files->create($fileMetadata, array(
                     'fields' => 'id'));
-                $file_path = $_FILES["file"]["tmp_name"];
+                $file_path = $json["file"];
                 $file = new \Google_Service_Drive_DriveFile();
                 $file->setName($username.'_imgPerfil');
                 $file->setParents(array($fileFolder->getId()));
                 $file->setDescription('Archivo cargado desde PHP');
-                $mimeType = $_FILES["file"]["type"];
+                $mimeType = 'image/jpg';
                 $file->setMimeType($mimeType);
 
 
