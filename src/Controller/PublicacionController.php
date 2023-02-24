@@ -264,7 +264,7 @@ class PublicacionController extends AbstractController
                 $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
                 $file->setParents(array($fileFolder->getId()));
                 $file->setDescription('Archivo cargado desde PHP');
-                $mimeType = $json["file"];
+                $mimeType = substr(explode(';', $json["file"])[0],5);
                 $file->setMimeType($mimeType);
 
             }else{
@@ -278,12 +278,11 @@ class PublicacionController extends AbstractController
             }
 
 
-
             $resultado = $service->files->create(
                 $file,
                 array(
                     'data'=> file_get_contents($file_path),
-                    'mimeType'=> 'image/jpg',
+                    'mimeType'=> $mimeType,
                     'uploadType' => 'media'
                 )
             );
