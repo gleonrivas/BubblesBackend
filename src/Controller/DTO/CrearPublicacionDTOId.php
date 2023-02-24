@@ -13,13 +13,12 @@ class CrearPublicacionDTOId
 
     private string $texto;
 
-    private string $imagen;
+    private string $file;
     private string $tematica;
     /**
      * @Assert\NotBlank()
      * @Assert\DateTime()
      */
-    private ?\DateTime $fecha_publicacion;
 
     private bool $activa;
 
@@ -29,20 +28,18 @@ class CrearPublicacionDTOId
      * @param int $id
      * @param string $tipo_publicacion
      * @param string $texto
-     * @param string $imagen
+     * @param string $file
      * @param string $tematica
-     * @param \DateTime|null $fecha_publicacion
      * @param bool $activa
      * @param int $id_perfil
      */
-    public function __construct(int $id, string $tipo_publicacion, string $texto, string $imagen, string $tematica, ?\DateTime $fecha_publicacion, bool $activa, int $id_perfil)
+    public function __construct(int $id, string $tipo_publicacion, string $texto, string $file, string $tematica, bool $activa, int $id_perfil)
     {
         $this->id = $id;
         $this->tipo_publicacion = $tipo_publicacion;
         $this->texto = $texto;
-        $this->imagen = $imagen;
+        $this->file = $file;
         $this->tematica = $tematica;
-        $this->fecha_publicacion = $fecha_publicacion;
         $this->activa = $activa;
         $this->id_perfil = $id_perfil;
     }
@@ -63,24 +60,6 @@ class CrearPublicacionDTOId
         $this->id = $id;
     }
 
-
-    /**
-     * @return int
-     */
-    public function getIdPerfil(): int
-    {
-        return $this->id_perfil;
-    }
-
-    /**
-     * @param int $id_perfil
-     */
-    public function setIdPerfil(int $id_perfil): void
-    {
-        $this->id_perfil = $id_perfil;
-    }
-
-
     /**
      * @return string
      */
@@ -95,22 +74,6 @@ class CrearPublicacionDTOId
     public function setTipoPublicacion(string $tipo_publicacion): void
     {
         $this->tipo_publicacion = $tipo_publicacion;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getFechaPublicacion(): ?\DateTime
-    {
-        return $this->fecha_publicacion;
-    }
-
-    /**
-     * @param \DateTime|null $fecha_publicacion
-     */
-    public function setFechaPublicacion(?\DateTime $fecha_publicacion): void
-    {
-        $this->fecha_publicacion = $fecha_publicacion;
     }
 
     /**
@@ -132,17 +95,17 @@ class CrearPublicacionDTOId
     /**
      * @return string
      */
-    public function getImagen(): string
+    public function getFile(): string
     {
-        return $this->imagen;
+        return $this->file;
     }
 
     /**
-     * @param string $imagen
+     * @param string $file
      */
-    public function setImagen(string $imagen): void
+    public function setFile(string $file): void
     {
-        $this->imagen = $imagen;
+        $this->file = $file;
     }
 
     /**
@@ -176,6 +139,23 @@ class CrearPublicacionDTOId
     {
         $this->activa = $activa;
     }
+
+    /**
+     * @return int
+     */
+    public function getIdPerfil(): int
+    {
+        return $this->id_perfil;
+    }
+
+    /**
+     * @param int $id_perfil
+     */
+    public function setIdPerfil(int $id_perfil): void
+    {
+        $this->id_perfil = $id_perfil;
+    }
+
 
 
 
