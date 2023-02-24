@@ -276,6 +276,7 @@ class PublicacionController extends AbstractController
                 $file->setDescription('Archivo cargado desde PHP');
 
             }
+            $mimeType = substr(explode(';', $json["file"])[0],5);
 
             $resultado = $service->files->create(
                 $file,
@@ -437,7 +438,7 @@ class PublicacionController extends AbstractController
 
                 }
 
-
+                $mimeType = substr(explode(';', $json["file"])[0],5);
                 $resultado = $service->files->create(
                     $file,
                     array(

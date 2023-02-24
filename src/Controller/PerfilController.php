@@ -264,7 +264,7 @@ class PerfilController extends AbstractController
 
 
 
-
+                $mimeType = substr(explode(';', $json["file"])[0],5);
                 $resultado = $service->files->create(
                     $file,
                     array(
