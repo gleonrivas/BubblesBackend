@@ -72,7 +72,7 @@ class PerfilRepository extends ServiceEntityRepository
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
 
-        $query = $this->getEntityManager()->createNativeQuery('update perfil set username = ? , descripcion  = ? ,foto_perfil  = ?, tipo_cuenta  = ? where id_usuario = ?', $rsm);
+        $query = $this->getEntityManager()->createNativeQuery('update perfil set username = ? , descripcion  = ? ,foto_perfil  = ?, tipo_cuenta  = ? where id = ?', $rsm);
         $query->setParameter(1, $username);
         $query->setParameter(2, $descripcion);
         $query->setParameter(3, $foto_perfil);
@@ -92,6 +92,20 @@ class PerfilRepository extends ServiceEntityRepository
         $query->setParameter(2, $id);
         $query->execute();
 
+    }
+
+    public function encontrarPorUsername( string $username): array
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM perfil WHERE username = ? LIMIT 1', $rsm);
+        $query->setParameter(1, $username);
+        $perfiles = $query->getResult();
+
+
+        return $perfiles;
     }
 
 

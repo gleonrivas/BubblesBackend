@@ -7,7 +7,7 @@ class EditarPerfilDTO
     private string $descripcion;
     private string $username;
     private string $tipoCuenta;
-    private string $fotoPerfil;
+
 
     public function __construct()
     {
@@ -61,21 +61,7 @@ class EditarPerfilDTO
         $this->tipoCuenta = $tipoCuenta;
     }
 
-    /**
-     * @return string
-     */
-    public function getFotoPerfil(): string
-    {
-        return $this->fotoPerfil;
-    }
 
-    /**
-     * @param string $fotoPerfil
-     */
-    public function setFotoPerfil(string $fotoPerfil): void
-    {
-        $this->fotoPerfil = $fotoPerfil;
-    }
 
 
 

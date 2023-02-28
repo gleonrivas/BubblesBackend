@@ -233,60 +233,65 @@ class PerfilController extends AbstractController
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
             $em = $this->doctrine->getManager();
+            $json  = json_decode($request->getContent(), true);
             //Obtenemos los parámetros del JSON
-            $username = $_POST['username'];
-            $descripcion = $_POST['descripcion'];
-            $tipo_cuenta = $_POST['tipoCuenta'];
+            $username = $json['username'];
+            $descripcion = $json['descripcion'];
+            $tipo_cuenta = $json['tipoCuenta'];
 
-            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
-            $client = new Client();
-            $client->useApplicationDefaultCredentials();
-            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
-            $service = new \Google_Service_Drive($client);
-
-
-            $fileMetadata = new Google_Service_Drive_DriveFile(array(
-                'name' => $username,
-                'mimeType' => 'application/vnd.google-apps.folder'));
-            $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
-            $fileFolder = $service->files->create($fileMetadata, array(
-                'fields' => 'id'));
-            $file_path = $_FILES["file"]["tmp_name"];
-            $file = new \Google_Service_Drive_DriveFile();
-            $file->setName($username.'_imgPerfil');
-            $file->setParents(array($fileFolder->getId()));
-            $file->setDescription('Archivo cargado desde PHP');
-            $mimeType = $_FILES["file"]["type"];
-            $file->setMimeType($mimeType);
+            if (count($perfilRepository->encontrarPorUsername($username))==0){
+                putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+                $client = new Client();
+                $client->useApplicationDefaultCredentials();
+                $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+                $service = new \Google_Service_Drive($client);
 
 
-
-
-
-            $resultado = $service->files->create(
-                $file,
-                array(
-                    'data'=> file_get_contents($file_path),
-                    'mimeType'=> $mimeType,
-                    'uploadType' => 'media'
-                )
-            );
+                $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                    'name' => $username,
+                    'mimeType' => 'application/vnd.google-apps.folder'));
+                $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+                $fileFolder = $service->files->create($fileMetadata, array(
+                    'fields' => 'id'));
+                $file_path = $json["file"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($username.'_imgPerfil');
+                $file->setParents(array($fileFolder->getId()));
+                $file->setDescription('Archivo cargado desde PHP');
+                $mimeType = substr(explode(';', $json["file"])[0],5);
+                $file->setMimeType($mimeType);
 
 
 
 
-            //GUARDAR
-            $nuevoPerfil = new Perfil();
-            $nuevoPerfil->setUsername($username);
-            $nuevoPerfil->setFotoPerfil('https://drive.google.com/uc?id='.$resultado->getId());
-            $nuevoPerfil->setTipoCuenta($tipo_cuenta);
-            $nuevoPerfil->setDescripcion($descripcion);
-            $nuevoPerfil->setCarpeta($fileFolder->getId());
-            $nuevoPerfil->setIdUsuario($usuarioRepository->findOneBy(array('id'=>$utilidades->infoToken($request)->getId())));
+                $mimeType = substr(explode(';', $json["file"])[0],5);
+                $resultado = $service->files->create(
+                    $file,
+                    array(
+                        'data'=> file_get_contents($file_path),
+                        'mimeType'=> $mimeType,
+                        'uploadType' => 'media'
+                    )
+                );
 
-            $perfilRepository->save($nuevoPerfil, true);
 
-            return new JsonResponse("{ mensaje: Perfil creado correctamente }", 200, [], true);
+
+
+                //GUARDAR
+                $nuevoPerfil = new Perfil();
+                $nuevoPerfil->setUsername($username);
+                $nuevoPerfil->setFotoPerfil('https://drive.google.com/uc?id='.$resultado->getId());
+                $nuevoPerfil->setTipoCuenta($tipo_cuenta);
+                $nuevoPerfil->setDescripcion($descripcion);
+                $nuevoPerfil->setCarpeta($fileFolder->getId());
+                $nuevoPerfil->setIdUsuario($usuarioRepository->findOneBy(array('id'=>$utilidades->infoToken($request)->getId())));
+
+                $perfilRepository->save($nuevoPerfil, true);
+
+                return new JsonResponse("{ mensaje: Perfil creado correctamente }", 200, [], true);
+            } else{
+                return new JsonResponse("{ mensaje: Este username no esta disponible}", 200, [], true);
+            }
 
         }else{
 
@@ -297,26 +302,68 @@ class PerfilController extends AbstractController
 
     }
 
-    #[Route('api/perfil/editar', name: 'app_perfil_editar', methods: ['POST'])]
+    #[Route('api/perfil/editar/{id}', name: 'app_perfil_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:EditarPerfilDTO::class)))]
     #[OA\Response(response: 200,description: "Perfil editado correctamente")]
     #[OA\Response(response: 101,description: "No ha indicado los datos del perfil")]
-    public function editar(Request $request, PerfilRepository $perfilRepository, Utilidades $utilidades): JsonResponse
+    public function editar(int $id_perfil,Request $request, PerfilRepository $perfilRepository, Utilidades $utilidades): JsonResponse
     {
 
-        //Obtener Json del body
-        $json  = json_decode($request->getContent(), true);
-        //Obtenemos los parámetros del JSON
-        $username = $json['username'];
-        $descripcion = $json['descripcion'];
-        $tipo_cuenta = $json['tipoCuenta'];
-        $foto_perfil = $json['fotoPerfil'];
 
-        $perfilRepository->editar($username,$descripcion,$foto_perfil,$tipo_cuenta, $utilidades->infoToken($request)->getId());
+        if($utilidades->comprobarPermisos($request, "usuario")) {
+            //Obtener Json del body
+            $json = json_decode($request->getContent(), true);
+            //Obtenemos los parámetros del JSON
+            $username = $json['username'];
+            $descripcion = $json['descripcion'];
+            $tipo_cuenta = $json['tipoCuenta'];
 
-        return new JsonResponse("{ mensaje: Perfil editado correctamente }", 200, [], true);
+
+            $perfilAntiguo = $perfilRepository->findOneBy(array('id'=>$id_perfil));
+
+
+
+            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+            $client = new Client();
+            $client->useApplicationDefaultCredentials();
+            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+            $service = new \Google_Service_Drive($client);
+            if ($perfilAntiguo->getCarpeta() != null){
+                $service->files->delete($perfilAntiguo->getCarpeta());
+            }
+            $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                'name' => $username,
+                'mimeType' => 'application/vnd.google-apps.folder'));
+            $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+            $fileFolder = $service->files->create($fileMetadata, array(
+                'fields' => 'id'));
+            $file_path = $json["file"];
+            $file = new \Google_Service_Drive_DriveFile();
+            $file->setName($username . '_imgPerfil');
+            $file->setParents(array($fileFolder->getId()));
+            $file->setDescription('Archivo cargado desde PHP');
+            $mimeType = substr(explode(';', $json["file"])[0], 5);
+            $file->setMimeType($mimeType);
+
+
+            $mimeType = substr(explode(';', $json["file"])[0], 5);
+            $resultado = $service->files->create(
+                $file,
+                array(
+                    'data' => file_get_contents($file_path),
+                    'mimeType' => $mimeType,
+                    'uploadType' => 'media'
+                )
+            );
+
+            $perfilRepository->editar($username, $descripcion, 'https://drive.google.com/uc?id='.$resultado->getId(), $tipo_cuenta, $perfilAntiguo->getId());
+
+            return new JsonResponse("{ mensaje: Perfil editado correctamente }", 200, [], true);
+        }else{
+            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+        }
 
     }
 

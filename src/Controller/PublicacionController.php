@@ -239,8 +239,8 @@ class PublicacionController extends AbstractController
                                        PublicacionRepository $publicacionRepository): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
-
-            $id_perfil = $_POST['idPerfil'];
+            $json  = json_decode($request->getContent(), true);
+            $id_perfil = $json['idPerfil'];
             $perfilActual = $repository->findOneBy(array('id'=>$id_perfil));
             $publicacionesPorPerfil = count($publicacionRepository->findBy(array('id_perfil'=>$id_perfil)));
 
@@ -259,26 +259,24 @@ class PublicacionController extends AbstractController
                 $fileFolder = $service->files->create($fileMetadata, array(
                     'fields' => 'id'));
                 $repository->insertarCarpeta($fileFolder->getId(), $perfilActual->getId());
-                $file_path = $_FILES["file"]["tmp_name"];
+                $file_path = $json["file"];
                 $file = new \Google_Service_Drive_DriveFile();
                 $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
                 $file->setParents(array($fileFolder->getId()));
                 $file->setDescription('Archivo cargado desde PHP');
-                $mimeType = $_FILES["file"]["type"];
+                $mimeType = substr(explode(';', $json["file"])[0],5);
                 $file->setMimeType($mimeType);
 
             }else{
 
-                $file_path = $_FILES["file"]["tmp_name"];
+                $file_path = $json["file"];
                 $file = new \Google_Service_Drive_DriveFile();
                 $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
                 $file->setParents(array($perfilActual->getCarpeta()));
                 $file->setDescription('Archivo cargado desde PHP');
-                $mimeType = $_FILES["file"]["type"];
-                $file->setMimeType($mimeType);
+
             }
-
-
+            $mimeType = substr(explode(';', $json["file"])[0],5);
 
             $resultado = $service->files->create(
                 $file,
@@ -289,8 +287,6 @@ class PublicacionController extends AbstractController
                 )
             );
 
-            //Obtener Json del body
-            $json = json_decode($request->getContent(), true);
 
 
             $criterio = array('id' => $id_perfil);
@@ -300,12 +296,12 @@ class PublicacionController extends AbstractController
 
             //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
             $publicacionNueva = new Publicacion();
-            $publicacionNueva->setTipoPublicacion($_POST['tipoPublicacion']);
-            $publicacionNueva->setTexto($_POST['texto']);
+            $publicacionNueva->setTipoPublicacion($json['tipoPublicacion']);
+            $publicacionNueva->setTexto($json['texto']);
             $publicacionNueva->setImagen('https://drive.google.com/uc?id='.$resultado->getId());
-            $publicacionNueva->setTematica($_POST['tematica']);
+            $publicacionNueva->setTematica($json['tematica']);
             $publicacionNueva->setFechaPublicacion($datetime);
-            $publicacionNueva->setActiva($_POST['activa']);
+            $publicacionNueva->setActiva($json['activa']);
             $publicacionNueva->setIdPerfil($perfil);
 
             //GUARDAR
@@ -346,7 +342,10 @@ class PublicacionController extends AbstractController
                 $client->useApplicationDefaultCredentials();
                 $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
                 $service = new \Google_Service_Drive($client);
-                $service->files->delete(substr($publicacion->getImagen(), strlen('https://drive.google.com/uc?id=')));
+                if($publicacion->getImagen() != null){
+                    $service->files->delete(substr($publicacion->getImagen(), strlen('https://drive.google.com/uc?id=')));
+                }
+
                 $publicacionRepository->remove($publicacion, true);
 
                 $mensaje = new MensajeRespuestaDTO("mensaje: Publicacion eliminada correctamente");
@@ -380,14 +379,25 @@ class PublicacionController extends AbstractController
             //buscar publicacion antigua
             $id = $json['id'];
             $publicaciones = array('id' => $id);
+
             if ($publicacionRepository->findBy($publicaciones) == null) {
                 $mensaje = new MensajeRespuestaDTO("mensaje: No existe la publicación");
 
                 $json = $utilidades->toJson($mensaje,null);
                 return new JsonResponse($json, 200, [], true);
             } else {
+                putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+                $client = new Client();
+                $client->useApplicationDefaultCredentials();
+                $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+                $service = new \Google_Service_Drive($client);
+
                 $listapublicaciones = $publicacionRepository->findBy($publicaciones);
                 $publicacionantigua = $listapublicaciones[0];
+
+                if ($publicacionantigua->getImagen() != null){
+                    $service->files->delete(substr($publicacionantigua->getImagen(), strlen('https://drive.google.com/uc?id=')));
+                }
 
                 //buscar usuario y cambiar formato fecha publicacion
                 $id_perfil = $json['idPerfil'];
@@ -395,13 +405,54 @@ class PublicacionController extends AbstractController
                 $perfiles = $repository->findBy($criterio);
                 $perfil = $perfiles[0];
 
-                $datetime = new \DateTime($json['fechaPublicacion']);
+                $datetime = new \DateTime(date("Y-m-d H:i:s"));
+
+                $perfilActual = $repository->findOneBy(array('id'=>$id_perfil));
+                $publicacionesPorPerfil = count($publicacionRepository->findBy(array('id_perfil'=>$id_perfil)));
+
+
+                if ($perfilActual->getCarpeta() == null){
+
+                    $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                        'name' => $perfilActual->getUsername(),
+                        'mimeType' => 'application/vnd.google-apps.folder'));
+                    $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+                    $fileFolder = $service->files->create($fileMetadata, array(
+                        'fields' => 'id'));
+                    $repository->insertarCarpeta($fileFolder->getId(), $perfilActual->getId());
+                    $file_path = $json["file"];
+                    $file = new \Google_Service_Drive_DriveFile();
+                    $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
+                    $file->setParents(array($fileFolder->getId()));
+                    $file->setDescription('Archivo cargado desde PHP');
+                    $mimeType = substr(explode(';', $json["file"])[0],5);
+                    $file->setMimeType($mimeType);
+
+                }else{
+
+                    $file_path = $json["file"];
+                    $file = new \Google_Service_Drive_DriveFile();
+                    $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
+                    $file->setParents(array($perfilActual->getCarpeta()));
+                    $file->setDescription('Archivo cargado desde PHP');
+
+                }
+
+                $mimeType = substr(explode(';', $json["file"])[0],5);
+                $resultado = $service->files->create(
+                    $file,
+                    array(
+                        'data'=> file_get_contents($file_path),
+                        'mimeType'=> $mimeType,
+                        'uploadType' => 'media'
+                    )
+                );
 
                 //CREAR NUEVA PUBLICACION A PARTIR DEL JSON
 
                 $publicacionantigua->setTipoPublicacion($json['tipoPublicacion']);
                 $publicacionantigua->setTexto($json['texto']);
-                $publicacionantigua->setImagen($json['imagen']);
+                $publicacionantigua->setImagen('https://drive.google.com/uc?id='.$resultado->getId());
                 $publicacionantigua->setTematica($json['tematica']);
                 $publicacionantigua->setFechaPublicacion($datetime);
                 $publicacionantigua->setActiva($json['activa']);

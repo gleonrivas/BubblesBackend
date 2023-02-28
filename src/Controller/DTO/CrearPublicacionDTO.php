@@ -8,6 +8,8 @@ class CrearPublicacionDTO
     /**
      * @Assert\NotBlank()
      */
+
+    private string $file;
     private string $tipo_publicacion;
 
     private string $texto;
@@ -22,6 +24,13 @@ class CrearPublicacionDTO
     private bool $activa;
 
     private int $id_perfil;
+
+    /**
+     * @return string
+     */
+
+
+
 
     /**
      * @param string $tipo_publicacion
@@ -41,6 +50,20 @@ class CrearPublicacionDTO
         $this->fecha_publicacion = $fecha_publicacion;
         $this->activa = $activa;
         $this->id_perfil = $id_perfil;
+    }
+
+
+    public function getFile(): string
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param string $file
+     */
+    public function setFile(string $file): void
+    {
+        $this->file = $file;
     }
 
     /**
