@@ -142,12 +142,12 @@ class UsuarioController extends AbstractController
         $json  = json_decode($request->getContent(), true);
         //Obtenemos los parámetros del JSON
         $nombre = $json['nombre'];
-        $password = $json['password'];
-        $rolname = $json['rol'];
         $apellidos = $json['apellidos'];
-        $telefono = $json['telefono'];
         $email = $json['email'];
-        $fecha_nacimiento = new \DateTime($json['fechaNacimiento']);
+        $telefono = $json['telefono'];
+        $password = $json['password'];
+        $fecha_nacimiento = $json['fechaNacimiento'];
+        $rolname = $json['rol'];
 
 
         //CREAR NUEVO USUARIO A PARTIR DEL JSON

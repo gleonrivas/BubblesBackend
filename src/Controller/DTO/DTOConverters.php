@@ -19,6 +19,7 @@ class DTOConverters
      {
 
          $perfilDto = new PerfilDTO();
+         $perfilDto->setId($perfil->getId());
          $perfilDto->setFotoPerfil($perfil->getFotoPerfil());
          $perfilDto->setDescripcion($perfil->getDescripcion());
          $perfilDto->setUsername($perfil->getUsername());

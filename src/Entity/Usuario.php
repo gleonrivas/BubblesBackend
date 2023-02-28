@@ -7,8 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Monolog\DateTimeImmutable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
 #[ORM\Table(name:"usuario")]
@@ -36,74 +36,22 @@ class Usuario
     #[ORM\Column(length: 100, nullable: false)]
     private ?string $contrasena;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $fecha_nacimiento = null;
+    #[ORM\Column(length: 100)]
+    private ?string $fecha_nacimiento = null;
 
     #[ORM\ManyToOne(inversedBy: 'usuario')]
     #[ORM\JoinColumn(name: "id_rol" , nullable: false)]
     private ?RolEntity $rol;
 
-
-
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: AccessToken::class )]
     private ?Collection $token;
 
-
-
-
-
-
-
     #[ORM\OneToMany(mappedBy: 'id_usuario', targetEntity: Perfil::class)]
-    private Collection $perfils;
+    private Collection $perfiles;
 
-    /**
-     * @return string|null
-     */
-    public function getContrasena(): ?string
-    {
-        return $this->contrasena;
-    }
-
-    /**
-     * @param string|null $contrasena
-     */
-    public function setContrasena(?string $contrasena): void
-    {
-        $this->contrasena = $contrasena;
-    }
-
-
-
-
-    /**
-     */
     public function __construct()
     {
-        $this->perfils = new ArrayCollection();
     }
-
-    /**
-     * @return RolEntity|null
-     */
-    public function getRol(): ?RolEntity
-    {
-        return $this->rol;
-    }
-
-    /**
-     * @param RolEntity|null $rol
-     */
-    public function setRol(?RolEntity $rol): void
-    {
-        $this->rol = $rol;
-    }
-
-
-
-
-
-
 
     /**
      * @return int|null
@@ -177,7 +125,6 @@ class Usuario
         return $this->email;
     }
 
-
     /**
      * @param string|null $email
      */
@@ -186,119 +133,85 @@ class Usuario
         $this->email = $email;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getContrasena(): ?string
+    {
+        return $this->contrasena;
+    }
+
+    /**
+     * @param string|null $contrasena
+     */
+    public function setContrasena(?string $contrasena): void
+    {
+        $this->contrasena = $contrasena;
+    }
 
     /**
      * @return string|null
      */
-    public function getTipoCuenta(): ?string
-    {
-        return $this->tipo_cuenta;
-    }
-
-    /**
-     * @param string|null $tipo_cuenta
-     */
-    public function setTipoCuenta(?string $tipo_cuenta): void
-    {
-        $this->tipo_cuenta = $tipo_cuenta;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getFechaNacimiento(): ?\DateTimeInterface
+    public function getFechaNacimiento(): ?string
     {
         return $this->fecha_nacimiento;
     }
 
     /**
-     * @param \DateTimeInterface|null $fecha_nacimiento
+     * @param string|null $fecha_nacimiento
      */
-    public function setFechaNacimiento(?\DateTimeInterface $fecha_nacimiento): void
+    public function setFechaNacimiento(?string $fecha_nacimiento): void
     {
         $this->fecha_nacimiento = $fecha_nacimiento;
     }
 
     /**
-     * @return string|null
+     * @return RolEntity|null
      */
-    public function getDescripcion(): ?string
+    public function getRol(): ?RolEntity
     {
-        return $this->descripcion;
+        return $this->rol;
     }
 
     /**
-     * @param string|null $descripcion
+     * @param RolEntity|null $rol
      */
-    public function setDescripcion(?string $descripcion): void
+    public function setRol(?RolEntity $rol): void
     {
-        $this->descripcion = $descripcion;
+        $this->rol = $rol;
     }
 
     /**
-     * @return string|null
+     * @return Collection|null
      */
-    public function getUsername(): ?string
+    public function getToken(): ?Collection
     {
-        return $this->username;
+        return $this->token;
     }
 
     /**
-     * @param string|null $username
+     * @param Collection|null $token
      */
-    public function setUsername(?string $username): void
+    public function setToken(?Collection $token): void
     {
-        $this->username = $username;
+        $this->token = $token;
     }
 
     /**
-     * @return string|null
+     * @return Collection
      */
-    public function getFotoPerfil(): ?string
+    public function getPerfiles(): Collection
     {
-        return $this->foto_perfil;
+        return $this->perfiles;
     }
 
     /**
-     * @param string|null $foto_perfil
+     * @param Collection $perfiles
      */
-    public function setFotoPerfil(?string $foto_perfil): void
+    public function setPerfiles(Collection $perfiles): void
     {
-        $this->foto_perfil = $foto_perfil;
+        $this->perfiles = $perfiles;
     }
-
-
-
-    /**
-     * @return Collection<int, Perfil>
-     */
-    public function getPerfils(): Collection
-    {
-        return $this->perfils;
-    }
-
-    public function addPerfil(Perfil $perfil): self
-    {
-        if (!$this->perfils->contains($perfil)) {
-            $this->perfils->add($perfil);
-            $perfil->setIdUsuario($this);
-        }
-
-        return $this;
-    }
-
-    public function removePerfil(Perfil $perfil): self
-    {
-        if ($this->perfils->removeElement($perfil)) {
-            // set the owning side to null (unless already changed)
-            if ($perfil->getIdUsuario() === $this) {
-                $perfil->setIdUsuario(null);
-            }
-        }
-
-        return $this;
-    }
-
 
 
 }
