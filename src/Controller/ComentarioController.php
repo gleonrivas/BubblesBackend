@@ -147,7 +147,7 @@ class ComentarioController extends AbstractController
     #[OA\Tag(name: 'Comentarios')]
     #[Security(name: "apikey")]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: ComentarioDTO::class))))]
-    public function listarPorPublicacion(int $id_publicacion,Request $request, DtoConverters $converters,ComentarioRepository $comentarioRepository, Utilidades $utilidades):JsonResponse
+    public function listarPorPublicacion(int $id_publicacion,Request $request, DtoConverters $converters, ComentarioRepository $comentarioRepository, Utilidades $utilidades):JsonResponse
     {
         //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
@@ -159,6 +159,8 @@ class ComentarioController extends AbstractController
             foreach($lista_comentarios as $comentario){
                 $comentarioDTO = $converters-> comentarioToDto($comentario);
                 $json = $utilidades->toJson($comentarioDTO, null);
+                $comentarioDTO->setUsername($comentario->getIdPerfil()->getUsername());
+                $comentarioDTO->setUrlImagen($comentario->getIdPerfil()->getFotoPerfil());
                 $lista_Json[] = json_decode($json);
             }
             return new JsonResponse($lista_Json, 200,[], false);

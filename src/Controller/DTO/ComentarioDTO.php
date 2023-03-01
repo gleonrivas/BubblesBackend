@@ -3,6 +3,7 @@
 namespace App\Controller\DTO;
 
 
+use App\Entity\Perfil;
 use App\Entity\Publicacion;
 
 class ComentarioDTO
@@ -10,12 +11,52 @@ class ComentarioDTO
 
     private int $id;
     private string $texto;
+
     private ?PerfilDTO $id_perfil;
     private ?PublicacionDTO $id_publicacion;
+
+    private string $username;
+
+    private string $urlImagen;
+
 
     public function __construct()
     {
     }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrlImagen(): string
+    {
+        return $this->urlImagen;
+    }
+
+    /**
+     * @param string $urlImagen
+     */
+    public function setUrlImagen(string $urlImagen): void
+    {
+        $this->urlImagen = $urlImagen;
+    }
+
+
 
     /**
      * @return int
