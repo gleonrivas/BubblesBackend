@@ -100,7 +100,7 @@ class PerfilRepository extends ServiceEntityRepository
 
         $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
 
-        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM perfil WHERE username = ? LIMIT 1', $rsm);
+        $query = $this->getEntityManager()->createNativeQuery('SELECT * FROM perfil WHERE username like ? LIMIT 1', $rsm);
         $query->setParameter(1, $username);
         $perfiles = $query->getResult();
 
