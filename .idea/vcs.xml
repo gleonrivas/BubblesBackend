@@ -3,6 +3,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/php-driver" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/php-driver/lib/cpp-driver" vcs="Git" />
   </component>
 </project>
