@@ -143,14 +143,15 @@ class PerfilController extends AbstractController
         //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
-            $perfil = $perfilRepository->findOneBy(array('username'=>$username));
+            $lista_perfiles = $perfilRepository->encontrarPorUsername($username);
             //Se transforma a Json
             $lista_Json = array();
             //se devuelve el Json transformado
-
-            $perfilDTO = $converters-> perfilToDto($perfil);
-            $json = $utilidades->toJson($perfilDTO, null);
-            $lista_Json[] = json_decode($json);
+            foreach ($lista_perfiles as $perfil){
+                $perfilDTO = $converters-> perfilToDto($perfil);
+                $json = $utilidades->toJson($perfilDTO, null);
+                $lista_Json[] = json_decode($json);
+            }
 
             return new JsonResponse($lista_Json, 200,[], false);
         }else{

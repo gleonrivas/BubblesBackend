@@ -90,6 +90,9 @@ class LoginController extends AbstractController
     }
 
 
+
+
+
     #[Route('/api/login/cambiar/{id_usuario}/{id_perfil}', name: 'app_login_cambiar', methods: ["POST"])]
     #[OA\Tag(name: 'Login')]
     public function loginPerfil(int $id_usuario, int $id_perfil, Request $request, Utilidades $utils, PerfilRepository $perfilRepository, UsuarioRepository $usuarioRepository, AccessTokenRepository $accessTokenRepository): JsonResponse
@@ -118,6 +121,8 @@ class LoginController extends AbstractController
             ]);
         }
     }
+
+
 }
 
 
