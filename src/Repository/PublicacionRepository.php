@@ -87,6 +87,17 @@ class PublicacionRepository extends ServiceEntityRepository
 
 
     }
+    public function eliminarPublicacionPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Publicacion', 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM publicacion * where id_perfil = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $this->getEntityManager()->flush();
+
+    }
 
 
 //    /**

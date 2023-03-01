@@ -39,6 +39,18 @@ class LikeRepository extends ServiceEntityRepository
         }
     }
 
+    public function eliminarLikesPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Like', 'l');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM likes * where id_perfil = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $this->getEntityManager()->flush();
+
+    }
+
 //    /**
 //     * @return Like[] Returns an array of Like objects
 //     */

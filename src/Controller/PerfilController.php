@@ -12,8 +12,13 @@ use App\Controller\DTO\UsuarioDTO;
 use App\Entity\Perfil;
 use App\Entity\Usuario;
 use App\Repository\AccessTokenRepository;
+use App\Repository\ComentarioRepository;
+use App\Repository\LikeRepository;
+use App\Repository\MensajeRepository;
 use App\Repository\PerfilRepository;
+use App\Repository\PublicacionRepository;
 use App\Repository\RolEntityRepository;
+use App\Repository\SeguidorRepository;
 use App\Repository\UsuarioRepository;
 use App\Utilidades\Utilidades;
 use Doctrine\DBAL\Portability\Converter;
@@ -302,7 +307,7 @@ class PerfilController extends AbstractController
 
     }
 
-    #[Route('api/perfil/editar', name: 'app_perfil_editar', methods: ['POST'])]
+    #[Route('api/perfil/editar/', name: 'app_perfil_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:EditarPerfilDTO::class)))]
@@ -314,12 +319,16 @@ class PerfilController extends AbstractController
         //Obtener Json del body
         $json  = json_decode($request->getContent(), true);
         //Obtenemos los parámetros del JSON
+        $id_perfil = $json['id'];
         $username = $json['username'];
         $descripcion = $json['descripcion'];
         $tipo_cuenta = $json['tipoCuenta'];
+
+
         $foto_perfil = $json['fotoPerfil'];
 
-        $perfilRepository->editar($username,$descripcion,$foto_perfil,$tipo_cuenta, $utilidades->infoToken($request)->getId());
+
+        $perfilRepository->editar($username,$descripcion,$foto_perfil,$tipo_cuenta, $id_perfil);
 
         return new JsonResponse("{ mensaje: Perfil editado correctamente }", 200, [], true);
 
@@ -330,7 +339,10 @@ class PerfilController extends AbstractController
     #[Security(name: "apikey")]
     #[OA\Response(response: 200,description: "Perfil borrado correctamente")]
     #[OA\Response(response: 101,description: "No se ha borrado correctamente")]
-    public function eliminar(Request $request,?int $id, PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
+    public function eliminar(Request $request,?int $id, PerfilRepository $perfilRepository, Utilidades $utilidades,
+                             LikeRepository $likeRepository, ComentarioRepository $comentarioRepository,
+                            MensajeRepository $mensajeRepository, SeguidorRepository $seguidorRepository,
+                            PublicacionRepository $publicacionRepository):JsonResponse
     {
 
         if($utilidades->comprobarPermisos($request, "usuario"))
@@ -345,7 +357,12 @@ class PerfilController extends AbstractController
             if ($perfilEncontrado->getCarpeta() != null){
                 $service->files->delete($perfilEncontrado->getCarpeta());
             }
-
+            $comentarioRepository->eliminarComentariosPorIdPerfil($id);
+            $mensajeRepository-> eliminarMensajesPorIdPerfil($id);
+            $seguidorRepository->eliminarSeguidorPorIdPerfil($id);
+            $seguidorRepository->eliminarSeguidoPorIdPerfil($id);
+            $likeRepository->eliminarLikesPorIdPerfil($id);
+            $publicacionRepository->eliminarPublicacionPorIdPerfil($id);
             $perfilRepository->remove($perfilEncontrado, true);
 
             return new JsonResponse("se ha eliminado correctamente", 200,[], true);
