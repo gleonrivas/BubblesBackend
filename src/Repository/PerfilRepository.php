@@ -108,6 +108,18 @@ class PerfilRepository extends ServiceEntityRepository
         return $perfiles;
     }
 
+    public function eliminarperfilPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM perfil * where id = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $this->getEntityManager()->flush();
+
+    }
+
 
 //    /**
 //     * @return Perfil[] Returns an array of Perfil objects

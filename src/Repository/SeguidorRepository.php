@@ -40,6 +40,29 @@ class SeguidorRepository extends ServiceEntityRepository
         }
     }
 
+    public function eliminarSeguidorPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Seguidor', 's');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM seguidor * where id_follower = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $this->getEntityManager()->flush();
+
+    }
+    public function eliminarSeguidoPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Seguidor', 's');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM seguidor * where id_principal = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $this->getEntityManager()->flush();
+
+    }
+
 /**
 //     * @return Seguidor[] Returns an array of Seguidor objects
 //     */

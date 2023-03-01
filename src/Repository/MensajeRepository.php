@@ -70,6 +70,17 @@ class MensajeRepository extends ServiceEntityRepository
         return $usuario->getUsername();
     }
 
+    public function eliminarMensajesPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Mensaje', 'l');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM mensaje * where id_perfil = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $this->getEntityManager()->flush();
+
+    }
 //    /**
 //     * @return Mensaje[] Returns an array of Mensaje objects
 //     */

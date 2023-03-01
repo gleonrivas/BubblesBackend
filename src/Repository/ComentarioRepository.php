@@ -57,6 +57,17 @@ class ComentarioRepository extends ServiceEntityRepository
 
         return $comentarios;
     }
+    public function eliminarComentariosPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Comentarios', 'c');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM comentarios * where id_perfil = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $this->getEntityManager()->flush();
+
+    }
 
 //    /**
 //     * @return Comentario[] Returns an array of Comentario objects

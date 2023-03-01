@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
+use function Webmozart\Assert\Tests\StaticAnalysis\string;
 
 class LikeController extends AbstractController
 {
@@ -73,6 +74,32 @@ class LikeController extends AbstractController
             }
         } else {
             return new JsonResponse("{message: Unauthorized}", 200, [], false);
+        }
+
+    }
+
+    #[Route('/api/like/listar/tematicasporlike/{id_perfil}', name: 'app_lista_tematicas', methods: ['GET'])]
+    #[OA\Tag(name: 'Likes')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array"))]
+    public function listartematica(Request $request, Utilidades $utilidades, PublicacionRepository $publicacionRepository,
+                                   int $id_perfil): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+
+            //se obtiene la lista de perfiles que han dado like
+            if ($publicacionRepository->tematicaPorLikes($id_perfil) != null) {
+                $lista_tematica = $publicacionRepository->tematicaPorLikes($id_perfil);
+                $lista_tematica = array_unique( $lista_tematica,  $sort_flags = SORT_STRING);
+                $lista_Json = $utilidades->toJson($lista_tematica, null);
+                return new JsonResponse($lista_Json, 200, [], true);
+            } else {
+                return new JsonResponse("{message: El perfil no prefiere ninguna temática}", 200, [], false);
+            }
+
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
 
     }
@@ -278,11 +305,12 @@ class LikeController extends AbstractController
             return new JsonResponse("{message: Unauthorized}", 200, [], false);
         }
     }
+
     #[Route('/api/likePublicacion/listar/{id_perfil}', name: 'app_likePublicacion_listar', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array", items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
-    public function listarPublicacion(int $id_perfil,Request $request, PublicacionRepository $repository, Utilidades $utilidades,DTOConverters $dtoConv): JsonResponse
+    public function listarPublicacion(int $id_perfil, Request $request, PublicacionRepository $repository, Utilidades $utilidades, DTOConverters $dtoConv): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             //se obtiene la lista de publicacion
