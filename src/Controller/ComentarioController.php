@@ -158,9 +158,9 @@ class ComentarioController extends AbstractController
             //se devuelve el Json transformado
             foreach($lista_comentarios as $comentario){
                 $comentarioDTO = $converters-> comentarioToDto($comentario);
+                $comentarioDTO->setUsername($comentarioDTO->getIdPerfil()->getUsername());
+                $comentarioDTO->setUrlImagen($comentarioDTO->getIdPerfil()->getFotoPerfil());
                 $json = $utilidades->toJson($comentarioDTO, null);
-                $comentarioDTO->setUsername($comentario->getIdPerfil()->getUsername());
-                $comentarioDTO->setUrlImagen($comentario->getIdPerfil()->getFotoPerfil());
                 $lista_Json[] = json_decode($json);
             }
             return new JsonResponse($lista_Json, 200,[], false);
