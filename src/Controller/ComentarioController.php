@@ -34,16 +34,16 @@ class ComentarioController extends AbstractController
         ]);
     }
 
-    #[Route('api/comentario/listar', name: 'app_comentario_listar', methods: ['GET'])]
+    #[Route('api/comentario/listar/{id_perfil}', name: 'app_comentario_listar', methods: ['GET'])]
     #[OA\Tag(name: 'Comentarios')]
     #[Security(name: "apikey")]
     #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: ComentarioDTO::class))))]
-    public function listar(Request $request, DtoConverters $converters,ComentarioRepository $comentarioRepository, Utilidades $utilidades):JsonResponse
+    public function listar(Request $request, DtoConverters $converters,ComentarioRepository $comentarioRepository, Utilidades $utilidades, int $id_perfil):JsonResponse
     {
         //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
-            $lista_comentarios = $comentarioRepository->findAll();
+            $lista_comentarios = $comentarioRepository->findBy(['id_perfil' => $id_perfil]);
             //Se transforma a Json
             $lista_Json = array();
             //se devuelve el Json transformado
@@ -130,11 +130,11 @@ class ComentarioController extends AbstractController
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
 
-            if ($comentarioRepository->findBy(array('id' => $id)) == null) {
+            if ($comentarioRepository->find(array('id' => $id)) == null) {
                 return new JsonResponse("{ mensaje: El comentario no existe }", 200, [], true);
             } else {
 
-                $comentarioRepository->remove($comentarioRepository->findOneBy(array('id' => $id)), true);
+                $comentarioRepository->remove($comentarioRepository->find(array('id' => $id)), true);
 
                 return new JsonResponse("{ mensaje: Comentario eliminado correctamente }", 200, [], true);
             }

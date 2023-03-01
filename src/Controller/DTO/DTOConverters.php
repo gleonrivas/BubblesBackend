@@ -88,10 +88,10 @@ class DTOConverters
         $publicacionDTO = new PublicacionDTO();
         $publicacionDTO->setId($publicacion->getId());
         $publicacionDTO->setTipoPublicacion($publicacion->getTipoPublicacion());
-        $publicacionDTO->setFechaPublicacion($publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'));
         $publicacionDTO->setTexto($publicacion->getTexto());
         $publicacionDTO->setImagen($publicacion->getImagen());
         $publicacionDTO->setTematica($publicacion->getTematica());
+        $publicacionDTO->setFechaPublicacion($publicacion->getFechaPublicacion()->format('Y-m-d H:i:s'));
         $publicacionDTO->setActiva($publicacion->getActiva());
         $publicacionDTO->setIdPerfil($this->perfilToDto($publicacion->getIdPerfil()));
 
