@@ -261,7 +261,7 @@ class LikeController extends AbstractController
 
             return new JsonResponse("{ mensaje: like a la publicación creado correctamente }", 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
         }
 
     }
