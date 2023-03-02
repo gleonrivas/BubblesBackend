@@ -14,6 +14,7 @@ use App\Repository\PublicacionRepository;
 use App\Utilidades\Utilidades;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
+use phpDocumentor\Reflection\Types\Array_;
 use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\String_;
 use phpDocumentor\Reflection\Utils;
@@ -82,7 +83,7 @@ class LikeController extends AbstractController
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
     #[OA\HeaderParameter(name: "apiKey", required: true)]
-    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array"))]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: Array_::class))]
     public function listartematica(Request $request, Utilidades $utilidades, PublicacionRepository $publicacionRepository,
                                    int $id_perfil): JsonResponse
     {
