@@ -70,14 +70,27 @@ class MensajeRepository extends ServiceEntityRepository
         return $usuario->getUsername();
     }
 
-    public function eliminarMensajesPorIdPerfil( int $id_perfil)
+    public function eliminarEmisorMensajesPorIdPerfil( int $id_perfil)
     {
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
 
         $rsm->addRootEntityFromClassMetadata('App\Entity\Mensaje', 'l');
 
-        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM mensaje * where id_perfil = ?', $rsm);
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM mensaje where emisor = ?', $rsm);
         $query->setParameter(1, $id_perfil);
+        $query->execute();
+        $this->getEntityManager()->flush();
+
+    }
+    public function eliminarReceptorMensajesPorIdPerfil( int $id_perfil)
+    {
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+        $rsm->addRootEntityFromClassMetadata('App\Entity\Mensaje', 'l');
+
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM mensaje where receptor = ?', $rsm);
+        $query->setParameter(1, $id_perfil);
+        $query->execute();
         $this->getEntityManager()->flush();
 
     }

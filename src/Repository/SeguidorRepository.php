@@ -48,6 +48,7 @@ class SeguidorRepository extends ServiceEntityRepository
 
         $query = $this->getEntityManager()->createNativeQuery('DELETE FROM seguidor * where id_follower = ?', $rsm);
         $query->setParameter(1, $id_perfil);
+        $query->execute();
         $this->getEntityManager()->flush();
 
     }
@@ -59,6 +60,7 @@ class SeguidorRepository extends ServiceEntityRepository
 
         $query = $this->getEntityManager()->createNativeQuery('DELETE FROM seguidor * where id_principal = ?', $rsm);
         $query->setParameter(1, $id_perfil);
+        $query->execute();
         $this->getEntityManager()->flush();
 
     }
