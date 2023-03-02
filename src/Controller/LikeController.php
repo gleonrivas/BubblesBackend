@@ -331,4 +331,28 @@ class LikeController extends AbstractController
         }
 
     }
+
+    #[Route('/api/like/comprobar/like{id_publicacion}/{id_perfil}', name: 'app_like_publicacion_perfil', methods: ['GET'])]
+    #[OA\Tag(name: 'Likes')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
+        items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
+    public function comprobarLike(Request    $request, LikeRepository $repository, PerfilRepository $perfilRepository,
+                                             Utilidades $utilidades,int $id_perfil, int $id_publicacion): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+            $criterio = array('id_publicacion' => $id_publicacion, 'id_perfil' => $id_perfil);
+            $like = $repository->findOneBy($criterio);
+            if ($like == null) {
+                return new JsonResponse(false, 200, [], false);
+            } else {
+
+                return new JsonResponse(true, 200, [], false);
+            }
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+        }
+
+    }
 }
