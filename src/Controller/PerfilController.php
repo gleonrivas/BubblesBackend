@@ -308,13 +308,13 @@ class PerfilController extends AbstractController
 
     }
 
-    #[Route('api/perfil/editar', name: 'app_perfil_editar', methods: ['POST'])]
+    #[Route('api/perfil/editar/', name: 'app_perfil_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:EditarPerfilDTO::class)))]
     #[OA\Response(response: 200,description: "Perfil editado correctamente")]
     #[OA\Response(response: 101,description: "No ha indicado los datos del perfil")]
-    public function editar(int $id_perfil,Request $request, PerfilRepository $perfilRepository, Utilidades $utilidades): JsonResponse
+    public function editar(Request $request, PerfilRepository $perfilRepository, Utilidades $utilidades): JsonResponse
     {
 
 
@@ -325,6 +325,7 @@ class PerfilController extends AbstractController
             $username = $json['username'];
             $descripcion = $json['descripcion'];
             $tipo_cuenta = $json['tipoCuenta'];
+            $id_perfil = $json['id'];
 
             $perfilAntiguo = $perfilRepository->findOneBy(array('id'=>$id_perfil));
             if ($perfilAntiguo->getCarpeta()==null){
@@ -397,15 +398,17 @@ class PerfilController extends AbstractController
             if ($perfilEncontrado->getCarpeta() != null){
                 $service->files->delete($perfilEncontrado->getCarpeta());
             }
+            $likeRepository->eliminarLikesPorIdPerfil($id);
             $comentarioRepository->eliminarComentariosPorIdPerfil($id);
-            $mensajeRepository-> eliminarMensajesPorIdPerfil($id);
+            $mensajeRepository-> eliminarEmisorMensajesPorIdPerfil($id);
+            $mensajeRepository->eliminarReceptorMensajesPorIdPerfil($id);
             $seguidorRepository->eliminarSeguidorPorIdPerfil($id);
             $seguidorRepository->eliminarSeguidoPorIdPerfil($id);
-            $likeRepository->eliminarLikesPorIdPerfil($id);
             $publicacionRepository->eliminarPublicacionPorIdPerfil($id);
-            $perfilRepository->remove($perfilEncontrado, true);
+            $perfilRepository->eliminarperfilPorIdPerfil($id);
+            $mensaje = $utilidades->toJson("perfil eliminado correctamente", null);
+            return new JsonResponse($mensaje, 200, [], true);
 
-            return new JsonResponse("se ha eliminado correctamente", 200,[], true);
 
         }else{
             return new JsonResponse("{message: Unauthorized}", 200,[], false);
