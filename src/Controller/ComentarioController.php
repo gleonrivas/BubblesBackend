@@ -160,6 +160,7 @@ class ComentarioController extends AbstractController
                 $comentarioDTO = $converters-> comentarioToDto($comentario);
                 $comentarioDTO->setUsername($comentarioDTO->getIdPerfil()->getUsername());
                 $comentarioDTO->setUrlImagen($comentarioDTO->getIdPerfil()->getFotoPerfil());
+                $comentarioDTO->setIdPerfilUsuario($comentario->getIdPerfil()->getId());
                 $json = $utilidades->toJson($comentarioDTO, null);
                 $lista_Json[] = json_decode($json);
             }

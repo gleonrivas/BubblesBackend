@@ -19,9 +19,27 @@ class ComentarioDTO
 
     private string $urlImagen;
 
+    private int $id_perfil_usuario;
+
 
     public function __construct()
     {
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdPerfilUsuario(): int
+    {
+        return $this->id_perfil_usuario;
+    }
+
+    /**
+     * @param int $id_perfil_usuario
+     */
+    public function setIdPerfilUsuario(int $id_perfil_usuario): void
+    {
+        $this->id_perfil_usuario = $id_perfil_usuario;
     }
 
     /**
