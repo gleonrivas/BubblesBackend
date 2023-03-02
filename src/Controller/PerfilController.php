@@ -326,29 +326,33 @@ class PerfilController extends AbstractController
             $descripcion = $json['descripcion'];
             $tipo_cuenta = $json['tipoCuenta'];
 
-
             $perfilAntiguo = $perfilRepository->findOneBy(array('id'=>$id_perfil));
-
-
-
-            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
-            $client = new Client();
-            $client->useApplicationDefaultCredentials();
-            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
-            $service = new \Google_Service_Drive($client);
-            $fileMetadata = new Google_Service_Drive_DriveFile(array(
-                'name' => $username,
-                'mimeType' => 'application/vnd.google-apps.folder'));
-            $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
-            $fileFolder = $service->files->create($fileMetadata, array(
-                'fields' => 'id'));
-            $file_path = $json["file"];
-            $file = new \Google_Service_Drive_DriveFile();
-            $file->setName($username . '_imgPerfil');
-            $file->setParents(array($fileFolder->getId()));
-            $file->setDescription('Archivo cargado desde PHP');
-            $mimeType = substr(explode(';', $json["file"])[0], 5);
-            $file->setMimeType($mimeType);
+            if ($perfilAntiguo->getCarpeta()==null){
+                putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+                $client = new Client();
+                $client->useApplicationDefaultCredentials();
+                $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+                $service = new \Google_Service_Drive($client);
+                $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                    'name' => $username,
+                    'mimeType' => 'application/vnd.google-apps.folder'));
+                $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+                $fileFolder = $service->files->create($fileMetadata, array(
+                    'fields' => 'id'));
+                $file_path = $json["file"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($username . '_imgPerfil');
+                $file->setParents(array($fileFolder->getId()));
+                $file->setDescription('Archivo cargado desde PHP');
+                $mimeType = substr(explode(';', $json["file"])[0], 5);
+                $file->setMimeType($mimeType);
+            }else{
+                $file_path = $json["file"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($username);
+                $file->setParents(array($perfilAntiguo->getCarpeta()));
+                $file->setDescription('Archivo cargado desde PHP');
+            }
 
 
             $mimeType = substr(explode(';', $json["file"])[0], 5);
