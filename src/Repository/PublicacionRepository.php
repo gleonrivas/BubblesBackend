@@ -95,6 +95,7 @@ class PublicacionRepository extends ServiceEntityRepository
 
         $query = $this->getEntityManager()->createNativeQuery('DELETE FROM publicacion * where id_perfil = ?', $rsm);
         $query->setParameter(1, $id_perfil);
+        $query->execute();
         $this->getEntityManager()->flush();
 
     }

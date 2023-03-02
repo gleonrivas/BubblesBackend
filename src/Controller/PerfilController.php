@@ -88,12 +88,12 @@ class PerfilController extends AbstractController
         //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
-            $criterio = array('id'=> $id);
 
-            if($perfilRepository->findBy($criterio)==null){
+
+            if($perfilRepository->findBy(array('id'=> $id))==null){
                 return new JsonResponse("{message: No existe el perfil}", 400,[], false);
             }else{
-                $lista_perfiles = $perfilRepository->findBy($criterio);
+                $lista_perfiles = $perfilRepository->findBy(array('id'=> $id));
                 //Se transforma a Json
                 $perfil = $lista_perfiles[0];
 
@@ -308,13 +308,13 @@ class PerfilController extends AbstractController
 
     }
 
-    #[Route('api/perfil/editar', name: 'app_perfil_editar', methods: ['POST'])]
+    #[Route('api/perfil/editar/', name: 'app_perfil_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:EditarPerfilDTO::class)))]
     #[OA\Response(response: 200,description: "Perfil editado correctamente")]
     #[OA\Response(response: 101,description: "No ha indicado los datos del perfil")]
-    public function editar(int $id_perfil,Request $request, PerfilRepository $perfilRepository, Utilidades $utilidades): JsonResponse
+    public function editar(Request $request, PerfilRepository $perfilRepository, Utilidades $utilidades): JsonResponse
     {
 
 
@@ -325,33 +325,35 @@ class PerfilController extends AbstractController
             $username = $json['username'];
             $descripcion = $json['descripcion'];
             $tipo_cuenta = $json['tipoCuenta'];
-
+            $id_perfil = $json['id'];
 
             $perfilAntiguo = $perfilRepository->findOneBy(array('id'=>$id_perfil));
-
-
-
-            putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
-            $client = new Client();
-            $client->useApplicationDefaultCredentials();
-            $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
-            $service = new \Google_Service_Drive($client);
-            if ($perfilAntiguo->getCarpeta() != null){
-                $service->files->delete($perfilAntiguo->getCarpeta());
+            if ($perfilAntiguo->getCarpeta()==null){
+                putenv('GOOGLE_APPLICATION_CREDENTIALS=../src/keys/bubbles-377817-2e196d93ff9e.json');
+                $client = new Client();
+                $client->useApplicationDefaultCredentials();
+                $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
+                $service = new \Google_Service_Drive($client);
+                $fileMetadata = new Google_Service_Drive_DriveFile(array(
+                    'name' => $username,
+                    'mimeType' => 'application/vnd.google-apps.folder'));
+                $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
+                $fileFolder = $service->files->create($fileMetadata, array(
+                    'fields' => 'id'));
+                $file_path = $json["file"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($username . '_imgPerfil');
+                $file->setParents(array($fileFolder->getId()));
+                $file->setDescription('Archivo cargado desde PHP');
+                $mimeType = substr(explode(';', $json["file"])[0], 5);
+                $file->setMimeType($mimeType);
+            }else{
+                $file_path = $json["file"];
+                $file = new \Google_Service_Drive_DriveFile();
+                $file->setName($username);
+                $file->setParents(array($perfilAntiguo->getCarpeta()));
+                $file->setDescription('Archivo cargado desde PHP');
             }
-            $fileMetadata = new Google_Service_Drive_DriveFile(array(
-                'name' => $username,
-                'mimeType' => 'application/vnd.google-apps.folder'));
-            $fileMetadata->setParents(array('11Qac_Tl5JTPB1ahAvjHjP4DK-xP4jowV'));
-            $fileFolder = $service->files->create($fileMetadata, array(
-                'fields' => 'id'));
-            $file_path = $json["file"];
-            $file = new \Google_Service_Drive_DriveFile();
-            $file->setName($username . '_imgPerfil');
-            $file->setParents(array($fileFolder->getId()));
-            $file->setDescription('Archivo cargado desde PHP');
-            $mimeType = substr(explode(';', $json["file"])[0], 5);
-            $file->setMimeType($mimeType);
 
 
             $mimeType = substr(explode(';', $json["file"])[0], 5);
@@ -396,15 +398,17 @@ class PerfilController extends AbstractController
             if ($perfilEncontrado->getCarpeta() != null){
                 $service->files->delete($perfilEncontrado->getCarpeta());
             }
+            $likeRepository->eliminarLikesPorIdPerfil($id);
             $comentarioRepository->eliminarComentariosPorIdPerfil($id);
-            $mensajeRepository-> eliminarMensajesPorIdPerfil($id);
+            $mensajeRepository-> eliminarEmisorMensajesPorIdPerfil($id);
+            $mensajeRepository->eliminarReceptorMensajesPorIdPerfil($id);
             $seguidorRepository->eliminarSeguidorPorIdPerfil($id);
             $seguidorRepository->eliminarSeguidoPorIdPerfil($id);
-            $likeRepository->eliminarLikesPorIdPerfil($id);
             $publicacionRepository->eliminarPublicacionPorIdPerfil($id);
-            $perfilRepository->remove($perfilEncontrado, true);
+            $perfilRepository->eliminarperfilPorIdPerfil($id);
+            $mensaje = $utilidades->toJson("perfil eliminado correctamente", null);
+            return new JsonResponse($mensaje, 200, [], true);
 
-            return new JsonResponse("se ha eliminado correctamente", 200,[], true);
 
         }else{
             return new JsonResponse("{message: Unauthorized}", 200,[], false);

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Like;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -45,9 +46,10 @@ class LikeRepository extends ServiceEntityRepository
 
         $rsm->addRootEntityFromClassMetadata('App\Entity\Like', 'l');
 
-        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM likes * where id_perfil = ?', $rsm);
+        $query = $this->getEntityManager()->createNativeQuery('DELETE FROM likes  where id_perfil = ?', $rsm);
         $query->setParameter(1, $id_perfil);
-        $this->getEntityManager()->flush();
+        $query->execute();
+        $this->getEntityManager()->clear();
 
     }
 

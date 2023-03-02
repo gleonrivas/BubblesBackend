@@ -65,6 +65,7 @@ class ComentarioRepository extends ServiceEntityRepository
 
         $query = $this->getEntityManager()->createNativeQuery('DELETE FROM comentarios * where id_perfil = ?', $rsm);
         $query->setParameter(1, $id_perfil);
+        $query->execute();
         $this->getEntityManager()->flush();
 
     }

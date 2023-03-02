@@ -116,6 +116,7 @@ class PerfilRepository extends ServiceEntityRepository
 
         $query = $this->getEntityManager()->createNativeQuery('DELETE FROM perfil * where id = ?', $rsm);
         $query->setParameter(1, $id_perfil);
+        $query->execute();
         $this->getEntityManager()->flush();
 
     }
