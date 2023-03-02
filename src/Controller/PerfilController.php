@@ -308,7 +308,7 @@ class PerfilController extends AbstractController
 
     }
 
-    #[Route('api/perfil/editar/', name: 'app_perfil_editar', methods: ['POST'])]
+    #[Route('api/perfil/editar', name: 'app_perfil_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:EditarPerfilDTO::class)))]
