@@ -332,7 +332,7 @@ class LikeController extends AbstractController
 
     }
 
-    #[Route('/api/like/listar/like/{id_publicacion}/{id_perfil}', name: 'app_like_publicacion', methods: ['GET'])]
+    #[Route('/api/like/comprobar/like{id_publicacion}/{id_perfil}', name: 'app_like_publicacion_perfil', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
     #[OA\HeaderParameter(name: "apiKey", required: true)]
@@ -342,28 +342,13 @@ class LikeController extends AbstractController
                                              Utilidades $utilidades,int $id_perfil, int $id_publicacion): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
-            $criterio = array('id_publicacion' => $id_publicacion, 'id_id_perfil' => $id_perfil);
+            $criterio = array('id_publicacion' => $id_publicacion, 'id_perfil' => $id_perfil);
             $like = $repository->findOneBy($criterio);
             if ($like == null) {
-                return new JsonResponse("{ mensaje: La publicacion no tiene likes }", 200, [], true);
+                return new JsonResponse(false, 200, [], false);
             } else {
-                $lista_dto_perfil = [];
-                    $criterio2 = array('id' => $like->getIdPerfil());
-                    $lista_perfiles = $perfilRepository->findBy($criterio2);
-                    foreach ($lista_perfiles as $perfil) {
-                        $perfilDTO = new PerfilDTO();
-                        $perfilDTO->setId($perfil->getId());
-                        $perfilDTO->setDescripcion($perfil->getDescripcion());
-                        $perfilDTO->setUsername($perfil->getUsername());
-                        $perfilDTO->setTipoCuenta($perfil->getTipoCuenta());
-                        $perfilDTO->setFotoPerfil($perfil->getFotoPerfil());
 
-                        array_push($lista_dto_perfil, $perfilDTO);
-
-                }
-
-                $lista_Json = $utilidades->toJson($lista_dto_perfil, null);
-                return new JsonResponse($lista_Json, 200, [], true);
+                return new JsonResponse(true, 200, [], false);
             }
         } else {
             return new JsonResponse("{message: Unauthorized}", 200, [], false);
