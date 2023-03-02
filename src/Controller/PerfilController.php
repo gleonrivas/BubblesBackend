@@ -336,9 +336,6 @@ class PerfilController extends AbstractController
             $client->useApplicationDefaultCredentials();
             $client->setScopes(['https://www.googleapis.com/auth/drive.file']);
             $service = new \Google_Service_Drive($client);
-            if ($perfilAntiguo->getCarpeta() != null){
-                $service->files->delete($perfilAntiguo->getCarpeta());
-            }
             $fileMetadata = new Google_Service_Drive_DriveFile(array(
                 'name' => $username,
                 'mimeType' => 'application/vnd.google-apps.folder'));
