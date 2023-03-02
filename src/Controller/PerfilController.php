@@ -88,12 +88,12 @@ class PerfilController extends AbstractController
         //Se obtiene la lista de perfiles de la BBDD
         if($utilidades->comprobarPermisos($request, "usuario"))
         {
-            $criterio = array('id'=> $id);
 
-            if($perfilRepository->findBy($criterio)==null){
+
+            if($perfilRepository->findBy(array('id'=> $id))==null){
                 return new JsonResponse("{message: No existe el perfil}", 400,[], false);
             }else{
-                $lista_perfiles = $perfilRepository->findBy($criterio);
+                $lista_perfiles = $perfilRepository->findBy(array('id'=> $id));
                 //Se transforma a Json
                 $perfil = $lista_perfiles[0];
 
@@ -308,7 +308,7 @@ class PerfilController extends AbstractController
 
     }
 
-    #[Route('api/perfil/editar', name: 'app_perfil_editar', methods: ['POST'])]
+    #[Route('api/perfil/editar/', name: 'app_perfil_editar', methods: ['POST'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\RequestBody(description:"DTO del perfil" ,required: true, content: new OA\JsonContent(ref: new Model(type:EditarPerfilDTO::class)))]
