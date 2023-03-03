@@ -50,7 +50,8 @@ class LikeController extends AbstractController
             $criterio = array('id_publicacion' => $id_publicacion);
             $lista_likes = $repository->findBy($criterio);
             if (count($lista_likes) == 0) {
-                return new JsonResponse("{ mensaje: La publicacion no tiene likes }", 200, [], true);
+                $lista_Json = $utilidades->toJson($lista_likes, null);
+                return new JsonResponse($lista_Json, 200, [], true);
             } else {
                 $lista_dto_perfil = [];
                 foreach ($lista_likes as $like) {
@@ -85,14 +86,14 @@ class LikeController extends AbstractController
     #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: Array_::class))]
     public function listartematica(Request $request, Utilidades $utilidades, PublicacionRepository $publicacionRepository,
-                                   int $id_perfil): JsonResponse
+                                   int     $id_perfil): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
 
             //se obtiene la lista de perfiles que han dado like
             if ($publicacionRepository->tematicaPorLikes($id_perfil) != null) {
                 $lista_tematica = $publicacionRepository->tematicaPorLikes($id_perfil);
-                $lista_tematica = array_unique( $lista_tematica,  $sort_flags = SORT_STRING);
+                $lista_tematica = array_unique($lista_tematica, $sort_flags = SORT_STRING);
                 $lista_Json = $utilidades->toJson($lista_tematica, null);
                 return new JsonResponse($lista_Json, 200, [], true);
             } else {
@@ -206,7 +207,7 @@ class LikeController extends AbstractController
     #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "Like eliminado correctamente")]
     #[OA\Response(response: 101, description: "El like ya no existe")]
-    public function eliminarlikepublicacion(Utilidades $utilidades, Request $request, LikeRepository $likeRepository, int $id): JsonResponse
+    public function eliminarlike(Utilidades $utilidades, Request $request, LikeRepository $likeRepository, int $id): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             $criterio = array('id' => $id);
@@ -258,10 +259,11 @@ class LikeController extends AbstractController
 
             //GUARDAR
             $likerepository->save($like, true);
-
-            return new JsonResponse("{ mensaje: like a la publicación creado correctamente }", 200, [], true);
+            $mensaje = $utils->toJson("mensaje: like creado correctamente", null);
+            return new JsonResponse($mensaje, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            $mensaje = $utils->toJson("mensaje: Unauthorized", null);
+            return new JsonResponse($mensaje, 401, [], false);
         }
 
     }
@@ -327,19 +329,20 @@ class LikeController extends AbstractController
             $lista_Json = $utilidades->toJson($lista_dto_publicacion, null);
             return new JsonResponse($lista_Json, 200, [], true);
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            $mensaje = $utilidades->toJson("message:Unauthotired", null);
+            return new JsonResponse($mensaje, 401, [], true);
         }
 
     }
 
-    #[Route('/api/like/comprobar/like{id_publicacion}/{id_perfil}', name: 'app_like_publicacion_perfil', methods: ['GET'])]
+    #[Route('/api/like/comprobar/like/{id_publicacion}/{id_perfil}', name: 'app_like_publicacion_perfil', methods: ['GET'])]
     #[OA\Tag(name: 'Likes')]
     #[Security(name: "apikey")]
     #[OA\HeaderParameter(name: "apiKey", required: true)]
     #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
         items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
     public function comprobarLike(Request    $request, LikeRepository $repository, PerfilRepository $perfilRepository,
-                                             Utilidades $utilidades,int $id_perfil, int $id_publicacion): JsonResponse
+                                  Utilidades $utilidades, int $id_perfil, int $id_publicacion): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
             $criterio = array('id_publicacion' => $id_publicacion, 'id_perfil' => $id_perfil);
@@ -351,8 +354,41 @@ class LikeController extends AbstractController
                 return new JsonResponse(true, 200, [], false);
             }
         } else {
-            return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            $mensaje = $utilidades->toJson("{message: Unauthorized}", null);
+            return new JsonResponse($mensaje, 401, [], false);
         }
 
     }
+
+    #[Route('/api/like/eliminar/{id_perfil}/{id_publicacion}', name: 'app_like_eliminar', methods: ['DELETE'])]
+    #[OA\Tag(name: 'Likes')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response: 200, description: "Like eliminado correctamente")]
+    #[OA\Response(response: 101, description: "El like ya no existe")]
+    public function eliminarlikepublicacion(Utilidades $utilidades, Request $request, LikeRepository $likeRepository, int $id_perfil, int $id_publicacion): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+            $criterio = array('id_perfil' => $id_perfil,
+                'id_publicacion' => $id_publicacion);
+            if ($likeRepository->findBy($criterio) == null) {
+                $mensaje = $utilidades->toJson("{ mensaje: El like ya no existe }", null);
+                return new JsonResponse($mensaje, 101, [], true);
+            } else {
+                //ELIMINAR
+                $listalikes = $likeRepository->findBy($criterio);
+                foreach ($listalikes as $like) {
+                    $likeRepository->remove($like, true);
+                }
+
+                $mensaje = $utilidades->toJson("{ mensaje: Like eliminado correctamente }", null);
+                return new JsonResponse($mensaje, 200, [], true);
+            }
+        } else {
+            $mensaje = $utilidades->toJson("{message: Unauthorized}", null);
+            return new JsonResponse($mensaje, 401, [], false);
+        }
+
+    }
+
 }

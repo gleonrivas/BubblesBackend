@@ -294,15 +294,17 @@ class PerfilController extends AbstractController
                 $nuevoPerfil->setIdUsuario($usuarioRepository->findOneBy(array('id'=>$utilidades->infoToken($request)->getId())));
 
                 $perfilRepository->save($nuevoPerfil, true);
-
-                return new JsonResponse("{ mensaje: Perfil creado correctamente }", 200, [], true);
+                $mensaje = $utilidades->toJson("mensaje: Perfil creado correctamente ", null);
+                return new JsonResponse($mensaje, 200, [], true);
             } else{
-                return new JsonResponse("{ mensaje: Este username no esta disponible}", 200, [], true);
+                $mensaje = $utilidades->toJson("mensaje: Este username  no está disponible ", null);
+                return new JsonResponse($mensaje, 200, [], true);
             }
 
         }else{
+            $mensaje = $utilidades->toJson("message: Unauthorizad ", null);
+            return new JsonResponse($mensaje, 401, [], true);
 
-            return new JsonResponse("{message: Unauthorized}", 200,[], false);
         }
 
 
@@ -369,9 +371,11 @@ class PerfilController extends AbstractController
 
             $perfilRepository->editar($username, $descripcion, 'https://drive.google.com/uc?id='.$resultado->getId(), $tipo_cuenta, $perfilAntiguo->getId());
 
-            return new JsonResponse("{ mensaje: Perfil editado correctamente }", 200, [], true);
+            $mensaje = $utilidades->toJson("mensaje: Perfil editado correctamente ", null);
+            return new JsonResponse($mensaje, 200, [], true);
         }else{
-            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+            $mensaje = $utilidades->toJson("mensaje: Unauthorized", null);
+            return new JsonResponse($mensaje, 401, [], false);
         }
 
     }
@@ -412,7 +416,9 @@ class PerfilController extends AbstractController
 
 
         }else{
-            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+            $mensaje = $utilidades->toJson("message: Unauthorized", null);
+            return new JsonResponse($mensaje, 401, [], true);
+
         }
 
     }
