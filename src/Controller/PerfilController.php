@@ -423,4 +423,31 @@ class PerfilController extends AbstractController
 
     }
 
+    #[Route('api/buscandoPerfil/{username}', name: 'app_perfil_username', methods: ['GET'])]
+    #[OA\Tag(name: 'Perfiles')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response:200,description:"successful operation" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
+    public function perfilPorUsername(Request $request, DtoConverters $converters,string $username, PerfilRepository $perfilRepository, Utilidades $utilidades):JsonResponse
+    {
+        {
+            //Se obtiene la lista de perfiles de la BBDD
+            if ($utilidades->comprobarPermisos($request, "usuario")) {
+                $lista_perfiles = $perfilRepository->getByUsername($username);
+                //Se transforma a Json
+                $lista_Json = array();
+                //se devuelve el Json transformado
+                foreach ($lista_perfiles as $perfil) {
+                    $perfilDTO = $converters->perfilToDto($perfil);
+                    $json = $utilidades->toJson($perfilDTO, null);
+                    $lista_Json[] = json_decode($json);
+                }
+                return new JsonResponse($lista_Json, 200, [], false);
+            } else {
+                return new JsonResponse("{message: Unauthorized}", 200, [], false);
+            }
+
+
+        }
+    }
 }
