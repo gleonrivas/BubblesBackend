@@ -480,26 +480,26 @@ class PublicacionController extends AbstractController
         }
     }
 
-//    #[Route('/api/publicacion/{id_publicacion}', name: 'app_publicacaion_id', methods: ['GET'])]
-//    #[OA\Tag(name: 'Publicaciones')]
-//    #[Security(name: "apikey")]
-//    #[OA\HeaderParameter(name: "apiKey", required: true)]
-//    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
-//        items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
-//    public function obtenerPublicacion(Request $request, PublicacionRepository $publicacionRepository, Utilidades $utilidades, int $id_publicacion, DTOConverters $converter): JsonResponse
-//    {
-//        if ($utilidades->comprobarPermisos($request, "usuario")) {
-//            //se obtiene la lista de publicacion
-//            $repo = $publicacionRepository->find(['id'=>$id_publicacion]);
-//
-//            $publicacionDTO = $converter->publicacionToDTO($repo);
-//
-//
-//            return new JsonResponse($utilidades->toJson($publicacionDTO, null), 200, [], true);
-//        } else {
-//            return new JsonResponse("{message: Unauthorized}", 401, [], false);
-//        }
-//
-//    }
+    #[Route('/api/publicacion/{id_publicacion}', name: 'app_publicacaion_id', methods: ['GET'])]
+    #[OA\Tag(name: 'Publicaciones')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
+        items: new OA\Items(ref: new Model(type: PublicacionDTO::class))))]
+    public function obtenerPublicacion(Request $request, PublicacionRepository $publicacionRepository, Utilidades $utilidades, int $id_publicacion, DTOConverters $converter): JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+            //se obtiene la lista de publicacion
+            $repo = $publicacionRepository->find(['id'=>$id_publicacion]);
+
+            $publicacionDTO = $converter->publicacionToDTO($repo);
+
+
+            return new JsonResponse($utilidades->toJson($publicacionDTO, null), 200, [], true);
+        } else {
+            return new JsonResponse("{message: Unauthorized}", 401, [], false);
+        }
+
+    }
 
 }
