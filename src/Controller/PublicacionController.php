@@ -274,9 +274,10 @@ class PublicacionController extends AbstractController
                 $file->setName($perfilActual->getUsername().'_'.$publicacionesPorPerfil);
                 $file->setParents(array($perfilActual->getCarpeta()));
                 $file->setDescription('Archivo cargado desde PHP');
+                $mimeType = substr(explode(';', $json["file"])[0],5);
 
             }
-            $mimeType = substr(explode(';', $json["file"])[0],5);
+
 
             $resultado = $service->files->create(
                 $file,
