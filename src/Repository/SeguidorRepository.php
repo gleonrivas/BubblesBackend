@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpInconsistentReturnPointsInspection */
 
 namespace App\Repository;
 
@@ -80,6 +80,21 @@ public function buscarSeguidorPorIdPrincipal(int $id_principal): array
     $seguidores = $query->getResult();
 
  return $seguidores;
+}
+
+public function getSiLeSigues(int $id_principal, int $id_follower): array
+{
+    $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+
+    $rsm->addRootEntityFromClassMetadata('App\Entity\Seguidor', 's');
+
+    $query = $this->getEntityManager()->createNativeQuery('select * from seguidor where id_principal =? and  id_follower =?', $rsm);
+    $query->setParameter(1, $id_principal);
+    $query->setParameter(2, $id_follower);
+    $seguidores = $query->getResult();
+
+    return $seguidores;
+
 }
 
 //    public function findOneBySomeField($value): ?Seguidor

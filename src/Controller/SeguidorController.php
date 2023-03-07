@@ -210,35 +210,21 @@ class SeguidorController extends AbstractController
 
     }
 
-    #[Route('/api/seguido/eliminar/{id}/{id_seguido}', name: 'app_dejar_seguir', methods: ['DELETE'])]
+    #[Route('/api/seguido/eliminar/{id_principal}/{id_follower}', name: 'app_dejar_seguir', methods: ['DELETE'])]
     #[OA\Tag(name: 'Seguidores')]
     #[Security(name: "apikey")]
     #[OA\Response(response: 200, description: "No sigues a ese perfil")]
     #[OA\Response(response: 100, description: "Has dejado de seguir a este perfil")]
     #[OA\Response(response: 101, description: "No ha indicado usario y contraseña")]
-    public function dejardeseguir(\Symfony\Component\HttpFoundation\Request $request, Utilidades $utilidades, SeguidorRepository $seguidorRepository, int $id, int $id_seguido): JsonResponse
+    public function dejardeseguir(\Symfony\Component\HttpFoundation\Request $request, Utilidades $utilidades, SeguidorRepository $seguidorRepository): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
-            $criterioseguidor = array('id_follower' => $id,
-                'id_principal' => $id_seguido);
 
-            if ($seguidorRepository->findBy($criterioseguidor) == null) {
-                $mensaje = new MensajeRespuestaDTO("mensaje: No sigues a este perfil");
+            $seguidorRepository->remove($seguidorRepository->findOneBy(['id_principal' => $request->get('id_principal')]), true);
+            $mensaje = new MensajeRespuestaDTO("mensaje: se ha eliminado");
 
-                $json = $utilidades->toJson($mensaje,null);
-                return new JsonResponse($json, 200, [], true);
-            } else {
-                $listaseguidores = $seguidorRepository->findBy($criterioseguidor);
-                $seguidor = $listaseguidores[0];
-
-
-                //ELIMINAR
-                $seguidorRepository->remove($seguidor, true);
-                $mensaje = new MensajeRespuestaDTO("mensaje: Has dejado de seguir a este perfil");
-
-                $json = $utilidades->toJson($mensaje,null);
-                return new JsonResponse($json, 200, [], true);
-            }
+            $json = $utilidades->toJson($mensaje,null);
+            return new JsonResponse($json, 200, [], true);
 
         } else {
             $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
@@ -247,4 +233,35 @@ class SeguidorController extends AbstractController
             return new JsonResponse($json, 401, [], true);
         }
     }
+
+
+
+    #[Route('/api/siguiendo/{id_principal}/{id_follower}', name: 'app_te_sigue', methods: ['GET'])]
+    #[OA\Tag(name: 'Seguidores')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array",
+        items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
+    public function leSigues(\Symfony\Component\HttpFoundation\Request $request, PerfilRepository $perfilrepository,
+                                                SeguidorRepository $seguidorRepository, Utilidades $utilidades):JsonResponse
+    {
+        if ($utilidades->comprobarPermisos($request, "usuario")) {
+
+            if ($seguidorRepository->getSiLeSigues((int)$request->get('id_principal'), (int)$request->get('id_follower')) != null) {
+                $mensaje = new MensajeRespuestaDTO("true");
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse( $json, 201, [], true);
+            } else {
+                $mensaje = new MensajeRespuestaDTO("false");
+                $json = $utilidades->toJson($mensaje,null);
+                return new JsonResponse( $json, 201, [], true);
+            }
+        }else {
+            $mensaje = new MensajeRespuestaDTO("mensaje: Unauthorized");
+
+            $json = $utilidades->toJson($mensaje,null);
+
+            return new JsonResponse( $json, 401, [], true);
+        }
+    }
+
 }
