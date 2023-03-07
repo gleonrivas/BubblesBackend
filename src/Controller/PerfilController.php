@@ -346,25 +346,31 @@ class PerfilController extends AbstractController
                 $mimeType = substr(explode(';', $json["file"])[0], 5);
                 $file->setMimeType($mimeType);
             } else {
-                $file_path = $json["file"];
+
                 $file = new \Google_Service_Drive_DriveFile();
                 $file->setName($username);
                 $file->setParents(array($perfilAntiguo->getCarpeta()));
                 $file->setDescription('Archivo cargado desde PHP');
+
             }
 
+            if ($json["file"] == ""){
+                $imagenPerfil = $perfilAntiguo->getFotoPerfil();
+            }else{
+                $mimeType = substr(explode(';', $json["file"])[0], 5);
+                $resultado = $service->files->create(
+                    $file,
+                    array(
+                        'data' => file_get_contents($json["file"]),
+                        'mimeType' => $mimeType,
+                        'uploadType' => 'media'
+                    )
+                );
+                $imagenPerfil = 'https://drive.google.com/uc?id=' . $resultado->getId();
 
-            $mimeType = substr(explode(';', $json["file"])[0], 5);
-            $resultado = $service->files->create(
-                $file,
-                array(
-                    'data' => file_get_contents($file_path),
-                    'mimeType' => $mimeType,
-                    'uploadType' => 'media'
-                )
-            );
+            }
 
-            $perfilRepository->editar($username, $descripcion, 'https://drive.google.com/uc?id=' . $resultado->getId(), $tipo_cuenta, $perfilAntiguo->getId());
+            $perfilRepository->editar($username, $descripcion, $imagenPerfil, $tipo_cuenta, $perfilAntiguo->getId());
 
             $mensaje = $utilidades->toJson("mensaje: Perfil editado correctamente ", null);
             return new JsonResponse($mensaje, 200, [], true);

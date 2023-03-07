@@ -239,6 +239,7 @@ class PublicacionController extends AbstractController
                                        PublicacionRepository $publicacionRepository): JsonResponse
     {
         if ($utilidades->comprobarPermisos($request, "usuario")) {
+
             $json  = json_decode($request->getContent(), true);
             $id_perfil = $json['idPerfil'];
             $perfilActual = $repository->findOneBy(array('id'=>$id_perfil));
