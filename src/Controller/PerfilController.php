@@ -11,6 +11,7 @@ use App\Controller\DTO\PerfilDTO;
 use App\Controller\DTO\UsuarioDTO;
 use App\Entity\Perfil;
 use App\Entity\Usuario;
+use App\Enums\tipo_cuenta;
 use App\Repository\AccessTokenRepository;
 use App\Repository\ComentarioRepository;
 use App\Repository\LikeRepository;
@@ -450,4 +451,34 @@ class PerfilController extends AbstractController
 
         }
     }
+
+    #[Route('api/buscandoPerfil/{username}/{descripcion}/{tipocuenta}', name: 'app_perfil_username', methods: ['GET'])]
+    #[OA\Tag(name: 'Perfiles')]
+    #[Security(name: "apikey")]
+    #[OA\HeaderParameter(name: "apiKey", required: true)]
+    #[OA\Response(response: 200, description: "successful operation", content: new OA\JsonContent(type: "array", items: new OA\Items(ref: new Model(type: PerfilDTO::class))))]
+    public function perfilPorAtributos(Request $request, DtoConverters $converters, string $username,string $descripcion,
+                                       string $tipocuenta,PerfilRepository $perfilRepository, Utilidades $utilidades): JsonResponse
+    {
+        {
+            //Se obtiene la lista de perfiles de la BBDD
+            if ($utilidades->comprobarPermisos($request, "usuario")) {
+                $criterio = array('username'=>$username, 'descripcion'=> $descripcion, 'tipo_cuenta'=>$tipocuenta);
+                $lista_perfiles = $perfilRepository->findBy($criterio);
+                //Se transforma a Json
+                $perfil = $lista_perfiles[0];
+                //se devuelve el Json transformado
+                $perfilDTO = $converters->perfilToDto($perfil);
+                $respuesta = $utilidades->toJson($perfilDTO, null);
+
+                return new JsonResponse($respuesta, 200, [], true);
+            } else {
+                return new JsonResponse("{message: Unauthorized}", 401, [], false);
+            }
+
+
+        }
+    }
+
+
 }
