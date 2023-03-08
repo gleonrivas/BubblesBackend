@@ -75,7 +75,7 @@ class DTOConverters
         $mensajeDTO->setTipoMensaje($mensaje->getTipoMensaje());
         $mensajeDTO->setImagen($mensaje->getImagen());
         $mensajeDTO->setLeido($mensaje->getLeido());
-        $mensajeDTO->setFechaEnvio($mensaje->getFechaEnvio()->format('Y-m-d H:i:s'));
+        $mensajeDTO->setFechaEnvio($mensaje->getFechaEnvio());
         $mensajeDTO->setEmisor($this->perfilToDto($mensaje->getEmisor()));
         $mensajeDTO->setReceptor($this->perfilToDto($mensaje->getReceptor()));
 

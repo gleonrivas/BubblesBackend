@@ -47,14 +47,14 @@ class MensajeRepository extends ServiceEntityRepository
         $rsm->addRootEntityFromClassMetadata('App\Entity\Perfil', 'p');
 
 
-        $query = $this->getEntityManager()->createNativeQuery('select p.* from mensaje m 
-                                                                join perfil p on m.receptor = p.id
-                                                                where emisor = ? group by p.id', $rsm);
+        $query = $this->getEntityManager()->createNativeQuery('SELECT DISTINCT receptor AS contacto FROM mensaje m WHERE emisor = ? UNION SELECT DISTINCT emisor AS contacto FROM mensaje m2 WHERE receptor = ?;', $rsm);
         $query->setParameter(1, $id_perfil);
         $chats = $query->getResult();
 
         return $chats;
     }
+
+
 
 
 

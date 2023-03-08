@@ -20,7 +20,7 @@ class Mensaje
     private ?string $mensaje = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $fecha_envio = null;
+    private ?string $fecha_envio = null;
 
     #[ORM\Column(length: 50)]
     private ?string $tipoMensaje = null;

@@ -126,7 +126,21 @@ class MensajeController extends AbstractController
 
 
 
+    #[Route('api/mensaje/contactos/{id_perfil}', name: 'app_mensaje_listarContactos', methods: ['GET'])]
+    #[OA\Tag(name: 'Mensajes')]
+    #[Security(name: "apikey")]
+    #[OA\Response(response:200,description:"se obtiene la lista de contactos que has escrito y/o te han escrito" ,content: new OA\JsonContent(type: "array", items: new OA\Items(ref:new Model(type: PerfilDTO::class))))]
+    public function getContactos(int $id_perfil,Request $request, DtoConverters $converters,MensajeRepository $mensajeRepository, Utilidades $utilidades):JsonResponse
+    {
 
+        if($utilidades->comprobarPermisos($request, "usuario"))
+        {
+            return new JsonResponse($mensajeRepository->findChats($id_perfil), 200,[], false);
+        }else{
+            return new JsonResponse("{message: Unauthorized}", 200,[], false);
+        }
+
+    }
 
 
 

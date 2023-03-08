@@ -452,7 +452,7 @@ class PerfilController extends AbstractController
         }
     }
 
-    #[Route('api/buscandoPerfil/{username}/{descripcion}/{tipocuenta}', name: 'app_perfil_username', methods: ['GET'])]
+    #[Route('api/buscandoPerfil/{username}/{descripcion}/{tipocuenta}', name: 'app_perfil_username_full', methods: ['GET'])]
     #[OA\Tag(name: 'Perfiles')]
     #[Security(name: "apikey")]
     #[OA\HeaderParameter(name: "apiKey", required: true)]
